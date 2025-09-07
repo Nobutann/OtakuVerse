@@ -16,7 +16,7 @@
 
 ---
 
-## Links
+## 🔗 Links
 
 <div align="center">
     <a href="https://otakuverse.atlassian.net/jira/software/projects/OT/boards/1">
