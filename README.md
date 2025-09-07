@@ -38,7 +38,7 @@ Esta primeira focará na base do sistema, com o layout e as funcionalidades bás
 
 Criamos um prototipo de baixa fidelidade no [figma](https://www.figma.com/design/6Q4DkRQeQO5bq2jOZrwhfO/OtakuVerse?t=B29iLpEUN9gL3O8G-1) das histórias de usuário que colocamos em nosso sprint do jira, também criamos um [docs](https://docs.google.com/document/d/1Y8RcR2egMJ4rOE_O9AO1JHqaPqj51M2uxXOSbzNYWv0/edit?usp=sharing) para apresentar melhor as histórias com cenários de validação usando BDD.
 
-Também foi feito um screencast apresentando nosso protótipo que está disponível no youtube através deste link.
+Também foi feito um screencast apresentando nosso protótipo que está disponível no youtube através deste [link](https://youtu.be/sO74KHClKPc).
 
 Nosso figma contem as telas de login, cadastro, listas, busca, ranking, detalhes e avaliação:
 ![figma](img/figmaprint.png)
