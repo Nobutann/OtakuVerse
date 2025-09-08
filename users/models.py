@@ -1,3 +1,51 @@
 from django.db import models
+from django.contrib.auth.models import User
+from PIL import Image
+from datetime import date
 
-# Create your models here.
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+
+    bio = models.TextField(max_length=500, blank=True)
+    birthDate = models.DateField(blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.jpg')
+
+    isPublic = models.BooleanField(default=True)
+    showStats = models.BooleanField(default=True)
+
+    animeCount = models.PositiveIntegerField(default=0)
+    episodesWatched = models.PositiveIntegerField(default=0)
+
+    joinedDate = models.DateTimeField(auto_now_add=True)
+    lastOnline = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        formatedName = "User Profile"
+        formatedNamePlural = "User Profiles"
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+    
+    def _resizeAvatar(self):
+        try:
+            img = Image.open(self.avatar.path)
+            if img.height > 300 or img.width > 300:
+                outputSize = (300, 300)
+                img.thumbnail(outputSize, Image.Resampling.LANCZOS)
+                img.save(self.avatar.path, quality=95)
+        except Exception:
+            pass
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.avatar and hasattr(self.avatar, 'path'):
+            self._resizeAvatar()
+
+@property
+def age(self):
+    if not self.birthDate:
+        return None
+    today = date.today()
+
+    return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
