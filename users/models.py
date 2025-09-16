@@ -19,6 +19,21 @@ class UserProfile(models.Model):
     joinedDate = models.DateTimeField(auto_now_add=True)
     lastOnline = models.DateTimeField(auto_now=True)
 
+    FEMALE = 'F'
+    MALE = 'M'
+    CUSTOM = 'CUSTOM'
+    NONE = 'NONE'
+
+    GENDER = [
+        (FEMALE, "Feminino"),
+        (MALE, "Masculino"),
+        (CUSTOM, "Customizado"),
+        (NONE, "Prefiro não dizer"),
+    ]
+
+    gender = models.CharField(max_length=20, choices=GENDER, default=NONE)
+    custom_gender = models.CharField(max_length=255, blank=True, null=True)
+
     class Meta:
         verbose_name = "User Profile"
         verbose_name_plural = "User Profiles"
