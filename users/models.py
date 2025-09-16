@@ -49,3 +49,15 @@ def age(self):
     today = date.today()
 
     return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
+
+class UserFriendship(models.Model):
+    fromUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sentFriendships')
+    toUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receivedFriendship')
+
+    STATUS_CHOICES = [
+        ('pending', 'Pendente'),
+        ('accepted', 'Aceito'),
+        ('declined', 'Recusado'),
+        ('blocked', 'Bloqueado'),
+    ]
+    
