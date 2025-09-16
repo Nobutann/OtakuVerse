@@ -65,4 +65,17 @@ def age(self):
 
     return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
 
-    
+class FriendRequest(models.Model):
+    STATUS = [
+        ('pending', 'Pendente'),
+        ('accepted', 'Aceitado'),
+        ('rejected', 'Rejeitado'),
+    ]
+
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_friend_requests')
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_friend_requests')
+    status = models.CharField(max_length=10, choices=STATUS, default='pending')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('from_user', 'to_user')
