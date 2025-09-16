@@ -20,8 +20,8 @@ class UserProfile(models.Model):
     lastOnline = models.DateTimeField(auto_now=True)
 
     class Meta:
-        formatedName = "User Profile"
-        formatedNamePlural = "User Profiles"
+        verbose_name = "User Profile"
+        verbose_name_plural = "User Profiles"
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -50,14 +50,4 @@ def age(self):
 
     return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
 
-class UserFriendship(models.Model):
-    fromUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sentFriendships')
-    toUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receivedFriendship')
-
-    STATUS_CHOICES = [
-        ('pending', 'Pendente'),
-        ('accepted', 'Aceito'),
-        ('declined', 'Recusado'),
-        ('blocked', 'Bloqueado'),
-    ]
     
