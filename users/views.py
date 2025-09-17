@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate, login
 
 def signup(request):
     if request.method == 'POST':
@@ -39,3 +40,24 @@ def signup(request):
         return redirect('login')
     else:
         return render(request, 'users/signup.html')
+    
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not all([username, password]):
+            return render(request, 'users/login.html', {'error': 'Todos os campos precisam ser preenchidos'})
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+
+            next_url = request.GET.get('next', f'/user/{user.username}/')
+            
+            return redirect(next_url)
+        else:
+            return render(request, 'users/login.html', {'error': 'Usuário ou senha incorretos'})
+        
+    return render(request, 'users/login.html')
