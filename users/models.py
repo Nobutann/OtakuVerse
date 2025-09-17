@@ -36,7 +36,7 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name = "Perfil de usuário"
-        verbose_name_plural = "Perfils de usuários"
+        verbose_name_plural = "Perfis de usuários"
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -117,7 +117,7 @@ class FriendRequest(models.Model):
     def reject(self):
         self.status = 'rejected'
         self.save()
-        
+
         return True
     
     def cancel(self):
