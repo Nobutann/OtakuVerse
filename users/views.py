@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from .models import UserProfile, Friendship, FriendRequest
 from django.db.models import Q
+from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 def signup(request):
     if request.method == 'POST':
@@ -122,3 +124,47 @@ def show_profile(request, username):
     }
 
     return render(request, 'users/profile.html', context)
+
+@login_required
+def edit_profile(request):
+    profile = request.user.profile
+
+    if request.method == 'POST':
+        bio = request.POST.get('bio', '')
+        birth_date = request.POST.get('birth_date')
+        gender = request.POST.get('gender')
+        custom_gender = request.POST.get('custom_gender', '')
+        is_public = request.POST.get('is_public') == 'on'
+        show_stats = request.POST.get('show_stats') == 'on'
+        avatar = request.FILES.get('avatar')
+
+        if len(bio) > 500:
+            return render(request, 'users/edit_profile.html', {'profile': profile, 'error': 'Bio deve ter no máximo 500 caracteres'})
+        
+        if birth_date:
+            try:
+                datetime.strptime(birth_date, '%Y-%m-%d')
+            except ValueError:
+                return render(request, 'users/edit_profile.html', {'profile': profile, 'error': 'Data de nascimento inválida'})
+            
+        
+        profile.bio = bio
+        profile.birthDate = birth_date if birth_date else None
+        profile.gender = gender
+        profile.custom_gender = custom_gender if gender == 'CUSTOM' else ''
+        profile.isPublic = is_public
+        profile.showStats = show_stats
+
+        if avatar:
+            profile.avatar = avatar
+
+        profile.save()
+
+        return redirect('users:profile', username=request.user.username)
+    
+    context = {
+        'profile': profile,
+        'gender_choices': UserProfile.GENDER,
+    }
+
+    return render(request, 'users/edit_profile.html', context)
