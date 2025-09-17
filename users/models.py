@@ -57,13 +57,13 @@ class UserProfile(models.Model):
         if self.avatar and hasattr(self.avatar, 'path'):
             self._resizeAvatar()
 
-@property
-def age(self):
-    if not self.birthDate:
-        return None
-    today = date.today()
+    @property
+    def age(self):
+        if not self.birthDate:
+            return None
+        today = date.today()
 
-    return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
+        return today.year - self.birthDate.year() - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
 
 class FriendRequest(models.Model):
     STATUS = [
