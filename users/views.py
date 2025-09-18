@@ -168,3 +168,23 @@ def edit_profile(request):
     }
 
     return render(request, 'users/edit_profile.html', context)
+
+@login_required
+def profile_settings(request):
+    profile = request.user.profile
+
+    if request.methot == 'POST':
+        is_public = request.POST.get('is_public') == 'on'
+        show_stats = request.POST.get('show_stats') == 'on'
+
+        profile.isPublic = is_public
+        profile.showStats = show_stats
+        profile.save()
+
+        return render(request, 'users/profile_settings.html', {'profile': profile, 'success': 'Configurações atualizadas com sucesso!'})
+    
+    context = {
+        'profile': profile,
+    }
+
+    return render(request, 'users/profile_settings.html', context)
