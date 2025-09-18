@@ -265,3 +265,23 @@ def cancel_friend_request(request, request_id):
     friend_request.cancel()
 
     return redirect('users:friend_requests')
+
+@login_required
+def remove_friend(request, username):
+    friend_user = get_object_or_404(User, username=username)
+    current_user = request.user
+
+    if current_user == friend_user:
+        return redirect('users:profile', username=username)
+    
+    friendship = Friendship.objects.filter(
+        user1=min(current_user, friend_user, key=lambda u: u.id),
+        user2=max(current_user, friend_user, key=lambda u: u.id)
+    ).first()
+
+    if not friendship:
+        return redirect('users:profile', username=username)
+    
+    friendship.delete()
+
+    return redirect('users:profile', username=username)
