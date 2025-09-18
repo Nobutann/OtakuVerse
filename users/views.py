@@ -7,6 +7,7 @@ from .models import UserProfile, Friendship, FriendRequest
 from django.db.models import Q
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 def signup(request):
     if request.method == 'POST':
@@ -222,3 +223,17 @@ def send_friend_request(request, username):
         )
 
     return redirect('users:profile', username=username)
+
+@login_required
+def accept_friend_request(request, request_id):
+    friend_request = get_object_or_404(FriendRequest, id=request_id)
+
+    if friend_request.to_user != request.user:
+        raise Http404("Pedido não encontrado")
+    
+    if friend_request.status != 'pending':
+        return redirect('users.friend_requests')
+    
+    friend_request.accept()
+
+    return redirect('users:friend_requests')
