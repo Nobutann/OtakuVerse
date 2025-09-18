@@ -251,3 +251,17 @@ def reject_friend_request(request, request_id):
     friend_request.reject()
 
     return redirect('users:friend_requests')
+
+@login_required
+def cancel_friend_request(request, request_id):
+    friend_request = get_object_or_404(FriendRequest, id=request_id)
+
+    if friend_request.from_user != request.user:
+        raise Http404("Pedido não encontrado")
+    
+    if friend_request.status != 'pending':
+        return redirect('users:friend_requests')
+    
+    friend_request.cancel()
+
+    return redirect('users:friend_requests')
