@@ -188,3 +188,37 @@ def profile_settings(request):
     }
 
     return render(request, 'users/profile_settings.html', context)
+
+@login_required
+def send_friend_request(request, username):
+    to_user = get_object_or_404(User, username=username)
+    from_user = request.user
+    
+    if from_user == to_user:
+        return redirect('user:profile', username=username)
+    
+    if Friendship.objects.filter(
+        user1=min(from_user, to_user, key=lambda u: u.id),
+        user2=max(from_user, to_user, key=lambda u: u.id)
+    ).exists():
+        return redirect('users:profile', username=username)
+    
+    existing_request = FriendRequest.objects.filter(
+        from_user=from_user,
+        to_user=to_user
+    ).first()
+
+    if existing_request:
+        if existing_request.status == 'pending':
+            return redirect('users:profile', username=username)
+        elif existing_request.status() == 'rejected':
+            existing_request.status = 'pending'
+            existing_request.save()
+    else:
+        FriendRequest.objects.filter(
+            from_user=from_user,
+            to_user=to_user,
+            status='pending'
+        )
+
+    return redirect('users:profile', username=username)
