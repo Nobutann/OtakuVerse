@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Busca de Animes</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results-list {
+            list-style: none;
+            padding: 0;
+        }
+        .anime-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .anime-item:last-child {
+            border-bottom: none;
+        }
+        .anime-image {
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+            margin-right: 20px;
+        }
+        .anime-details {
+            flex-grow: 1;
+        }
+        .anime-details h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .anime-details p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+        .no-results {
+            text-align: center;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Busca de Animes</h1>
+
+    <form action="{% url 'buscar_anime' %}" method="get">
+        <input type="text" name="q" placeholder="Digite o nome do anime..." value="{{ query }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if erro %}
+        <p class="error-message">{{ erro }}</p>
+    {% elif resultados %}
+        <ul class="results-list">
+            {% for anime in resultados %}
+            <li class="anime-item">
+                <img src="{{ anime.images.jpg.image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image">
+                <div class="anime-details">
+                    <h2>{{ anime.title }}</h2>
+                    <p><strong>Tipo:</strong> {{ anime.type }}</p>
+                    <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
+                    <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A"|truncatechars:150 }}</p>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% elif query %}
+        <p class="no-results">Nenhum resultado encontrado para "{{ query }}".</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

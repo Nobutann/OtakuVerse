@@ -1,6 +1,7 @@
+# seu_projeto/seu_app/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.buscar_anime, name='pagina_busca'),
+    path('buscar', views.buscar_anime, name='buscar_anime'),
 ]
