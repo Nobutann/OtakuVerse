@@ -17,7 +17,12 @@ def buscar_anime(request):
             response = requests.get(api_url, params=params, timeout=10)
             response.raise_for_status()
             dados_api = response.json()
-            contexto['resultado'] = dados_api.get('data', [])
+            
+            # ADICIONE ESTE PRINT PARA VER A RESPOSTA COMPLETA
+            print(f"Dados da API: {dados_api}")
+            
+            contexto['resultados'] = dados_api.get('data', [])
+
         except requests.exceptions.RequestException as e:
             contexto['erro'] = f"Ocorreu um erro ao buscar na API: {e}"
             print(contexto['erro'])
