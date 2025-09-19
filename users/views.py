@@ -329,3 +329,23 @@ def search_users(request):
     }
 
     return render(request, 'users/search_users.html', context)
+
+@login_required
+def friends_request(request):
+    received_requests = FriendRequest.objects.filter(
+        to_user = request.user, status='pending'
+    ).select_related('from_user__profile').order_by('-timestamp')
+
+    sent_requests = FriendRequest.objects.filter(
+        from_user = request.user,
+        status = 'pending'
+    ).select_related('to_user__profile').order_by('-timespamp')
+
+    context = {
+        'received_requests': received_requests,
+        'sent_requests': sent_requests,
+        'received_count': received_requests.count(),
+        'sent_count': sent_requests.count(),
+    }
+
+    return render(request, 'users/friend_requests.html')
