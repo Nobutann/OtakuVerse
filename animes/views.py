@@ -17,9 +17,36 @@ def buscar_anime(request):
             response = requests.get(api_url, params=params, timeout=10)
             response.raise_for_status()
             dados_api = response.json()
-            contexto['resultado'] = dados_api.get('data', [])
+            
+            # ADICIONE ESTE PRINT PARA VER A RESPOSTA COMPLETA
+            print(f"Dados da API: {dados_api}")
+            
+            contexto['resultados'] = dados_api.get('data', [])
+
         except requests.exceptions.RequestException as e:
             contexto['erro'] = f"Ocorreu um erro ao buscar na API: {e}"
             print(contexto['erro'])
 
     return render(request, 'animes/pagina_de_busca.html', contexto)
+
+def detalhes_anime(request, anime_id):
+    contexto = {
+        'anime': None,
+        'erro': None,
+    }
+
+    api_url = f'https://api.jikan.moe/v4/anime/{anime_id}'
+
+    try:
+        response = requests.get(api_url, timeout=10)
+        response.raise_for_status()
+        dados_api = response.json()
+        
+        # A API de detalhes retorna o objeto diretamente na chave 'data'
+        contexto['anime'] = dados_api.get('data')
+
+    except requests.exceptions.RequestException as e:
+        contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
+        print(contexto['erro'])
+
+    return render(request, 'animes/pagina_de_detalhes.html', contexto)

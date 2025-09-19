@@ -87,7 +87,7 @@
     </style>
 </head>
 <body>
-
+    
 <div class="container">
     <h1>Busca de Animes</h1>
 
@@ -101,15 +101,21 @@
     {% elif resultados %}
         <ul class="results-list">
             {% for anime in resultados %}
-            <li class="anime-item">
-                <img src="{{ anime.images.jpg.image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image">
-                <div class="anime-details">
-                    <h2>{{ anime.title }}</h2>
-                    <p><strong>Tipo:</strong> {{ anime.type }}</p>
-                    <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
-                    <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A"|truncatechars:150 }}</p>
-                </div>
-            </li>
+                <li class="anime-item">
+                    {% if anime.images.jpg.image_url %}
+                        <img src="{{ anime.images.jpg.image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image">
+                    {% endif %}
+                    <div class="anime-details">
+                        {% if anime.mal_id %}
+                            <h2><a href="{% url 'detalhes_anime' anime.mal_id %}">{{ anime.title }}</a></h2>
+                        {% else %}
+                            <h2>{{ anime.title }}</h2>
+                        {% endif %}
+                        <p><strong>Tipo:</strong> {{ anime.type }}</p>
+                        <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
+                        <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A"|truncatechars:150 }}</p>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     {% elif query %}

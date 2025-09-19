@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ anime.title }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #0056b3; }
+        .anime-details-full { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .anime-image-full { max-width: 300px; height: auto; border-radius: 8px; margin-bottom: 20px; }
+        p strong { color: #0056b3; }
+        .error-message { color: red; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    {% if erro %}
+        <p class="error-message">{{ erro }}</p>
+    {% elif anime %}
+        <div class="anime-details-full">
+            <h1>{{ anime.title }}</h1>
+            <img src="{{ anime.images.jpg.large_image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image-full">
+            <p><strong>Tipo:</strong> {{ anime.type }}</p>
+            <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
+            <p><strong>Status:</strong> {{ anime.status|default:"N/A" }}</p>
+            <p><strong>Lançamento:</strong> {{ anime.aired.string|default:"N/A" }}</p>
+            <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A" }}</p>
+            {% if anime.trailer and anime.trailer.embed_url %}
+                <iframe src="{{ anime.trailer.embed_url|safe }}" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Anime não encontrado.</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'buscar_anime' %}">Voltar para a busca</a>
+
+</div>
+
+</body>
+</html>
