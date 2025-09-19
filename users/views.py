@@ -174,7 +174,7 @@ def edit_profile(request):
 def profile_settings(request):
     profile = request.user.profile
 
-    if request.methot == 'POST':
+    if request.method == 'POST':
         is_public = request.POST.get('is_public') == 'on'
         show_stats = request.POST.get('show_stats') == 'on'
 
