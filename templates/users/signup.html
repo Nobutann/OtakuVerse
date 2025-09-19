@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crie sua conta no OtakuVerse - A plataforma definitiva para otakus organizarem suas listas de anime e conectarem com outros fãs">
+    <meta name="keywords" content="anime, otaku, myanimelist, cadastro, conta">
+    <title>Criar Conta - OtakuVerse</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Comfortaa:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'users/css/signup.css' %}">
+</head>
+<body>
+    <aside class="geometric-bg" aria-hidden="true">
+        <div class="geometric-shape shape-1"></div>
+        <div class="geometric-shape shape-2"></div>
+        <div class="geometric-shape shape-3"></div>
+        <div class="floating-heart heart-1">♡</div>
+        <div class="floating-heart heart-2">♡</div>
+        <div class="floating-heart heart-3">♡</div>
+    </aside>
+
+    <main class="signup-main">
+        <section class="signup-container">
+            <header class="logo-section">
+                <h1 class="logo">
+                    <span class="logo-otaku">Otaku</span><span class="logo-verse">Verse</span>
+                </h1>
+                <p class="subtitle">Sua jornada no universo otaku começa aqui</p>
+            </header>
+
+            {% if error %}
+            <div class="error-message" role="alert" aria-live="assertive">
+                <span class="sr-only">Erro:</span>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="post" id="signupForm" novalidate>
+                <fieldset class="signup-fieldset">
+                    <legend class="sr-only">Informações para criar conta</legend>
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="username">
+                            Nome de usuário
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="username" 
+                            name="username" 
+                            placeholder="apelido senpai"
+                            required
+                            aria-describedby="username-help"
+                            autocomplete="username"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            E-mail
+                        </label>
+                        <input 
+                            type="email" 
+                            class="form-input" 
+                            id="email" 
+                            name="email" 
+                            placeholder="seu@email.com"
+                            required
+                            aria-describedby="email-help"
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">
+                            Senha
+                        </label>
+                        <input 
+                            type="password" 
+                            class="form-input" 
+                            id="password" 
+                            name="password" 
+                            placeholder="••••••••"
+                            required
+                            aria-describedby="password-help password-strength-desc"
+                            autocomplete="new-password"
+                            minlength="8"
+                        >
+                        <div class="password-strength" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText" aria-live="polite"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password_confirm">
+                            Confirmar senha
+                        </label>
+                        <input 
+                            type="password" 
+                            class="form-input" 
+                            id="password_confirm" 
+                            name="password_confirm" 
+                            placeholder="••••••••"
+                            required
+                            aria-describedby="password-confirm-help"
+                            autocomplete="new-password"
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Criar Conta</span>
+                    </button>
+                </fieldset>
+            </form>
+
+            <div class="divider" role="separator" aria-hidden="true">
+                <span>ou</span>
+            </div>
+
+            <footer class="signup-footer">
+                <nav class="login-link">
+                    <span class="cute-text">Já tem uma conta?</span> 
+                    <a href="{% url 'users:login' %}" class="login-link-anchor">
+                        Faça login aqui
+                    </a>
+                </nav>
+            </footer>
+        </section>
+    </main>
+
+    <script src="{% static 'users/js/signup.js' %}"></script>
+</body>
+</html>
