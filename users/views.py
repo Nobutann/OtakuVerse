@@ -311,3 +311,21 @@ def friends_list(request, username):
     }
 
     return render(request, 'users/friends_list.html', context)
+
+def search_users(request):
+    query = request.GET.get('q', '').strip()
+    users = []
+
+    if query:
+        users = User.objects.filter(
+            username__icontains=query,
+            profile__isPublic=True
+        ).select_related('profile')[:20]
+
+    context = {
+        'query': query,
+        'users': users,
+        'users_count': len(users),
+    }
+
+    return render(request, 'users/search_users.html', context)
