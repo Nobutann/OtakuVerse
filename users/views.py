@@ -285,3 +285,29 @@ def remove_friend(request, username):
     friendship.delete()
 
     return redirect('users:profile', username=username)
+
+def friends_list(request, username):
+    user = get_object_or_404(User, username=username)
+
+    if not user.profile.isPublic and request.user != user:
+        return render(request, 'user/profile_restricted.html', {'user': user})
+    
+    friendships = Friendship.objects.filter(
+        Q(user1=user) | Q(user2=user)
+    )
+
+    friends = []
+    for friendship in friendships:
+        friend = friendship.get_other_user(user)
+        friends.append(friend)
+
+    friends_count = len(friends)
+
+    context = {
+        'user': user,
+        'friends': friends,
+        'friends_count': friends_count,
+        'is_own': request.user == user,
+    }
+
+    return render(request, 'users/friends_list.html', context)
