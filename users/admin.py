@@ -10,6 +10,12 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Friendship)
 class FriendshipAdmin(admin.ModelAdmin):
+    list_display = ['user1', 'user2', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['user1__username', 'user2__username']
+
+@admin.register(FriendRequest)
+class FriendRequestAdmin(admin.ModelAdmin):
     list_display = ['from_user', 'to_user', 'status', 'timestamp']
     list_filter = ['status', 'timestamp']
     search_fields = ['from_user__username', 'to_user__username']
