@@ -15,13 +15,14 @@ def homepage(request):
         28025,
         32268,
         35247,
-        40815,
+        14829,
+        34599,
     ]
 
     try:
         featured_anime = []
 
-        for id in ids[:6]:
+        for id in ids:
             try:
                 response = requests.get(f"https://api.jikan.moe/v4/anime/{id}", timeout=8)
                 response.raise_for_status()
