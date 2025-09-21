@@ -108,8 +108,8 @@ class FriendRequest(models.Model):
         self.save()
 
         Friendship.objects.get_or_create(
-            user1 = min(self.from_user, self.to_user, key=lambda u: u.id),
-            user2 = max(self.from_user, self.to_user, key=lambda u: u.id)
+            user1 = self.from_user,
+            user2 = self.to_user
         )
 
         return True
