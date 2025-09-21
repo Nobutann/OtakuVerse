@@ -50,7 +50,7 @@
                             class="form-input" 
                             id="username" 
                             name="username" 
-                            placeholder="apelido senpai"
+                            placeholder="seu_nome_otaku"
                             required
                             aria-describedby="username-help"
                             autocomplete="username"
@@ -70,6 +70,59 @@
                             required
                             aria-describedby="email-help"
                             autocomplete="email"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="birth_date">
+                            Data de nascimento
+                        </label>
+                        <input 
+                            type="date" 
+                            class="form-input" 
+                            id="birth_date" 
+                            name="birth_date" 
+                            aria-describedby="birth-help"
+                        >
+                        <small class="field-help">Opcional</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="gender">
+                            Gênero
+                        </label>
+                        <div class="select-wrapper">
+                            <select 
+                                class="form-input form-select" 
+                                id="gender" 
+                                name="gender"
+                                aria-describedby="gender-help"
+                            >
+                                <option value="">Selecione (opcional)</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                                <option value="CUSTOM">Customizado</option>
+                                <option value="NONE">Prefiro não dizer</option>
+                            </select>
+                            <div class="select-arrow-wrapper">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 10.5L3 5.5h10L8 10.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="customGenderGroup" style="display: none;">
+                        <label class="form-label" for="custom_gender">
+                            Especificar gênero
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="custom_gender" 
+                            name="custom_gender" 
+                            placeholder="Digite seu gênero"
+                            maxlength="255"
                         >
                     </div>
 

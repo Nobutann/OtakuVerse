@@ -223,6 +223,54 @@ body {
     outline: none;
 }
 
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-select {
+    width: 100%;
+    padding: 1rem 3rem 1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--dark-border);
+    border-radius: 16px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.form-select:focus {
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-select option {
+    background-color: #3A3A3A;
+    color: #FFFFFF;
+    padding: 0.5rem;
+}
+
+.select-arrow-wrapper {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.form-select:focus + .select-arrow-wrapper {
+    color: var(--primary-pink);
+}
+
 .form-input:focus {
     border-color: var(--primary-pink);
     box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
@@ -232,6 +280,14 @@ body {
 .form-input::placeholder {
     color: var(--text-secondary);
     font-weight: 300;
+}
+
+.field-help {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    font-style: italic;
 }
 
 .error-message {
