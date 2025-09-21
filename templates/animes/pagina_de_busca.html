@@ -91,7 +91,7 @@
 <div class="container">
     <h1>Busca de Animes</h1>
 
-    <form action="{% url 'buscar_anime' %}" method="get">
+    <form action="{% url 'animes:buscar_anime' %}" method="get">
         <input type="text" name="q" placeholder="Digite o nome do anime..." value="{{ query }}">
         <button type="submit">Buscar</button>
     </form>
@@ -107,7 +107,7 @@
                     {% endif %}
                     <div class="anime-details">
                         {% if anime.mal_id %}
-                            <h2><a href="{% url 'detalhes_anime' anime.mal_id %}">{{ anime.title }}</a></h2>
+                            <h2><a href="{% url 'animes:detalhes_anime' anime.mal_id %}">{{ anime.title }}</a></h2>
                         {% else %}
                             <h2>{{ anime.title }}</h2>
                         {% endif %}

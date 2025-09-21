@@ -18,7 +18,6 @@ def buscar_anime(request):
             response.raise_for_status()
             dados_api = response.json()
             
-            # ADICIONE ESTE PRINT PARA VER A RESPOSTA COMPLETA
             print(f"Dados da API: {dados_api}")
             
             contexto['resultados'] = dados_api.get('data', [])
@@ -42,7 +41,6 @@ def detalhes_anime(request, anime_id):
         response.raise_for_status()
         dados_api = response.json()
         
-        # A API de detalhes retorna o objeto diretamente na chave 'data'
         contexto['anime'] = dados_api.get('data')
 
     except requests.exceptions.RequestException as e:

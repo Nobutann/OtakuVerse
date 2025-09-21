@@ -59,7 +59,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            next_url = request.GET.get('next', f'/user/{user.username}/')
+            next_url = request.GET.get('next', '/')
             
             return redirect(next_url)
         else:
