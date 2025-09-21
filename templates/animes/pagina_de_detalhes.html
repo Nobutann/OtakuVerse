@@ -9,7 +9,6 @@
     <section class="featured-section">
         <div class="container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
 
-            <!-- Card da Imagem do Anime -->
             <div class="anime-card" style="max-width: 300px; flex: 1 1 300px;">
                 <div class="anime-poster" style="aspect-ratio: 3/4;">
                     <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}">
@@ -20,7 +19,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Título abaixo da imagem -->
                 <div class="anime-details">
                     <h3 class="anime-title">{{ anime.title }}</h3>
                     {% if anime.title_english %}
@@ -29,7 +27,6 @@
                 </div>
             </div>
 
-            <!-- Detalhes do Anime -->
             <div style="max-width: 700px; flex: 1 1 500px; color: var(--text-primary);">
                 <div style="margin-bottom: 1rem;">
                     {% if anime.type %}
