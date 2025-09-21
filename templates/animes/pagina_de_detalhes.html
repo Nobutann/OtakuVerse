@@ -1,43 +1,81 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ anime.title }}</title>
-    <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        h1 { text-align: center; color: #0056b3; }
-        .anime-details-full { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .anime-image-full { max-width: 300px; height: auto; border-radius: 8px; margin-bottom: 20px; }
-        p strong { color: #0056b3; }
-        .error-message { color: red; text-align: center; }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-<div class="container">
-    {% if erro %}
-        <p class="error-message">{{ erro }}</p>
-    {% elif anime %}
-        <div class="anime-details-full">
-            <h1>{{ anime.title }}</h1>
-            <img src="{{ anime.images.jpg.large_image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image-full">
-            <p><strong>Tipo:</strong> {{ anime.type }}</p>
-            <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
-            <p><strong>Status:</strong> {{ anime.status|default:"N/A" }}</p>
-            <p><strong>Lançamento:</strong> {{ anime.aired.string|default:"N/A" }}</p>
-            <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A" }}</p>
-            {% if anime.trailer and anime.trailer.embed_url %}
-                <iframe src="{{ anime.trailer.embed_url|safe }}" width="560" height="315" frameborder="0" allowfullscreen></iframe>
-            {% endif %}
+{% block title %}{{ anime.title|default:"Anime" }} - OtakuVerse{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    {% if anime %}
+    <section class="featured-section">
+        <div class="container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+
+            <!-- Card da Imagem do Anime -->
+            <div class="anime-card" style="max-width: 300px; flex: 1 1 300px;">
+                <div class="anime-poster" style="aspect-ratio: 3/4;">
+                    <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}">
+                    <div class="anime-overlay">
+                        <div class="anime-info">
+                            <div class="anime-score">⭐ {{ anime.score|default:"N/A" }}</div>
+                            <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Título abaixo da imagem -->
+                <div class="anime-details">
+                    <h3 class="anime-title">{{ anime.title }}</h3>
+                    {% if anime.title_english %}
+                        <p class="anime-subtitle">{{ anime.title_english }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Detalhes do Anime -->
+            <div style="max-width: 700px; flex: 1 1 500px; color: var(--text-primary);">
+                <div style="margin-bottom: 1rem;">
+                    {% if anime.type %}
+                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(221,160,221,0.8); border-radius: 6px;">{{ anime.type }}</span>
+                    {% endif %}
+                    {% if anime.episodes %}
+                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(255,182,193,0.8); border-radius: 6px;">{{ anime.episodes }} eps</span>
+                    {% endif %}
+                    {% if anime.status %}
+                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(135,206,235,0.8); border-radius: 6px;">{{ anime.status }}</span>
+                    {% endif %}
+                    {% if anime.rating %}
+                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(255,182,193,0.8); border-radius: 6px;">{{ anime.rating }}</span>
+                    {% endif %}
+                </div>
+
+                {% if anime.synopsis %}
+                <div style="margin-bottom: 1.5rem;">
+                    <h2 style="font-family: 'Comfortaa', cursive; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-accent);">Sinopse</h2>
+                    <p style="line-height: 1.6; color: var(--text-secondary);">{{ anime.synopsis }}</p>
+                </div>
+                {% endif %}
+
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                    {% if anime.genres %}
+                        <div>
+                            <h3 style="font-weight: 600; color: var(--text-accent);">Gêneros:</h3>
+                            <p>{{ anime.genres|join:", " }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if anime.studios %}
+                        <div>
+                            <h3 style="font-weight: 600; color: var(--text-accent);">Estúdios:</h3>
+                            <p>{{ anime.studios|join:", " }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+    </section>
+
     {% else %}
-        <p>Anime não encontrado.</p>
+    <div class="error-banner" role="alert">
+        <p>Não conseguimos carregar os detalhes do anime no momento. Tente novamente mais tarde.</p>
+    </div>
     {% endif %}
-    <br>
-    <a href="{% url 'animes:buscar_anime' %}">Voltar para a busca</a>
-
-</div>
-
-</body>
-</html>
+</main>
+{% endblock %}

@@ -1,128 +1,67 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Busca de Animes</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #0056b3;
-        }
-        form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: 70%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 20px;
-            margin-left: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .results-list {
-            list-style: none;
-            padding: 0;
-        }
-        .anime-item {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding: 15px 0;
-        }
-        .anime-item:last-child {
-            border-bottom: none;
-        }
-        .anime-image {
-            width: 100px;
-            height: auto;
-            border-radius: 4px;
-            margin-right: 20px;
-        }
-        .anime-details {
-            flex-grow: 1;
-        }
-        .anime-details h2 {
-            margin: 0;
-            font-size: 1.2em;
-        }
-        .anime-details p {
-            margin: 5px 0 0;
-            font-size: 0.9em;
-            color: #666;
-        }
-        .error-message {
-            color: red;
-            text-align: center;
-        }
-        .no-results {
-            text-align: center;
-            color: #999;
-        }
-    </style>
-</head>
-<body>
-    
-<div class="container">
-    <h1>Busca de Animes</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-    <form action="{% url 'animes:buscar_anime' %}" method="get">
-        <input type="text" name="q" placeholder="Digite o nome do anime..." value="{{ query }}">
-        <button type="submit">Buscar</button>
-    </form>
+{% block title %}Buscar Animes - OtakuVerse{% endblock %}
 
-    {% if erro %}
-        <p class="error-message">{{ erro }}</p>
-    {% elif resultados %}
-        <ul class="results-list">
-            {% for anime in resultados %}
-                <li class="anime-item">
-                    {% if anime.images.jpg.image_url %}
-                        <img src="{{ anime.images.jpg.image_url }}" alt="Imagem de {{ anime.title }}" class="anime-image">
-                    {% endif %}
-                    <div class="anime-details">
-                        {% if anime.mal_id %}
-                            <h2><a href="{% url 'animes:detalhes_anime' anime.mal_id %}">{{ anime.title }}</a></h2>
-                        {% else %}
-                            <h2>{{ anime.title }}</h2>
-                        {% endif %}
-                        <p><strong>Tipo:</strong> {{ anime.type }}</p>
-                        <p><strong>Episódios:</strong> {{ anime.episodes|default:"N/A" }}</p>
-                        <p><strong>Sinopse:</strong> {{ anime.synopsis|default:"N/A"|truncatechars:150 }}</p>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
-    {% elif query %}
-        <p class="no-results">Nenhum resultado encontrado para "{{ query }}".</p>
+{% block content %}
+<main class="main-content">
+    <section class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">Resultados para: <span class="highlight">{{ query }}</span></h1>
+            <p class="hero-subtitle">Explore os animes encontrados na busca</p>
+        </div>
+    </section>
+
+    {% if resultados %}
+    <section class="featured-section">
+        <div class="container">
+            <header class="section-header">
+                <h2 class="section-title">Animes Encontrados</h2>
+                <p class="section-subtitle">Confira os resultados da sua busca</p>
+            </header>
+            
+            <div class="anime-grid">
+                {% for anime in resultados %}
+                <article class="anime-card">
+                    <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
+                        <div class="anime-poster">
+                            <img 
+                                src="{{ anime.images.jpg.image_url }}" 
+                                alt="{{ anime.title }}"
+                                loading="lazy"
+                            >
+                            <div class="anime-overlay">
+                                <div class="anime-info">
+                                    <div class="anime-score">
+                                        {% if anime.score %}
+                                            ⭐ {{ anime.score }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </div>
+                                    <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="anime-details">
+                            <h3 class="anime-title">{{ anime.title }}</h3>
+                            <div class="anime-meta">
+                                <span class="anime-type">{{ anime.type|default:"TV" }}</span>
+                                {% if anime.episodes %}
+                                    <span class="anime-episodes">{{ anime.episodes }} eps</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <div class="error-banner" role="alert">
+        <p>Nenhum anime encontrado para "{{ query }}". Tente outra busca.</p>
+    </div>
     {% endif %}
-
-</div>
-
-</body>
-</html>
+</main>
+{% endblock %}

@@ -41,7 +41,12 @@ def detalhes_anime(request, anime_id):
         response.raise_for_status()
         dados_api = response.json()
         
-        contexto['anime'] = dados_api.get('data')
+        anime = dados_api.get('data')
+        if anime:
+            anime['genres'] = [g['name'] for g in anime.get('genres', [])]
+            anime['studios'] = [s['name'] for s in anime.get('studios', [])]
+        
+        contexto['anime'] = anime
 
     except requests.exceptions.RequestException as e:
         contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"

@@ -1,177 +1,83 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OtakuVerse - A plataforma definitiva para otakus organizarem suas listas de anime e conectarem com outros fãs">
-    <title>OtakuVerse - Sua jornada no universo otaku</title>
-    {% load static %}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'main/css/homepage.css' %}">
-</head>
-<body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-left">
-                    <a href="{% url 'main:homepage' %}" class="logo">
-                        <span class="logo-otaku">Otaku</span><span class="logo-verse">Verse</span>
-                    </a>
-                </div>
-                
-                <div class="nav-center">
-                    <form 
-                        id="anime-search-form"
-                        class="search-form" 
-                        action="{% url 'animes:buscar_anime' %}" 
-                        method="get"
-                    >
-                        <div class="search-container">
-                            <input 
-                                type="text" 
-                                name="q" 
-                                class="search-input" 
-                                placeholder="Buscar anime..."
-                                autocomplete="off"
-                                id="searchInput"
-                            >
-                            <button type="submit" class="search-btn" aria-label="Buscar">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            <div class="search-suggestions" id="searchSuggestions"></div>
-                        </div>
-                    </form>
-                </div>
-                
-                <div class="nav-right">
-                    <ul class="nav-menu">
-                        <li class="nav-item coming-soon">
-                            <a href="#" class="nav-link">Top</a>
-                        </li>
-                        <li class="nav-item coming-soon">
-                            <a href="#" class="nav-link">Reviews</a>
-                        </li>
-                        {% if user.is_authenticated %}
-                            <li class="nav-item dropdown">
-                                <button class="nav-link user-menu" id="userMenuBtn">
-                                    <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="user-avatar">
-                                    <span class="username">{{ user.username }}</span>
-                                </button>
-                                <div class="dropdown-menu" id="userDropdown">
-                                    <a href="{% url 'users:profile' user.username %}" class="dropdown-item">Meu Perfil</a>
-                                    <a href="{% url 'users:edit_profile' %}" class="dropdown-item">Configurações</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="{% url 'users:logout' %}" class="dropdown-item">Sair</a>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a href="{% url 'users:login' %}" class="nav-link login-btn">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'users:signup' %}" class="nav-link signup-btn">Cadastrar</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+{% extends 'base.html' %}
 
-    <main class="main-content">
-        <section class="hero-section">
-            <div class="hero-container">
-                <h1 class="hero-title">Bem-vindo ao <span class="highlight">OtakuVerse</span></h1>
-                <p class="hero-subtitle">Organize suas listas de anime e conecte-se com outros otakus</p>
-            </div>
-        </section>
+{% block title %}OtakuVerse - Sua jornada no universo otaku{% endblock %}
 
-        {% if erro %}
-        <div class="error-banner" role="alert">
-            <p>Ops! Não conseguimos carregar as recomendações no momento.</p>
+{% block content %}
+<main class="main-content">
+    <section class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">Bem-vindo ao <span class="highlight">OtakuVerse</span></h1>
+            <p class="hero-subtitle">Organize suas listas de anime e conecte-se com outros otakus</p>
         </div>
-        {% endif %}
+    </section>
 
-        {% if featured_anime %}
-        <section class="featured-section">
-            <div class="container">
-                <header class="section-header">
-                    <h2 class="section-title">Animes em Destaque</h2>
-                    <p class="section-subtitle">Confira essas recomendações especiais</p>
-                </header>
-                
-                <div class="anime-grid">
-                    {% for anime in featured_anime %}
-                    <article class="anime-card">
-                        <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
-                            <div class="anime-poster">
-                                <img 
-                                    src="{{ anime.images.jpg.image_url }}" 
-                                    alt="{{ anime.title }}"
-                                    loading="lazy"
-                                >
-                                <div class="anime-overlay">
-                                    <div class="anime-info">
-                                        <div class="anime-score">
-                                            {% if anime.score %}
-                                                ⭐ {{ anime.score }}
-                                            {% else %}
-                                                N/A
-                                            {% endif %}
-                                        </div>
-                                        <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="anime-details">
-                                <h3 class="anime-title">{{ anime.title }}</h3>
-                                <div class="anime-meta">
-                                    <span class="anime-type">{{ anime.type|default:"TV" }}</span>
-                                    {% if anime.episodes %}
-                                        <span class="anime-episodes">{{ anime.episodes }} eps</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </a>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% endif %}
+    {% if erro %}
+    <div class="error-banner" role="alert">
+        <p>Ops! Não conseguimos carregar as recomendações no momento.</p>
+    </div>
+    {% endif %}
 
-        {% if not user.is_authenticated %}
-        <section class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Pronto para começar sua jornada?</h2>
-                    <p class="cta-subtitle">Junte-se à nossa comunidade de otakus e organize seus animes favoritos</p>
-                    <div class="cta-buttons">
-                        <a href="{% url 'users:signup' %}" class="cta-btn primary">Criar Conta</a>
-                        <a href="{% url 'users:login' %}" class="cta-btn secondary">Fazer Login</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        {% endif %}
-    </main>
-
-    <footer class="main-footer">
+    {% if featured_anime %}
+    <section class="featured-section">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3 class="footer-title">OtakuVerse</h3>
-                    <p class="footer-text">A plataforma definitiva para otakus organizarem suas listas e conectarem com a comunidade.</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 OtakuVerse. Feito com 💜 para a comunidade otaku.</p>
+            <header class="section-header">
+                <h2 class="section-title">Animes em Destaque</h2>
+                <p class="section-subtitle">Confira essas recomendações especiais</p>
+            </header>
+            
+            <div class="anime-grid">
+                {% for anime in featured_anime %}
+                <article class="anime-card">
+                    <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
+                        <div class="anime-poster">
+                            <img 
+                                src="{{ anime.images.jpg.image_url }}" 
+                                alt="{{ anime.title }}"
+                                loading="lazy"
+                            >
+                            <div class="anime-overlay">
+                                <div class="anime-info">
+                                    <div class="anime-score">
+                                        {% if anime.score %}
+                                            ⭐ {{ anime.score }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </div>
+                                    <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="anime-details">
+                            <h3 class="anime-title">{{ anime.title }}</h3>
+                            <div class="anime-meta">
+                                <span class="anime-type">{{ anime.type|default:"TV" }}</span>
+                                {% if anime.episodes %}
+                                    <span class="anime-episodes">{{ anime.episodes }} eps</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                {% endfor %}
             </div>
         </div>
-    </footer>
+    </section>
+    {% endif %}
 
-    <script src="{% static 'main/js/homepage.js' %}"></script>
-</body>
-</html>
+    {% if not user.is_authenticated %}
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para começar sua jornada?</h2>
+                <p class="cta-subtitle">Junte-se à nossa comunidade de otakus e organize seus animes favoritos</p>
+                <div class="cta-buttons">
+                    <a href="{% url 'users:signup' %}" class="cta-btn primary">Criar Conta</a>
+                    <a href="{% url 'users:login' %}" class="cta-btn secondary">Fazer Login</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}
