@@ -42,7 +42,7 @@ def signup(request):
             password=password
         )
 
-        return redirect('login')
+        return redirect('main:homepage')
     else:
         return render(request, 'users/signup.html')
     
