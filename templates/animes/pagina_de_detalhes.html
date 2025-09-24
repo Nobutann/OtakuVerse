@@ -1,78 +1,92 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block title %}{{ anime.title|default:"Anime" }} - OtakuVerse{% endblock %}
 
 {% block content %}
-<main class="main-content">
-    {% if anime %}
-    <section class="featured-section">
-        <div class="container" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
 
-            <div class="anime-card" style="max-width: 300px; flex: 1 1 300px;">
-                <div class="anime-poster" style="aspect-ratio: 3/4;">
-                    <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}">
-                    <div class="anime-overlay">
-                        <div class="anime-info">
-                            <div class="anime-score">⭐ {{ anime.score|default:"N/A" }}</div>
-                            <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="anime-details">
-                    <h3 class="anime-title">{{ anime.title }}</h3>
-                    {% if anime.title_english %}
-                        <p class="anime-subtitle">{{ anime.title_english }}</p>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div style="max-width: 700px; flex: 1 1 500px; color: var(--text-primary);">
-                <div style="margin-bottom: 1rem;">
-                    {% if anime.type %}
-                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(221,160,221,0.8); border-radius: 6px;">{{ anime.type }}</span>
-                    {% endif %}
-                    {% if anime.episodes %}
-                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(255,182,193,0.8); border-radius: 6px;">{{ anime.episodes }} eps</span>
-                    {% endif %}
-                    {% if anime.status %}
-                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(135,206,235,0.8); border-radius: 6px;">{{ anime.status }}</span>
-                    {% endif %}
-                    {% if anime.rating %}
-                        <span style="margin-right: 1rem; font-size: 1rem; padding: 0.3rem 0.6rem; background: rgba(255,182,193,0.8); border-radius: 6px;">{{ anime.rating }}</span>
-                    {% endif %}
-                </div>
-
-                {% if anime.synopsis %}
-                <div style="margin-bottom: 1.5rem;">
-                    <h2 style="font-family: 'Comfortaa', cursive; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-accent);">Sinopse</h2>
-                    <p style="line-height: 1.6; color: var(--text-secondary);">{{ anime.synopsis }}</p>
-                </div>
-                {% endif %}
-
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
-                    {% if anime.genres %}
-                        <div>
-                            <h3 style="font-weight: 600; color: var(--text-accent);">Gêneros:</h3>
-                            <p>{{ anime.genres|join:", " }}</p>
-                        </div>
-                    {% endif %}
-
-                    {% if anime.studios %}
-                        <div>
-                            <h3 style="font-weight: 600; color: var(--text-accent);">Estúdios:</h3>
-                            <p>{{ anime.studios|join:", " }}</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {% else %}
-    <div class="error-banner" role="alert">
-        <p>Não conseguimos carregar os detalhes do anime no momento. Tente novamente mais tarde.</p>
+<div style="display: flex; gap: 20px; margin-bottom: 30px;">
+    <!-- Capa do Anime -->
+    <div>
+        {% if anime.images.jpg.image_url %}
+            <img src="{{ anime.images.jpg.image_url }}" alt="Capa de {{ anime.title }}" style="width: 250px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+        {% endif %}
     </div>
-    {% endif %}
-</main>
+
+    <!-- Informações do Anime -->
+    <div style="flex: 1;">
+        <h1 style="margin-top: 0;">{{ anime.title }}</h1>
+
+        {% if erro %}
+            <p style="color: red;">{{ erro }}</p>
+        {% endif %}
+
+        <p><strong>Sinopse:</strong> {{ anime.synopsis }}</p>
+        <p><strong>Gêneros:</strong> {{ anime.genres|join:", " }}</p>
+        <p><strong>Estúdios:</strong> {{ anime.studios|join:", " }}</p>
+
+        {% if anime.status %}<p><strong>Status:</strong> {{ anime.status }}</p>{% endif %}
+        {% if anime.episodes %}<p><strong>Episódios:</strong> {{ anime.episodes }}</p>{% endif %}
+        {% if anime.score %}<p><strong>Nota Média:</strong> {{ anime.score }}</p>{% endif %}
+        {% if anime.rank %}<p><strong>Rank:</strong> {{ anime.rank }}</p>{% endif %}
+
+        {% if anime.trailer and anime.trailer.embed_url %}
+            <p>
+                <strong>Trailer:</strong><br>
+                <iframe width="400" height="225" src="{{ anime.trailer.embed_url }}" frameborder="0" allowfullscreen style="border-radius: 10px; margin-top: 10px;"></iframe>
+            </p>
+        {% endif %}
+    </div>
+</div>
+
+<hr style="margin: 30px 0;">
+
+<!-- Avaliações -->
+<h2>Avaliações</h2>
+
+{% if reviews %}
+    {% for review in reviews %}
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);">
+            <p><strong>{{ review.user.username }}</strong> - Nota: {{ review.score }}</p>
+            {% if review.comment %}
+                <p>{{ review.comment }}</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Nenhuma avaliação ainda.</p>
+    {% endfor %}
+{% else %}
+    <p>Nenhuma avaliação ainda.</p>
+{% endif %}
+
+<!-- Formulário de Avaliação -->
+{% if user.is_authenticated %}
+    {% with mal_id=anime.mal_id %}
+        <form method="post" action="{% url 'avaliar_anime' mal_id %}" style="margin-top: 30px; max-width: 500px;">
+            {% csrf_token %}
+            <label for="score"><strong>Nota:</strong></label>
+            <select name="score" id="score" required style="margin-left: 10px; padding: 5px;">
+                <option value="10">10 - Obra-Prima</option>
+                <option value="9">9 - Ótimo</option>
+                <option value="8">8 - Muito Bom</option>
+                <option value="7">7 - Bom</option>
+                <option value="6">6 - Aceitável</option>
+                <option value="5">5 - Mediano</option>
+                <option value="4">4 - Ruim</option>
+                <option value="3">3 - Péssimo</option>
+                <option value="2">2 - Horrível</option>
+                <option value="1">1 - Abominável</option>
+            </select>
+
+            <div style="margin-top: 10px;">
+                <label for="comment"><strong>Comentário:</strong></label><br>
+                <textarea name="comment" id="comment" rows="4" style="width: 100%; padding: 5px; border-radius: 5px;"></textarea>
+            </div>
+
+            <button type="submit" style="margin-top: 10px; padding: 8px 15px; border-radius: 5px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+                Enviar
+            </button>
+        </form>
+    {% endwith %}
+{% else %}
+    <p style="margin-top: 20px;">Você precisa <a href="{% url 'login_user' %}">entrar</a> para avaliar este anime.</p>
+{% endif %}
+
 {% endblock %}

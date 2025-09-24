@@ -1,10 +1,11 @@
 from django import forms
+from .models import Review
 
-NOTAS = [(i, str(i)) for i in range(1, 6)]
-
-class RatingForm(forms.Form):
-    nota = forms.TypedChoiceField(choices=NOTAS, coerce=int, widget=forms.RadioSelect)
-    comentario = forms.CharField(
-        required=False,
-        widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Escreva um comentário (opcional)..."})
-    )
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['score', 'comment']
+        widgets = {
+            'score': forms.Select(attrs={'class': 'form-select'}),
+            'comment': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+        }

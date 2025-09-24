@@ -1,69 +1,24 @@
-from django.db.models import Avg, Count
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.decorators import login_required
+from animes.models import Anime
+from .forms import ReviewForm
+from .models import Review
 
-from .forms import RatingForm
-from .models import Anime, Rating
+@login_required
+def avaliar_anime(request, anime_id):
+    anime = get_object_or_404(Anime, id=anime_id)
 
-def _ensure_session(request: HttpRequest) -> str:
-    if not request.session.session_key:
-        request.session.save()
-    return request.session.session_key
-
-class AnimeListView(ListView):
-    model = Anime
-    template_name = "reviews/anime_list.html"
-    context_object_name = "animes"
-
-    def get_queryset(self):
-        return (
-            Anime.objects.all()
-            .annotate(media=Avg("ratings__nota"), qtd=Count("ratings"))
-        )
-
-class AnimeDetailView(DetailView):
-    model = Anime
-    template_name = "reviews/anime_detail.html"
-    context_object_name = "anime"
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        anime: Anime = ctx["anime"]
-        session_key = _ensure_session(self.request)
-
-        avaliacao = Rating.objects.filter(anime=anime, session_key=session_key).first()
-        if avaliacao:
-            form = RatingForm(initial={"nota": avaliacao.nota, "comentario": avaliacao.comentario})
-        else:
-            form = RatingForm()
-
-        ctx.update({
-            "form": form,
-            "media": anime.media,
-            "qtd": anime.total_avaliacoes,
-            "minhas_estrelas": avaliacao.nota if avaliacao else 0,
-            "avaliacoes": anime.ratings.select_related("anime")[:20],
-        })
-        return ctx
-
-def rate_anime(request: HttpRequest, pk: int) -> HttpResponse:
-    anime = get_object_or_404(Anime, pk=pk)
-    session_key = _ensure_session(request)
+    existing_review = Review.objects.filter(anime_id=anime_id, user=request.user).first()
 
     if request.method == "POST":
-        form = RatingForm(request.POST)
+        form = ReviewForm(request.POST, instance=existing_review)
         if form.is_valid():
-            nota = form.cleaned_data["nota"]
-            comentario = form.cleaned_data["comentario"]
-            Rating.objects.update_or_create(
-                anime=anime,
-                session_key=session_key,
-                defaults={"nota": nota, "comentario": comentario},
-            )
-            return redirect(reverse("anime_detail", kwargs={"pk": anime.pk}))
+            review = form.save(commit=False)
+            review.anime_id = anime_id
+            review.user = request.user
+            review.save()
+            return redirect("detalhes_anime", anime_id=anime.id)
     else:
-        form = RatingForm()
+        form = ReviewForm(instance=existing_review)
 
-    return render(request, "reviews/rate_anime.html", {"anime": anime, "form": form})
+    return render(request, "reviews/add_review.html", {"form": form, "anime": anime})
