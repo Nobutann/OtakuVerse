@@ -18,3 +18,26 @@ class Anime(models.Model):
 
     def __str__(self):
         return self.title
+    
+class AnimeList(models.Model):
+    STATUS = [
+        ('watching', 'Assistindo'),
+        ('completed', 'Completo'),
+        ('ptw', 'Planejo Assistir'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='anime_entries')
+    anime = models.ForeignKey(Anime, on_delete=models.CASCADE, related_name='user_entries')
+    score = models.PositiveIntegerField(null=True, blank=True)
+    episodes_watched = models.PositiveIntegerField(default=0)
+    start_date = models.DateField(null=True, blank=True)
+    finish_date = models.DateField(null=True, blank=True)
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user', 'anime']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.anime.title} ({self.status})"
