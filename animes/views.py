@@ -32,6 +32,7 @@ def buscar_anime(request):
     return render(request, 'animes/pagina_de_busca.html', contexto)
 
 def detalhes_anime(request, anime_id):
+    
     contexto = {
         'anime': None,
         'erro': None,

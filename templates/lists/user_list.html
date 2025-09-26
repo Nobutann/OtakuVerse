@@ -60,7 +60,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td class="anime-title">
                             <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" class="anime-cover">
-                            <a href="{% url 'animes:detalhes_anime' anime_id=entry.anime.id %}">{{ entry.anime.title }}</a>
+                            <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}">{{ entry.anime.title }}</a>
                         </td>
                         <td>
                             <span class="status-label status-{{ entry.status }}">
