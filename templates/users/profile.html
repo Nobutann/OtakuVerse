@@ -161,33 +161,36 @@
                     
                     {% if user.anime_entries.exists %}
                         <div class="anime-preview">
-                            {% for entry in user.anime_entries.all|slice:":6" %}
-                                <div class="anime-preview-item">
-                                    <div class="anime-poster-small">
-                                        <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
-                                        {% if entry.score %}
-                                            <div class="anime-score-badge">{{ entry.score }}</div>
-                                        {% endif %}
-                                    </div>
-                                    <div class="anime-info-small">
-                                        <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
-                                        <div class="anime-status">
-                                            <span class="status-badge status-{{ entry.status }}">
-                                                {% if entry.status == 'watching' %}Assistindo
-                                                {% elif entry.status == 'completed' %}Completo
-                                                {% elif entry.status == 'ptw' %}Planejo Assistir
-                                                {% endif %}
-                                            </span>
-                                        </div>
-                                        {% if entry.episodes_watched and entry.anime.episodes %}
-                                            <div class="progress-info">
-                                                {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endfor %}
+    {% for entry in user.anime_entries.all|slice:":6" %}
+        <div class="anime-preview-item">
+            <!-- Link envolvendo todo o card do anime -->
+            <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" class="anime-card-link">
+                <div class="anime-poster-small">
+                    <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
+                    {% if entry.score %}
+                        <div class="anime-score-badge">{{ entry.score }}</div>
+                    {% endif %}
+                </div>
+                <div class="anime-info-small">
+                    <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
+                    <div class="anime-status">
+                        <span class="status-badge status-{{ entry.status }}">
+                            {% if entry.status == 'watching' %}Assistindo
+                            {% elif entry.status == 'completed' %}Completo
+                            {% elif entry.status == 'ptw' %}Planejo Assistir
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% if entry.episodes_watched and entry.anime.episodes %}
+                        <div class="progress-info">
+                            {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
                         </div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
                         
                         {% if user.anime_entries.count > 6 %}
                             <div class="anime-preview-footer">
