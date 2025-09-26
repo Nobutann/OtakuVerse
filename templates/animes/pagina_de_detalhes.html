@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block title %}{{ anime.title|default:"Anime" }} - OtakuVerse{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'anime/css/detalhes.css' %}">
 {% endblock %}
 
 {% block content %}
+
 <main class="main-content">
     {% if anime %}
     <section class="featured-section">
@@ -95,7 +93,17 @@
                         </div>
                     </div>
                 </div>
+
+<div class="container anime-details-page">
+
+    <div class="anime-info-section">
+        {% if anime.images.jpg.image_url %}
+            <div class="anime-poster-lg">
+                <img src="{{ anime.images.jpg.image_url }}" alt="Capa de {{ anime.title }}">
+
             </div>
+        {% endif %}
+
 
             <div class="anime-info-section" style="flex: 1; display: flex; flex-direction: column; gap: 2rem;">
                 <div class="anime-header" style="padding: 2rem;">
@@ -124,14 +132,40 @@
                     {% if anime.source %}
                         <span class="tag tag-source">{{ anime.source }}</span>
                     {% endif %}
+
+        <div class="anime-main-info">
+            <h1 class="anime-title-lg">{{ anime.title }}</h1>
+            
+            {% if erro %}
+                <div class="error-banner">
+                    <p>{{ erro }}</p>
+
                 </div>
+            {% endif %}
+
 
                 {% if anime.synopsis %}
                 <div class="synopsis-section">
                     <h3>Sinopse</h3>
                     <p>{{ anime.synopsis }}</p>
                 </div>
+
+            <div class="anime-stats">
+                {% if anime.status %}
+                    <span class="stat-item"><strong>Status:</strong> {{ anime.status }}</span>
                 {% endif %}
+                {% if anime.episodes %}
+                    <span class="stat-item"><strong>Episódios:</strong> {{ anime.episodes }}</span>
+
+                {% endif %}
+                {% if anime.score %}
+                    <span class="stat-item"><strong>Nota:</strong> {{ anime.score }}</span>
+                {% endif %}
+                {% if anime.rank %}
+                    <span class="stat-item"><strong>Rank:</strong> {{ anime.rank }}</span>
+                {% endif %}
+            </div>
+
 
                 <div class="details-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem;">
                     <div class="detail-section">
@@ -173,9 +207,76 @@
                         <h4>Estúdios</h4>
                         <p>{{ anime.studios|join:", " }}</p>
                     </div>
+
+            <p class="anime-synopsis"><strong>Sinopse:</strong> {{ anime.synopsis }}</p>
+            <p class="anime-genres"><strong>Gêneros:</strong> {{ anime.genres|join:", " }}</p>
+            <p class="anime-studios"><strong>Estúdios:</strong> {{ anime.studios|join:", " }}</p>
+            
+            {% if anime.trailer and anime.trailer.embed_url %}
+                <div class="anime-trailer-container">
+                    <h3 class="trailer-title">Trailer</h3>
+                    <iframe src="{{ anime.trailer.embed_url }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="reviews-section">
+        <h2 class="section-title-sm">Avaliações</h2>
+
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <strong class="review-user">{{ review.user.username }}</strong>
+                        <span class="review-score">Nota: {{ review.score }}</span>
+                    </div>
+                    {% if review.comment %}
+                        <p class="review-comment">{{ review.comment }}</p>
+
                     {% endif %}
                 </div>
+            {% empty %}
+                <p class="no-reviews">Nenhuma avaliação ainda.</p>
+            {% endfor %}
+        {% else %}
+            <p class="no-reviews">Nenhuma avaliação ainda.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="review-form-container">
+                <h3 class="form-title">Deixe sua avaliação</h3>
+                {% with mal_id=anime.mal_id %}
+                    <form method="post" action="{% url 'avaliar_anime' mal_id %}" class="review-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="score"><strong>Nota:</strong></label>
+                            <select name="score" id="score" required class="form-select">
+                                <option value="10">10 - Obra-Prima</option>
+                                <option value="9">9 - Ótimo</option>
+                                <option value="8">8 - Muito Bom</option>
+                                <option value="7">7 - Bom</option>
+                                <option value="6">6 - Aceitável</option>
+                                <option value="5">5 - Mediano</option>
+                                <option value="4">4 - Ruim</option>
+                                <option value="3">3 - Péssimo</option>
+                                <option value="2">2 - Horrível</option>
+                                <option value="1">1 - Abominável</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment"><strong>Comentário:</strong></label>
+                            <textarea name="comment" id="comment" rows="4" class="form-textarea"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn cta-btn primary">
+                            Enviar Avaliação
+                        </button>
+                    </form>
+                {% endwith %}
             </div>
+
 
         </div>
     </section>
@@ -187,3 +288,11 @@
 </main>
 <script src="{% static 'anime/js/detalhes.js' %}"></script>
 {% endblock %}
+
+        {% else %}
+            <p class="login-prompt">Você precisa <a href="{% url 'login_user' %}">entrar</a> para avaliar este anime.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
+

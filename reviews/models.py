@@ -1,45 +1,28 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models import Avg
+from django.contrib.auth.models import User
 
-class Anime(models.Model):
-    titulo = models.CharField(max_length=200, unique=True)
-    sinopse = models.TextField(blank=True)
-    capa_url = models.URLField(blank=True)
-    criado_em = models.DateTimeField(auto_now_add=True)
+SCORE_CHOICES = [
+    (10, "10 - Obra-Prima"),
+    (9, "9 - Ótimo"),
+    (8, "8 - Muito Bom"),
+    (7, "7 - Bom"),
+    (6, "6 - Aceitável"),
+    (5, "5 - Mediano"),
+    (4, "4 - Ruim"),
+    (3, "3 - Muito Ruim"),
+    (2, "2 - Horrível"),
+    (1, "1 - Terrível"),
+]
 
-    class Meta:
-        ordering = ["titulo"]
-
-    def __str__(self) -> str:
-        return self.titulo
-
-    @property
-    def media(self) -> float:
-        return self.ratings.aggregate(avg=Avg("nota"))["avg"] or 0.0
-
-    @property
-    def total_avaliacoes(self) -> int:
-        return self.ratings.count()
-
-class RatingQuerySet(models.QuerySet):
-    def aggregate_avg(self) -> float:
-        return self.aggregate(avg=Avg("nota"))["avg"] or 0.0
-
-class Rating(models.Model):
-    anime = models.ForeignKey(Anime, on_delete=models.CASCADE, related_name="ratings")
-    session_key = models.CharField(max_length=40)  # identifica usuário anônimo
-    nota = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    comentario = models.TextField(blank=True)
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    anime_id = models.IntegerField()
+    score = models.IntegerField(choices=SCORE_CHOICES)
+    comment = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    objects = RatingQuerySet.as_manager()
-
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["anime", "session_key"], name="unique_rating_per_session_per_anime")
-        ]
-        ordering = ["-created_at"]
+        unique_together = ('user', 'anime_id')
 
-    def __str__(self) -> str:
-        return f"{self.anime.titulo} - {self.nota}★"
+    def __str__(self):
+        return f"{self.user} - {self.anime_id} ({self.score})"

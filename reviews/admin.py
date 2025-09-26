@@ -1,19 +1,8 @@
 from django.contrib import admin
-from .models import Anime, Rating
+from .models import Review
 
-@admin.register(Anime)
-class AnimeAdmin(admin.ModelAdmin):
-    list_display = ("id", "titulo", "media_avaliacoes", "qtd_avaliacoes")
-    search_fields = ("titulo",)
-
-    def media_avaliacoes(self, obj):
-        return obj.ratings.aggregate_avg()
-
-    def qtd_avaliacoes(self, obj):
-        return obj.ratings.count()
-
-@admin.register(Rating)
-class RatingAdmin(admin.ModelAdmin):
-    list_display = ("id", "anime", "nota", "session_key", "created_at")
-    list_filter = ("nota", "created_at")
-    search_fields = ("session_key", "comentario", "anime__titulo")
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('user', 'anime_id', 'score', 'created_at')
+    list_filter = ('score', 'created_at')
+    search_fields = ('user__username', 'anime_id')

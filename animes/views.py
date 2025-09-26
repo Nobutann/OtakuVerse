@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
+from reviews.models import Review
+from django.db.models import Avg
+from django.contrib.auth.decorators import login_required
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
@@ -32,10 +35,11 @@ def detalhes_anime(request, anime_id):
     contexto = {
         'anime': None,
         'erro': None,
+        'reviews': [],
+        'average_score': None,
     }
 
     api_url = f'https://api.jikan.moe/v4/anime/{anime_id}'
-
     try:
         response = requests.get(api_url, timeout=10)
         response.raise_for_status()
@@ -51,5 +55,9 @@ def detalhes_anime(request, anime_id):
     except requests.exceptions.RequestException as e:
         contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
         print(contexto['erro'])
+
+    reviews = Review.objects.filter(anime_id=anime_id).order_by('-created_at')
+    contexto['reviews'] = reviews
+    contexto['average_score'] = reviews.aggregate(Avg('score'))['score__avg']
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
