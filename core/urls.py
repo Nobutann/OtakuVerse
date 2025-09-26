@@ -24,8 +24,12 @@ urlpatterns = [
     path('animes/', include('animes.urls')),
     path('users/', include('users.urls')),
     path('', include('main.urls')),
+
+    path('lists/', include('lists.urls')),
+
     path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login_user'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout_user'),
+
 ]
 
 

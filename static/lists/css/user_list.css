@@ -1,0 +1,167 @@
+.profile-container {
+    margin-top: 20px;
+}
+
+.stats-bar {
+    background: #2d2d2d;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+}
+
+.stats-bar span {
+    color: #fff;
+}
+
+.stats-bar .status-watching {
+    color: #4db8ff;
+}
+.stats-bar .status-completed {
+    color: #6de36d;
+}
+.stats-bar .status-ptw {
+    color: #ffa94d;
+}
+
+.status-filter {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #444;
+    padding-bottom: 8px;
+}
+
+.status-filter ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.status-filter a {
+    text-decoration: none;
+    color: #ccc;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.status-filter a:hover {
+    background: #444;
+    color: #fff;
+}
+
+.status-filter a.active {
+    background: #6c63ff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.anime-list-wrapper {
+    overflow-x: auto;
+}
+
+.anime-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    background: #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.anime-list-table th,
+.anime-list-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    color: #ddd;
+}
+
+.anime-list-table th {
+    background: #1f1f1f;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.anime-list-table tr:hover {
+    background: #3a3a3a;
+}
+
+.anime-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.anime-title a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.anime-title a:hover {
+    color: #6c63ff;
+}
+
+.anime-cover {
+    width: 40px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #555;
+}
+
+.status-label {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-watching {
+    background: #005b96;
+    color: #fff;
+}
+
+.status-completed {
+    background: #228b22;
+    color: #fff;
+}
+
+.status-ptw {
+    background: #ff8c00;
+    color: #fff;
+}
+
+/* Botões de ações */
+.actions a {
+    margin-right: 8px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+}
+
+.actions .edit-btn {
+    color: #6c63ff;
+}
+
+.actions .delete-btn {
+    color: #e74c3c;
+}
+
+.actions a:hover {
+    transform: scale(1.2);
+}
+
+.empty-list {
+    text-align: center;
+    color: #aaa;
+    padding: 20px;
+    font-style: italic;
+}

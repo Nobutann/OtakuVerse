@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Lista de {{ profile_user.username }} - OtakuVerse{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'lists/css/user_list.css' %}">
+
+<div class="container">
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2>{{ profile_user.username }} - Lista de Animes</h2>
+            {% if not is_own_list and not profile_user.profile.isPublic %}
+                <p class="profile-privacy">
+                    <span class="private-profile">🔒 Este perfil é privado.</span>
+                </p>
+            {% endif %}
+        </div>
+
+        <div class="stats-bar">
+            <span>Total: {{ stats.total }}</span>
+            <span class="status-watching">Assistindo: {{ stats.watching }}</span>
+            <span class="status-completed">Completos: {{ stats.completed }}</span>
+            <span class="status-ptw">Planejo: {{ stats.ptw }}</span>
+        </div>
+
+        <div class="status-filter">
+            <ul>
+                <li><a href="?status=all" {% if status_filter == "all" %}class="active"{% endif %}>Todos</a></li>
+                {% for value, label in status_choices %}
+                <li>
+                    <a href="?status={{ value }}" {% if status_filter == value %}class="active"{% endif %}>
+                        {{ label }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="anime-list-wrapper">
+            <table class="anime-list-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Status</th>
+                        <th>Episódios</th>
+                        <th>Nota</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>Notas</th>
+                        {% if is_own_list %}
+                            <th>Ações</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="anime-title">
+                            <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" class="anime-cover">
+                            <a href="{% url 'animes:detalhes_anime' anime_id=entry.anime.id %}">{{ entry.anime.title }}</a>
+                        </td>
+                        <td>
+                            <span class="status-label status-{{ entry.status }}">
+                                {{ entry.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ entry.episodes_watched }} / {{ entry.anime.episodes|default:"?" }}</td>
+                        <td>{{ entry.score|default:"-" }}</td>
+                        <td>{{ entry.start_date|date:"d/m/Y"|default:"-" }}</td>
+                        <td>{{ entry.finish_date|date:"d/m/Y"|default:"-" }}</td>
+                        <td>{{ entry.notes|default:"" }}</td>
+                        {% if is_own_list %}
+                        <td class="actions">
+                            <a href="{% url 'lists:edit_entry' entry.id %}" class="edit-btn">✏️</a>
+                            <a href="{% url 'lists:remove_entry' entry.id %}" class="delete-btn">🗑️</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="empty-list">Nenhum anime encontrado nesta lista.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,14 +1,137 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'anime/css/detalhes.css' %}">
+{% endblock %}
+
 {% block content %}
+
+<main class="main-content">
+    {% if anime %}
+    <section class="featured-section">
+        <div class="anime-details-container" style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: flex-start; max-width: 1200px; margin: 0 auto; padding: 2rem;">
+
+            <div class="anime-poster-section" style="flex: 0 0 320px; display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="anime-card">
+                    <div class="anime-poster" style="aspect-ratio: 3/4; overflow: hidden;">
+                        <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="anime-overlay">
+                            <div class="anime-info">
+                                <div class="anime-score">⭐ {{ anime.score|default:"N/A" }}</div>
+                                <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.is_authenticated %}
+                <div class="list-actions">
+                    <h4>Adicionar à Lista</h4>
+                    {% if user_entry %}
+                        <div class="current-entry" style="text-align: center;">
+                            <p class="entry-status" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+                                <span class="status-badge status-{{ user_entry.status }}">{{ user_entry.get_status_display }}</span>
+                                {% if user_entry.score %}
+                                    <span class="user-score">{{ user_entry.score }}/10</span>
+                                {% endif %}
+                            </p>
+                            <div class="entry-actions" style="display: flex; gap: 0.5rem; justify-content: center;">
+                                <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-secondary btn-small">Editar</a>
+                                <a href="{% url 'lists:remove_entry' user_entry.id %}" class="btn btn-danger btn-small">Remover</a>
+                            </div>
+
+                            <!-- Contador de episódios -->
+                            <div class="episode-counter" 
+                                 data-entry-id="{{ user_entry.id }}" 
+                                 data-max-episodes="{{ anime.episodes|default:0 }}" 
+                                 style="margin-top: 1rem; display:flex; align-items:center; gap:0.5rem;">
+                                <button type="button" class="btn btn-small decrease-ep">-</button>
+                                <span class="episodes-watched">{{ user_entry.episodes_watched|default:0 }}</span>
+                                <button type="button" class="btn btn-small increase-ep">+</button>
+                                <span style="margin-left: 0.5rem;">/ {{ anime.episodes|default:0 }}</span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <form method="post" action="{% url 'lists:add_to_list' anime.mal_id %}" class="add-to-list-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                            {% csrf_token %}
+                            <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label for="status">Status:</label>
+                                <select name="status" id="status" class="form-control" style="padding: 0.7rem; border-radius: 8px;">
+                                    <option value="ptw" selected>Planejo Assistir</option>
+                                    <option value="watching">Assistindo</option>
+                                    <option value="completed">Completo</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">Adicionar à Lista</button>
+                        </form>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="list-actions">
+                    <p class="login-prompt"><a href="{% url 'users:login' %}">Faça login</a> para adicionar à sua lista</p>
+                </div>
+                {% endif %}
+
+                <div class="anime-stats">
+                    <h4>Estatísticas</h4>
+                    <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
+                            <span class="stat-label">Pontuação</span>
+                            <span class="stat-value">{{ anime.score|default:"N/A" }}</span>
+                        </div>
+                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
+                            <span class="stat-label">Ranking</span>
+                            <span class="stat-value">#{{ anime.rank|default:"N/A" }}</span>
+                        </div>
+                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
+                            <span class="stat-label">Popularidade</span>
+                            <span class="stat-value">#{{ anime.popularity|default:"N/A" }}</span>
+                        </div>
+                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
+                            <span class="stat-label">Membros</span>
+                            <span class="stat-value">{{ anime.members|default:"N/A" }}</span>
+                        </div>
+                    </div>
+                </div>
+
 <div class="container anime-details-page">
 
     <div class="anime-info-section">
         {% if anime.images.jpg.image_url %}
             <div class="anime-poster-lg">
                 <img src="{{ anime.images.jpg.image_url }}" alt="Capa de {{ anime.title }}">
+
             </div>
         {% endif %}
+
+
+            <div class="anime-info-section" style="flex: 1; display: flex; flex-direction: column; gap: 2rem;">
+                <div class="anime-header" style="padding: 2rem;">
+                    <h1 class="anime-title">{{ anime.title }}</h1>
+                    {% if anime.title_english %}
+                        <h2 class="anime-title-english">{{ anime.title_english }}</h2>
+                    {% endif %}
+                    {% if anime.title_japanese %}
+                        <h3 class="anime-title-japanese">{{ anime.title_japanese }}</h3>
+                    {% endif %}
+                </div>
+
+                <div class="anime-tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    {% if anime.type %}
+                        <span class="tag tag-type">{{ anime.type }}</span>
+                    {% endif %}
+                    {% if anime.episodes %}
+                        <span class="tag tag-episodes">{{ anime.episodes }} eps</span>
+                    {% endif %}
+                    {% if anime.status %}
+                        <span class="tag tag-status">{{ anime.status }}</span>
+                    {% endif %}
+                    {% if anime.rating %}
+                        <span class="tag tag-rating">{{ anime.rating }}</span>
+                    {% endif %}
+                    {% if anime.source %}
+                        <span class="tag tag-source">{{ anime.source }}</span>
+                    {% endif %}
 
         <div class="anime-main-info">
             <h1 class="anime-title-lg">{{ anime.title }}</h1>
@@ -16,8 +139,16 @@
             {% if erro %}
                 <div class="error-banner">
                     <p>{{ erro }}</p>
+
                 </div>
             {% endif %}
+
+
+                {% if anime.synopsis %}
+                <div class="synopsis-section">
+                    <h3>Sinopse</h3>
+                    <p>{{ anime.synopsis }}</p>
+                </div>
 
             <div class="anime-stats">
                 {% if anime.status %}
@@ -25,6 +156,7 @@
                 {% endif %}
                 {% if anime.episodes %}
                     <span class="stat-item"><strong>Episódios:</strong> {{ anime.episodes }}</span>
+
                 {% endif %}
                 {% if anime.score %}
                     <span class="stat-item"><strong>Nota:</strong> {{ anime.score }}</span>
@@ -33,6 +165,48 @@
                     <span class="stat-item"><strong>Rank:</strong> {{ anime.rank }}</span>
                 {% endif %}
             </div>
+
+
+                <div class="details-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem;">
+                    <div class="detail-section">
+                        <h4>Informações</h4>
+                        <div class="detail-list" style="display:flex; flex-direction: column; gap: 0.8rem;">
+                            {% if anime.type %}
+                            <div class="detail-item"><span class="detail-label">Tipo:</span> <span class="detail-value">{{ anime.type }}</span></div>
+                            {% endif %}
+                            {% if anime.episodes %}
+                            <div class="detail-item"><span class="detail-label">Episódios:</span> <span class="detail-value">{{ anime.episodes }}</span></div>
+                            {% endif %}
+                            {% if anime.status %}
+                            <div class="detail-item"><span class="detail-label">Status:</span> <span class="detail-value">{{ anime.status }}</span></div>
+                            {% endif %}
+                            {% if anime.aired.string %}
+                            <div class="detail-item"><span class="detail-label">Exibido:</span> <span class="detail-value">{{ anime.aired.string }}</span></div>
+                            {% endif %}
+                            {% if anime.season %}
+                            <div class="detail-item"><span class="detail-label">Temporada:</span> <span class="detail-value">{{ anime.season|title }} {{ anime.year }}</span></div>
+                            {% endif %}
+                            {% if anime.source %}
+                            <div class="detail-item"><span class="detail-label">Fonte:</span> <span class="detail-value">{{ anime.source }}</span></div>
+                            {% endif %}
+                            {% if anime.duration %}
+                            <div class="detail-item"><span class="detail-label">Duração:</span> <span class="detail-value">{{ anime.duration }}</span></div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if anime.genres %}
+                    <div class="detail-section">
+                        <h4>Gêneros</h4>
+                        <p>{{ anime.genres|join:", " }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if anime.studios %}
+                    <div class="detail-section">
+                        <h4>Estúdios</h4>
+                        <p>{{ anime.studios|join:", " }}</p>
+                    </div>
 
             <p class="anime-synopsis"><strong>Sinopse:</strong> {{ anime.synopsis }}</p>
             <p class="anime-genres"><strong>Gêneros:</strong> {{ anime.genres|join:", " }}</p>
@@ -61,6 +235,7 @@
                     </div>
                     {% if review.comment %}
                         <p class="review-comment">{{ review.comment }}</p>
+
                     {% endif %}
                 </div>
             {% empty %}
@@ -101,9 +276,23 @@
                     </form>
                 {% endwith %}
             </div>
+
+
+        </div>
+    </section>
+    {% else %}
+    <div class="error-banner" role="alert">
+        <p>Não conseguimos carregar os detalhes do anime no momento. Tente novamente mais tarde.</p>
+    </div>
+    {% endif %}
+</main>
+<script src="{% static 'anime/js/detalhes.js' %}"></script>
+{% endblock %}
+
         {% else %}
             <p class="login-prompt">Você precisa <a href="{% url 'login_user' %}">entrar</a> para avaliar este anime.</p>
         {% endif %}
     </section>
 </div>
 {% endblock %}
+
