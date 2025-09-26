@@ -167,14 +167,62 @@
                 <section class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title">Lista de Animes</h2>
+                        {% if request.user == user %}
+                            <a href="{% url 'lists:user_list' user.username %}" class="view-all">Ver lista completa</a>
+                        {% else %}
+                            {% if user.profile.isPublic %}
+                                <a href="{% url 'lists:user_list' user.username %}" class="view-all">Ver lista completa</a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                     
-                    <div class="coming-soon-card">
-                        <div class="coming-soon-content">
-                            <h3>Em Breve...</h3>
-                            <p>A funcionalidade de listas de anime estará disponível em breve!</p>
+                    {% if user.anime_entries.exists %}
+                        <div class="anime-preview">
+                            {% for entry in user.anime_entries.all|slice:":6" %}
+                            <div class="anime-preview-item">
+                                <div class="anime-poster-small">
+                                    <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
+                                    {% if entry.score %}
+                                        <div class="anime-score-badge">{{ entry.score }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="anime-info-small">
+                                    <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
+                                    <div class="anime-status">
+                                        <span class="status-badge status-{{ entry.status }}">
+                                            {% if entry.status == 'watching' %}Assistindo
+                                            {% elif entry.status == 'completed' %}Completo
+                                            {% elif entry.status == 'ptw' %}Planejo Assistir
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    {% if entry.episodes_watched and entry.anime.episodes %}
+                                        <div class="progress-info">
+                                            {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
-                    </div>
+                        
+                        {% if user.anime_entries.count > 6 %}
+                            <div class="anime-preview-footer">
+                                <p class="preview-count">
+                                    Mostrando 6 de {{ user.anime_entries.count }} animes
+                                </p>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="empty-state">
+                            {% if request.user == user %}
+                                <p class="empty-text">Você ainda não adicionou nenhum anime à sua lista.</p>
+                                <a href="{% url 'animes:buscar_anime' %}" class="btn btn-primary">Buscar Animes</a>
+                            {% else %}
+                                <p class="empty-text">{{ user.username }} ainda não tem animes na lista.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </section>
             </div>
         </div>
@@ -187,6 +235,7 @@
                             Website pessoal
                         </a>
                     </section>
+                    {% endif %}
                 </div>
 
                 <div class="profile-main-content">

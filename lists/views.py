@@ -96,7 +96,7 @@ def user_list(request, username):
     
     status_filter = request.GET.get("status", "all")
 
-    entries = user.anime_entries.select_related('anime').order_by('-update_at')
+    entries = user.anime_entries.select_related('anime').order_by('-updated_at')
 
     if status_filter != 'all':
         entries = entries.filter(status=status_filter)
@@ -161,7 +161,7 @@ def edit_entry(request, entry_id):
     
     context = {
         'entry': entry,
-        'status': AnimeList.STATUS,
+        'status_choices': AnimeList.STATUS,
     }
 
     return render(request, 'lists/edit_entry.html', context)

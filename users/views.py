@@ -122,6 +122,7 @@ def show_profile(request, username):
             Q(user1=user) | Q(user2=user)
         ).count(),
         'is_own_profile': request.user == user,
+        'recent_anime_entries': user.anime_entries.select_related("anime")[:6],
     }
 
     return render(request, 'users/profile.html', context)

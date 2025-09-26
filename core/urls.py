@@ -23,6 +23,7 @@ urlpatterns = [
     path('animes/', include('animes.urls')),
     path('users/', include('users.urls')),
     path('', include('main.urls')),
+    path('lists/', include('lists.urls')),
 ]
 
 
