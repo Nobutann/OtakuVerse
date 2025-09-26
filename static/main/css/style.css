@@ -635,3 +635,241 @@ body {
         max-width: 300px;
     }
 }
+
+/* --- Detalhes do Anime --- */
+.anime-details-page {
+    padding: 3rem 0;
+}
+
+.anime-info-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    background: var(--dark-card);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.anime-poster-lg {
+    flex-shrink: 0;
+    width: 250px;
+    height: 350px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-hover);
+}
+
+.anime-poster-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.anime-poster-lg:hover img {
+    transform: scale(1.05);
+}
+
+.anime-main-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.anime-title-lg {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.anime-synopsis,
+.anime-genres,
+.anime-studios {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.anime-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: var(--dark-light);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--dark-border);
+}
+
+.anime-trailer-container {
+    margin-top: 2rem;
+}
+
+.anime-trailer-container iframe {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 16/9;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+.trailer-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-accent);
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: var(--dark-border);
+    margin: 4rem 0;
+}
+
+/* --- Seção de Avaliações --- */
+.reviews-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section-title-sm {
+    font-family: 'Comfortaa', cursive;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--text-accent);
+}
+
+.review-card {
+    background: var(--dark-card);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.review-user {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.review-score {
+    font-weight: 600;
+    color: var(--primary-pink);
+    background: rgba(255, 182, 193, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+}
+
+.review-comment {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.no-reviews {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.review-form-container {
+    background: var(--dark-card);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-soft);
+    margin-top: 3rem;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-accent);
+}
+
+.review-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.review-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--dark-light);
+    border: 1px solid var(--dark-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+
+.form-select:focus,
+.form-textarea:focus {
+    border-color: var(--primary-pink);
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 182, 193, 0.3);
+}
+
+.submit-btn {
+    margin-top: 1.5rem;
+}
+
+.login-prompt {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.login-prompt a {
+    color: var(--primary-pink);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-prompt a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .anime-info-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .anime-main-info {
+        text-align: center;
+    }
+    .anime-poster-lg {
+        width: 100%;
+        max-width: 200px;
+    }
+    .anime-stats {
+        justify-content: center;
+    }
+    .review-form-container {
+        padding: 1.5rem;
+    }
+}

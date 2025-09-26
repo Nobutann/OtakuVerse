@@ -25,7 +25,7 @@ def get_anime(mal_id):
                     title = data.get('title', ''),
                     title_english = data.get('title_english', ''),
                     synopsis = data.get('synopsis', ''),
-                    image_url = data.get('images', {}).get('jpg', {}).get('image.url', ''),
+                    image_url = data.get('images', {}).get('jpg', {}).get('image_url', ''),
                     episodes = data.get('episodes'),
                     score = data.get('score'),
                     year = data.get('year'),
@@ -84,7 +84,7 @@ def add_to_list(request, mal_id):
         else:
             messages.success(request, f"{anime.title} foi adicionado à sua lista!")
 
-        return redirect('lists:my_list')
+        return redirect('lists:user_list', username=request.user.username)
 
 @login_required
 def user_list(request, username):
@@ -191,7 +191,7 @@ def update_status(request, entry_id):
             entry.save()
 
             return JsonResponse({
-                'sucsess': True,
+                'success': True,
                 'message': f"Status atualizado para {entry.get_status_display()}"
             })
         

@@ -1,0 +1,78 @@
+/* ===== Botões de status ===== */
+.status-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #fff;
+    cursor: default;
+    transition: all 0.3s ease;
+}
+
+/* Cores específicas para cada status */
+.status-ptw { /* Planejo Assistir */
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+}
+
+.status-watching { /* Assistindo */
+    background: linear-gradient(135deg, #98fb98, #00fa9a);
+}
+
+.status-completed { /* Completo */
+    background: linear-gradient(135deg, #dda0dd, #ba55d3);
+}
+
+/* Efeito hover para badges (mesmo estilo do site) */
+.status-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ===== Botão "Adicionar à Lista" ===== */
+.btn-full {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Cores para os botões */
+.btn-primary {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #add8e6, #87cefa);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #87cefa, #1e90ff);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff7f7f, #ff4c4c);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #ff4c4c, #ff0000);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Botões pequenos dentro do entry-actions */
+.btn-small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+}
