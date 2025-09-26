@@ -11,4 +11,5 @@ urlpatterns = [
     path('update-status/<int:entry_id>/', views.update_status, name='update_status'),
     path('update-score/<int:entry_id>/', views.update_score, name='update_score'),
     path('animes/<int:anime_id>/', views.detalhes_anime, name='detalhes_anime'),
+    path('update-episodes/<int:entry_id>/', views.update_episodes, name='update_episodes'),
 ]

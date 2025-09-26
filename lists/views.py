@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from .models import Anime, AnimeList
 import requests
+from reviews.models import Review
+from django.db.models import Avg
 
 def get_anime(mal_id):
     try:
@@ -42,33 +44,28 @@ def get_anime(mal_id):
             pass
 
         return None
-def detalhes_anime(request, anime_id):
     
+def detalhes_anime(request, anime_id):
     contexto = {
         'anime': None,
         'erro': None,
         'reviews': [],
         'average_score': None,
+        'user_entry': None,
     }
 
-    api_url = f'https://api.jikan.moe/v4/anime/{anime_id}'
-    try:
-        response = requests.get(api_url, timeout=10)
-        response.raise_for_status()
-        dados_api = response.json()
-        
-        anime = dados_api.get('data')
-        if anime:
-            anime['genres'] = [g['name'] for g in anime.get('genres', [])]
-            anime['studios'] = [s['name'] for s in anime.get('studios', [])]
-        
-        contexto['anime'] = anime
+    anime = get_anime(anime_id)
+    if not anime:
+        contexto['erro'] = "Não conseguimos carregar os detalhes do anime."
+        return render(request, 'animes/pagina_de_detalhes.html', contexto)
 
-    except requests.exceptions.RequestException as e:
-        contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
-        print(contexto['erro'])
+    contexto['anime'] = anime 
 
-    reviews = Review.objects.filter(anime_id=anime_id).order_by('-created_at')
+    if request.user.is_authenticated:
+        user_entry = AnimeList.objects.filter(user=request.user, anime=anime).first()
+        contexto['user_entry'] = user_entry
+
+    reviews = Review.objects.filter(anime=anime).order_by('-created_at')
     contexto['reviews'] = reviews
     contexto['average_score'] = reviews.aggregate(Avg('score'))['score__avg']
 
@@ -262,3 +259,40 @@ def update_score(request, entry_id):
             })
         
     return JsonResponse({'success': False})
+
+@login_required
+def update_episodes(request, entry_id):
+    if request.method == 'POST':
+        entry = get_object_or_404(AnimeList, id=entry_id, user=request.user)
+
+        try:
+            episodes_watched = int(request.POST.get('episodes_watched', 0))
+
+            if episodes_watched < 0:
+                return JsonResponse({
+                    'success': False,
+                    'error': "Número de episódios não pode ser negativo"
+                })
+            
+            if entry.anime.episodes and episodes_watched > entry.anime.episodes:
+                return JsonResponse({
+                    'success': False,
+                    'error': f"Máximo de {entry.anime.episodes} episódios"
+                })
+            
+            entry.episodes_watched = episodes_watched
+            entry.save()
+
+            return JsonResponse({
+                'success': True,
+                'episodes_watched': entry.episodes_watched,
+                'message': "Episódios atualizados com sucesso!"
+            })
+        
+        except (ValueError, TypeError):
+            return JsonResponse({
+                'success': False,
+                'error': "Valor inválido para episódios"
+            })
+        
+    return JsonResponse({'success': False, 'error': "Método não permitido"})

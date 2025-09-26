@@ -973,3 +973,223 @@ anime-trailer-container {
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
 }
+/* ===== Seção Adicionar à Lista ===== */
+.list-actions {
+    background: linear-gradient(135deg, rgba(58, 58, 58, 0.9) 0%, rgba(74, 74, 74, 0.7) 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(10px);
+}
+
+.list-actions h4 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-pink);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Formulário */
+.add-to-list-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.add-to-list-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.add-to-list-form label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.add-to-list-form .form-control {
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.add-to-list-form .form-control:focus {
+    outline: none;
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+}
+
+/* Botão Adicionar à Lista - COM HOVER */
+.btn-full {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-lavender) 50%, var(--accent-coral) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.6);
+    background: linear-gradient(135deg, var(--accent-coral) 0%, var(--primary-pink) 50%, var(--primary-lavender) 100%);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(1.01);
+}
+
+/* Status atual - SEM HOVER */
+.current-entry {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.entry-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.status-badge {
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: white;
+}
+
+.status-ptw { background: linear-gradient(135deg, #FFB6C1, #FF69B4); }
+.status-watching { background: linear-gradient(135deg, #98FB98, #00FA9A); }
+.status-completed { background: linear-gradient(135deg, #DDA0DD, #BA55D3); }
+
+.user-score {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-pink);
+    background: rgba(255, 182, 193, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+}
+
+/* Contador de Episódios - SEM HOVER NO CONTAINER */
+.episode-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 182, 193, 0.2);
+}
+
+/* Botões do contador - COM HOVER */
+.btn-episode {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-lavender));
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-episode:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--accent-coral), var(--primary-pink));
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+}
+
+.btn-episode:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.btn-episode:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.episode-display {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.episodes-watched { color: var(--primary-pink); }
+.episode-separator { color: var(--text-muted); }
+.total-episodes { color: var(--text-secondary); }
+
+/* Ações - COM HOVER NOS BOTÕES */
+.entry-actions {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #87CEEB, #4682B4);
+    color: white;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(135, 206, 235, 0.5);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #FF6B6B, #FF4757);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255, 107, 107, 0.5);
+}
+
+.btn-small {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+}

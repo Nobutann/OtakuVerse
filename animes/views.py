@@ -3,6 +3,7 @@ import requests
 from reviews.models import Review, SCORE_CHOICES
 from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
+from lists.models import Anime, AnimeList
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
@@ -36,6 +37,7 @@ def detalhes_anime(request, anime_id):
         'average_score': None,
         'score_choices': SCORE_CHOICES,
         'user_review': None,
+        'user_entry': None,  # ✅ Adicionar user_entry
     }
 
     api_url = f'https://api.jikan.moe/v4/anime/{anime_id}'
@@ -46,6 +48,7 @@ def detalhes_anime(request, anime_id):
 
         anime = dados_api.get('data')
         if anime:
+            # Processar gêneros e estúdios
             if isinstance(anime.get('genres', []), list) and anime.get('genres') and isinstance(anime['genres'][0], dict):
                 anime['genres'] = [g.get('name') for g in anime.get('genres', [])]
             if isinstance(anime.get('studios', []), list) and anime.get('studios') and isinstance(anime['studios'][0], dict):
@@ -53,9 +56,21 @@ def detalhes_anime(request, anime_id):
 
         contexto['anime'] = anime
 
+        # ✅ BUSCAR USER_ENTRY SE O USUÁRIO ESTIVER LOGADO
+        if request.user.is_authenticated and anime:
+            try:
+                # Primeiro, tentar encontrar o anime no banco local
+                anime_obj = Anime.objects.get(mal_id=anime_id)
+                user_entry = AnimeList.objects.filter(user=request.user, anime=anime_obj).first()
+                contexto['user_entry'] = user_entry
+            except Anime.DoesNotExist:
+                # Se o anime não estiver no banco local, user_entry será None
+                contexto['user_entry'] = None
+
     except requests.exceptions.RequestException as e:
         contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
 
+    # Reviews
     reviews_qs = Review.objects.filter(anime_id=anime_id).order_by('-created_at')
     contexto['reviews'] = reviews_qs
     contexto['average_score'] = reviews_qs.aggregate(Avg('score'))['score__avg']
