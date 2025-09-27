@@ -21,7 +21,7 @@ load_dotenv(BASE_DIR / 'env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-TARGET_ENV = os.getenv('TARGET_ENV') 
+TARGET_ENV = os.getenv('TARGET_ENV', 'dev')  # Default para dev se não definido
 NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
 if NOT_PROD:
@@ -29,7 +29,7 @@ if NOT_PROD:
     SECRET_KEY = 'django-insecure-$#em!h^%odmz6%n&k@hic&*hvkes$sx*(jnm-knzl0oje52uov'
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = True
-    ALLOWED_HOSTS = ['*']  # Para desenvolvimento local
+    ALLOWED_HOSTS = []  
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -62,8 +62,8 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DBNAME'),  
-            'USER': os.environ.get('DBUSER'),  
+            'NAME': os.environ.get('DBNAME'),
+            'USER': os.environ.get('DBUSER'),
             'PASSWORD': os.environ.get('DBPASS'),
             'HOST': os.environ.get('DBHOST'),
             'PORT': os.environ.get('DB_PORT', '5432'),
@@ -85,12 +85,11 @@ INSTALLED_APPS = [
     'animes',
     'main',
     'lists',
-    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,7 +107,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',  # Adicionado
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
