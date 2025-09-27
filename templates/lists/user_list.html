@@ -6,25 +6,26 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'lists/css/user_list.css' %}">
 
-<div class="container">
-    <div class="profile-container">
-        <div class="profile-header">
-            <h2>{{ profile_user.username }} - Lista de Animes</h2>
+<main class="container">
+    <article class="profile-container">
+        
+        <header class="profile-header">
+            <h1>{{ profile_user.username }} - Lista de Animes</h1>
             {% if not is_own_list and not profile_user.profile.isPublic %}
                 <p class="profile-privacy">
                     <span class="private-profile">🔒 Este perfil é privado.</span>
                 </p>
             {% endif %}
-        </div>
+        </header>
 
-        <div class="stats-bar">
-            <span>Total: {{ stats.total }}</span>
-            <span class="status-watching">Assistindo: {{ stats.watching }}</span>
-            <span class="status-completed">Completos: {{ stats.completed }}</span>
-            <span class="status-ptw">Planejo: {{ stats.ptw }}</span>
-        </div>
+        <section class="stats-bar" aria-label="Estatísticas da lista">
+            <p>Total: {{ stats.total }}</p>
+            <p class="status-watching">Assistindo: {{ stats.watching }}</p>
+            <p class="status-completed">Completos: {{ stats.completed }}</p>
+            <p class="status-ptw">Planejo: {{ stats.ptw }}</p>
+        </section>
 
-        <div class="status-filter">
+        <nav class="status-filter" aria-label="Filtrar por status">
             <ul>
                 <li><a href="?status=all" {% if status_filter == "all" %}class="active"{% endif %}>Todos</a></li>
                 {% for value, label in status_choices %}
@@ -35,22 +36,22 @@
                 </li>
                 {% endfor %}
             </ul>
-        </div>
+        </nav>
 
-        <div class="anime-list-wrapper">
+        <section class="anime-list-wrapper">
             <table class="anime-list-table">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Título</th>
-                        <th>Status</th>
-                        <th>Episódios</th>
-                        <th>Nota</th>
-                        <th>Início</th>
-                        <th>Fim</th>
-                        <th>Notas</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Episódios</th>
+                        <th scope="col">Nota</th>
+                        <th scope="col">Início</th>
+                        <th scope="col">Fim</th>
+                        <th scope="col">Notas</th>
                         {% if is_own_list %}
-                            <th>Ações</th>
+                            <th scope="col">Ações</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -60,7 +61,9 @@
                         <td>{{ forloop.counter }}</td>
                         <td class="anime-title">
                             <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" class="anime-cover">
-                            <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}">{{ entry.anime.title }}</a>
+                            <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}">
+                                {{ entry.anime.title }}
+                            </a>
                         </td>
                         <td>
                             <span class="status-label status-{{ entry.status }}">
@@ -74,8 +77,8 @@
                         <td>{{ entry.notes|default:"" }}</td>
                         {% if is_own_list %}
                         <td class="actions">
-                            <a href="{% url 'lists:edit_entry' entry.id %}" class="edit-btn">✏️</a>
-                            <a href="{% url 'lists:remove_entry' entry.id %}" class="delete-btn">🗑️</a>
+                            <a href="{% url 'lists:edit_entry' entry.id %}" class="edit-btn" aria-label="Editar entrada">✏️</a>
+                            <a href="{% url 'lists:remove_entry' entry.id %}" class="delete-btn" aria-label="Remover entrada">🗑️</a>
                         </td>
                         {% endif %}
                     </tr>
@@ -86,7 +89,8 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
+        </section>
+
+    </article>
+</main>
 {% endblock %}

@@ -6,152 +6,143 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
 
-<main class="profile-main">
-    <div class="container">
-        <div class="profile-header">
-            <div class="profile-avatar">
-                <img src="{{ user.profile.avatar.url }}" alt="Avatar de {{ user.username }}" class="avatar-image">
-            </div>
-            
-            <div class="profile-info">
-                <div class="profile-title">
-                    <h1 class="username">{{ user.username }}</h1>
-                    {% if user.profile.age %}
-                        <span class="age">{{ user.profile.age }} anos</span>
-                    {% endif %}
-                </div>
-                
-                {% if user.profile.location %}
-                    <div class="profile-location">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
-                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
-                        </svg>
-                        <span>{{ user.profile.location }}</span>
-                    </div>
-                {% endif %}
-                
-                <div class="profile-meta">
-                    <span class="joined-date">
-                        Membro desde {{ user.profile.joinedDate|date:"M Y" }}
+<main class="profile-main container">
+    
+    <header class="profile-header">
+        <figure class="profile-avatar">
+            <img src="{{ user.profile.avatar.url }}" alt="Avatar de {{ user.username }}" class="avatar-image">
+        </figure>
+        
+        <div class="profile-info">
+            <h1 class="username">{{ user.username }}</h1>
+            {% if user.profile.age %}
+                <p class="age">{{ user.profile.age }} anos</p>
+            {% endif %}
+
+            {% if user.profile.location %}
+                <p class="profile-location">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+                    </svg>
+                    <span>{{ user.profile.location }}</span>
+                </p>
+            {% endif %}
+
+            <p class="profile-meta">
+                <time class="joined-date">
+                    Membro desde {{ user.profile.joinedDate|date:"M Y" }}
+                </time>
+                {% if user.profile.lastOnline %}
+                    <span class="last-online">
+                        Visto por último {{ user.profile.lastOnline|timesince }} atrás
                     </span>
-                    {% if user.profile.lastOnline %}
-                        <span class="last-online">
-                            Visto por último {{ user.profile.lastOnline|timesince }} atrás
-                        </span>
-                    {% endif %}
-                </div>
-            </div>
-            
-            <div class="profile-actions">
-                {% if request.user == user %}
-                    <a href="{% url 'users:edit_profile' %}" class="btn btn-primary">
-                        Editar Perfil
-                    </a>
                 {% endif %}
-            </div>
+            </p>
         </div>
 
-        <div class="profile-content">
-            <div class="profile-sidebar">
-                {% if user.profile.showStats %}
-                    <section class="stats-card">
-                        <h3 class="card-title">Estatísticas</h3>
-                        <div class="stats-grid">
-                            <div class="stat-item">
-                                <span class="stat-number">{{ user.profile.current_anime_count }}</span>
-                                <span class="stat-label">Animes</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">{{ user.profile.current_episodes_watched }}</span>
-                                <span class="stat-label">Episódios</span>
-                            </div>
+        <nav class="profile-actions">
+            {% if request.user == user %}
+                <a href="{% url 'users:edit_profile' %}" class="btn btn-primary">Editar Perfil</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="profile-content">
+        <aside class="profile-sidebar">
+            {% if user.profile.showStats %}
+                <section class="stats-card" aria-labelledby="stats-title">
+                    <h2 id="stats-title" class="card-title">Estatísticas</h2>
+                    <dl class="stats-grid">
+                        <div class="stat-item">
+                            <dt class="stat-number">{{ user.profile.current_anime_count }}</dt>
+                            <dd class="stat-label">Animes</dd>
                         </div>
-                    </section>
-                {% endif %}
+                        <div class="stat-item">
+                            <dt class="stat-number">{{ user.profile.current_episodes_watched }}</dt>
+                            <dd class="stat-label">Episódios</dd>
+                        </div>
+                    </dl>
+                </section>
+            {% endif %}
 
-                {% if user.profile.bio %}
-                    <section class="bio-card">
-                        <h3 class="card-title">Sobre</h3>
-                        <p class="bio-text">{{ user.profile.bio|linebreaks }}</p>
-                    </section>
-                {% endif %}
+            {% if user.profile.bio %}
+                <section class="bio-card" aria-labelledby="bio-title">
+                    <h2 id="bio-title" class="card-title">Sobre</h2>
+                    <p class="bio-text">{{ user.profile.bio|linebreaks }}</p>
+                </section>
+            {% endif %}
 
-                {% if user.profile.website %}
-                    <section class="links-card">
-                        <h3 class="card-title">Links</h3>
-                        <a href="{{ user.profile.website }}" target="_blank" rel="noopener" class="external-link">
-                            Website pessoal
-                        </a>
-                    </section>
-                {% endif %}
-            </div>
+            {% if user.profile.website %}
+                <section class="links-card" aria-labelledby="links-title">
+                    <h2 id="links-title" class="card-title">Links</h2>
+                    <a href="{{ user.profile.website }}" target="_blank" rel="noopener" class="external-link">
+                        Website pessoal
+                    </a>
+                </section>
+            {% endif %}
+        </aside>
 
-            <div class="profile-main-content">
-                <section class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title">Lista de Animes</h2>
-                        {% if request.user == user %}
-                            <a href="{% url 'lists:user_list' user.username %}" class="view-all">Ver lista completa</a>
-                        {% else %}
-                            {% if user.profile.isPublic %}
-                                <a href="{% url 'lists:user_list' user.username %}" class="view-all">Ver lista completa</a>
-                            {% endif %}
-                        {% endif %}
+        <article class="profile-main-content">
+            <section class="activity-section" aria-labelledby="anime-list-title">
+                <div class="section-header">
+                    <h2 id="anime-list-title" class="section-title">Lista de Animes</h2>
+                    {% if request.user == user or user.profile.isPublic %}
+                        <a href="{% url 'lists:user_list' user.username %}" class="view-all">Ver lista completa</a>
+                    {% endif %}
+                </div>
+                
+                {% if user.anime_entries.exists %}
+                    <div class="anime-preview">
+                        {% for entry in user.anime_entries.all|slice:":6" %}
+                            <article class="anime-preview-item">
+                                <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" class="anime-card-link">
+                                    <figure class="anime-poster-small">
+                                        <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
+                                        {% if entry.score %}
+                                            <figcaption class="anime-score-badge">{{ entry.score }}</figcaption>
+                                        {% endif %}
+                                    </figure>
+                                    <div class="anime-info-small">
+                                        <h3 class="anime-title-small">{{ entry.anime.title }}</h3>
+                                        <p class="anime-status">
+                                            <span class="status-badge status-{{ entry.status }}">
+                                                {% if entry.status == 'watching' %}Assistindo
+                                                {% elif entry.status == 'completed' %}Completo
+                                                {% elif entry.status == 'ptw' %}Planejo Assistir
+                                                {% endif %}
+                                            </span>
+                                        </p>
+                                        {% if entry.episodes_watched and entry.anime.episodes %}
+                                            <p class="progress-info">
+                                                {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </article>
+                        {% endfor %}
                     </div>
                     
-                    {% if user.anime_entries.exists %}
-                        <div class="anime-preview">
-                            {% for entry in user.anime_entries.all|slice:":6" %}
-                                <div class="anime-preview-item">
-                                    <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" class="anime-card-link">
-                                        <div class="anime-poster-small">
-                                            <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
-                                            {% if entry.score %}
-                                                <div class="anime-score-badge">{{ entry.score }}</div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="anime-info-small">
-                                            <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
-                                            <div class="anime-status">
-                                                <span class="status-badge status-{{ entry.status }}">
-                                                    {% if entry.status == 'watching' %}Assistindo
-                                                    {% elif entry.status == 'completed' %}Completo
-                                                    {% elif entry.status == 'ptw' %}Planejo Assistir
-                                                    {% endif %}
-                                                </span>
-                                            </div>
-                                            {% if entry.episodes_watched and entry.anime.episodes %}
-                                                <div class="progress-info">
-                                                    {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        
-                        {% if user.anime_entries.count > 6 %}
-                            <div class="anime-preview-footer">
-                                <p class="preview-count">
-                                    Mostrando 6 de {{ user.anime_entries.count }} animes
-                                </p>
-                            </div>
-                        {% endif %}
-                    {% else %}
-                        <div class="empty-state">
-                            {% if request.user == user %}
-                                <p class="empty-text">Você ainda não adicionou nenhum anime à sua lista.</p>
-                                <a href="{% url 'animes:buscar_anime' %}" class="btn btn-primary">Buscar Animes</a>
-                            {% else %}
-                                <p class="empty-text">{{ user.username }} ainda não tem animes na lista.</p>
-                            {% endif %}
-                        </div>
+                    {% if user.anime_entries.count > 6 %}
+                        <footer class="anime-preview-footer">
+                            <p class="preview-count">
+                                Mostrando 6 de {{ user.anime_entries.count }} animes
+                            </p>
+                        </footer>
                     {% endif %}
-                </section>
-            </div>
-        </div>
+                {% else %}
+                    <section class="empty-state">
+                        {% if request.user == user %}
+                            <p class="empty-text">Você ainda não adicionou nenhum anime à sua lista.</p>
+                            <a href="{% url 'animes:buscar_anime' %}" class="btn btn-primary">Buscar Animes</a>
+                        {% else %}
+                            <p class="empty-text">{{ user.username }} ainda não tem animes na lista.</p>
+                        {% endif %}
+                    </section>
+                {% endif %}
+            </section>
+        </article>
     </div>
 </main>
 

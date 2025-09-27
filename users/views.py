@@ -41,7 +41,7 @@ def signup(request):
             password=password
         )
 
-        return redirect('main:homepage')
+        return redirect('users:login')
     else:
         return render(request, 'users/signup.html')
     

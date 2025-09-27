@@ -81,16 +81,18 @@ def add_to_list(request, mal_id):
         
         status = request.POST.get('status', 'ptw')
         score = request.POST.get('score')
+        episodes_watched = 0
 
         if score:
             try:
                 score = int(score)
                 if score < 1 or score > 10:
                     score = None
-
             except (ValueError, TypeError):
                 score = None
 
+        if status == 'completed' and anime.episodes:
+            episodes_watched = anime.episodes
 
         anime_entry, created = AnimeList.objects.get_or_create(
             user = request.user,
@@ -98,19 +100,34 @@ def add_to_list(request, mal_id):
             defaults = {
                 'status': status,
                 'score': score,
+                'episodes_watched': episodes_watched,
             }
         )
 
         if not created:
+            old_status = anime_entry.status
             anime_entry.status = status
+            
             if score:
                 anime_entry.score = score
 
+            if status == 'completed' and old_status != 'completed' and anime.episodes:
+                if anime_entry.episodes_watched < anime.episodes:
+                    anime_entry.episodes_watched = anime.episodes
+
             anime_entry.save()
-            messages.success(request, f"{anime.title} foi atualizado na sua lista!")
+            
+            if (status == 'completed' and old_status != 'completed' and 
+                anime.episodes and anime_entry.episodes_watched == anime.episodes):
+                messages.success(request, f"{anime.title} foi marcado como completo com todos os {anime.episodes} episódios!")
+            else:
+                messages.success(request, f"{anime.title} foi atualizado na sua lista!")
 
         else:
-            messages.success(request, f"{anime.title} foi adicionado à sua lista!")
+            if status == 'completed' and anime.episodes and episodes_watched == anime.episodes:
+                messages.success(request, f"{anime.title} foi adicionado como completo com todos os {anime.episodes} episódios!")
+            else:
+                messages.success(request, f"{anime.title} foi adicionado à sua lista!")
 
         return redirect('lists:user_list', username=request.user.username)
 
@@ -118,9 +135,6 @@ def add_to_list(request, mal_id):
 def user_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    if not user.profile.isPublic and request.user != user:
-        messages.error(request, "Este perfil é privado.")
-        return redirect("users:profile", username=username)
     
     status_filter = request.GET.get("status", "all")
 
@@ -159,6 +173,7 @@ def edit_entry(request, entry_id):
         finish_date = request.POST.get('finish_date')
         notes = request.POST.get('notes', '')
 
+        old_status = entry.status
         entry.status = status
 
         if score:
@@ -171,10 +186,12 @@ def edit_entry(request, entry_id):
 
         try:
             episodes_watched = int(episodes_watched)
-
             if episodes_watched >= 0:
+                if (status == 'completed' and old_status != 'completed' and 
+                    entry.anime.episodes and episodes_watched < entry.anime.episodes):
+                    episodes_watched = entry.anime.episodes
+                
                 entry.episodes_watched = episodes_watched
-        
         except (ValueError, TypeError):
             pass
 
@@ -183,9 +200,14 @@ def edit_entry(request, entry_id):
         entry.notes = notes
 
         entry.save()
-        messages.success(request, f"{entry.anime.title} foi atualizado!")
 
-        return redirect("lists:user_list", request.user.username)
+        if (status == 'completed' and old_status != 'completed' and 
+            entry.anime.episodes and entry.episodes_watched == entry.anime.episodes):
+            messages.success(request, f"{entry.anime.title} foi marcado como completo com todos os {entry.anime.episodes} episódios!")
+        else:
+            messages.success(request, f"{entry.anime.title} foi atualizado!")
+
+        return redirect("lists:user_list", username=request.user.username)
     
     context = {
         'entry': entry,
@@ -202,7 +224,7 @@ def remove_entry(request, entry_id):
         anime_title = entry.anime.title
         entry.delete()
         messages.success(request, f"{anime_title} foi removido de sua lista.")
-        return redirect('lists:my_list')
+        return redirect('lists:user_list', request.user.username)
     
     context = {'entry':entry}
 

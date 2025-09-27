@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Remover {{ entry.anime.title }} - OtakuVerse{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+
+<main class="profile-main">
+    <div class="container">
+
+        <header class="edit-profile-header">
+            <div class="header-content">
+                <h1 class="page-title">Confirmar Remoção</h1>
+                <p class="page-subtitle">Tem certeza que deseja remover este anime da sua lista?</p>
+            </div>
+        </header>
+
+        <section class="card" style="margin-bottom: 2rem; border: 2px solid #ff6b6b; background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 71, 87, 0.05) 100%);">
+            <header style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #ff6b6b; color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                    ⚠️
+                </div>
+                <div>
+                    <h2 style="color: #ff6b6b; font-size: 1.3rem; margin: 0; font-weight: 600;">
+                        Atenção: Esta ação não pode ser desfeita!
+                    </h2>
+                    <p style="color: var(--text-secondary); margin: 0.5rem 0 0 0;">
+                        Todos os dados relacionados a este anime serão permanentemente removidos.
+                    </p>
+                </div>
+            </header>
+        </section>
+
+        <article class="card" style="margin-bottom: 2rem;">
+            <h2 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); margin-bottom: 1.5rem;">
+                Informações do Anime
+            </h2>
+            
+            <section style="display: flex; gap: 2rem; align-items: flex-start;">
+                <figure style="flex-shrink: 0;">
+                    <img src="{{ entry.anime.image_url }}" 
+                         alt="{{ entry.anime.title }}" 
+                         style="width: 140px; height: 200px; object-fit: cover; border-radius: 12px; box-shadow: var(--shadow-soft);">
+                </figure>
+                <div style="flex: 1;">
+                    <h3 style="font-family: 'Comfortaa', cursive; color: var(--text-primary); font-size: 1.8rem; margin-bottom: 0.5rem;">
+                        {{ entry.anime.title }}
+                    </h3>
+                    {% if entry.anime.title_english %}
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.1rem;">
+                            {{ entry.anime.title_english }}
+                        </p>
+                    {% endif %}
+
+                    <dl style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        {% if entry.anime.episodes %}
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.8rem; border-radius: 8px;">
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Episódios</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.anime.episodes }}</dd>
+                            </div>
+                        {% endif %}
+                        {% if entry.anime.year %}
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.8rem; border-radius: 8px;">
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Ano</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.anime.year }}</dd>
+                            </div>
+                        {% endif %}
+                        {% if entry.anime.score %}
+                            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.8rem; border-radius: 8px;">
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Nota MyAnimeList</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.anime.score }}/10</dd>
+                            </div>
+                        {% endif %}
+                    </dl>
+
+                    <section style="background: rgba(255, 182, 193, 0.1); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 182, 193, 0.2);">
+                        <h4 style="color: var(--primary-pink); margin-bottom: 1rem; font-weight: 600;">
+                            Seus dados que serão removidos:
+                        </h4>
+                        
+                        <dl style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                            <div>
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Status</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">
+                                    {% if entry.status == 'watching' %}Assistindo
+                                    {% elif entry.status == 'completed' %}Completo
+                                    {% elif entry.status == 'ptw' %}Planejo Assistir
+                                    {% endif %}
+                                </dd>
+                            </div>
+                            
+                            <div>
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Episódios assistidos</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.episodes_watched }}</dd>
+                            </div>
+                            
+                            {% if entry.score %}
+                            <div>
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Sua nota</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.score }}/10</dd>
+                            </div>
+                            {% endif %}
+                            
+                            {% if entry.start_date %}
+                            <div>
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Data de início</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.start_date|date:"d/m/Y" }}</dd>
+                            </div>
+                            {% endif %}
+                            
+                            {% if entry.finish_date %}
+                            <div>
+                                <dt style="color: var(--text-muted); font-size: 0.9rem;">Data de conclusão</dt>
+                                <dd style="color: var(--text-primary); font-weight: 600;">{{ entry.finish_date|date:"d/m/Y" }}</dd>
+                            </div>
+                            {% endif %}
+                        </dl>
+                        
+                        {% if entry.notes %}
+                        <section style="margin-top: 1rem;">
+                            <h5 style="color: var(--text-muted); font-size: 0.9rem;">Suas anotações</h5>
+                            <p style="color: var(--text-primary); margin-top: 0.5rem; background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 8px; font-size: 0.95rem; line-height: 1.5;">
+                                {{ entry.notes|linebreaks }}
+                            </p>
+                        </section>
+                        {% endif %}
+                    </section>
+                </div>
+            </section>
+        </article>
+
+        <section class="card">
+            <h2 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); margin-bottom: 1.5rem; text-align: center;">
+                O que você gostaria de fazer?
+            </h2>
+            
+            <nav style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{% url 'lists:user_list' request.user.username %}" 
+                   class="btn btn-secondary btn-large"
+                   style="min-width: 180px;">
+                    <span style="margin-right: 0.5rem;">←</span>
+                    Cancelar
+                </a>
+                
+                <a href="{% url 'lists:edit_entry' entry.id %}" 
+                   class="btn"
+                   style="background: linear-gradient(135deg, var(--accent-blue), var(--primary-lavender)); color: white; min-width: 180px;">
+                    <span style="margin-right: 0.5rem;">✏️</span>
+                    Editar ao Invés
+                </a>
+
+                <form method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="btn btn-danger btn-large"
+                            style="min-width: 180px;"
+                            onclick="return confirm('Tem CERTEZA ABSOLUTA que deseja remover {{ entry.anime.title }} da sua lista? Esta ação não pode ser desfeita!')">
+                        <span style="margin-right: 0.5rem;">🗑️</span>
+                        Sim, Remover
+                    </button>
+                </form>
+            </nav>
+        </section>
+
+        <footer style="text-align: center; margin-top: 2rem; color: var(--text-muted); font-style: italic;">
+            <p>Dica: Você pode sempre adicionar este anime novamente mais tarde, mas terá que inserir todas as informações do zero.</p>
+        </footer>
+    </div>
+</main>
+<script src="{% static 'lists/js/confirm_remove.js' %}"></script>
+{% endblock %}

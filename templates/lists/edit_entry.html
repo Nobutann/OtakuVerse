@@ -8,27 +8,26 @@
 
 <main class="profile-main">
     <div class="container">
-        <!-- Header -->
-        <div class="edit-profile-header">
+
+        <header class="edit-profile-header">
             <div class="header-content">
                 <h1 class="page-title">Editar Entrada</h1>
                 <p class="page-subtitle">Atualize as informações de {{ entry.anime.title }}</p>
             </div>
-            <div class="profile-actions">
+            <nav class="profile-actions">
                 <a href="{% url 'lists:user_list' request.user.username %}" class="btn btn-secondary">
                     Voltar à Lista
                 </a>
-            </div>
-        </div>
+            </nav>
+        </header>
 
-        <!-- Anime Info Card -->
-        <div class="card" style="margin-bottom: 2rem;">
-            <div style="display: flex; gap: 2rem; align-items: flex-start;">
-                <div style="flex-shrink: 0;">
+        <article class="card" style="margin-bottom: 2rem;">
+            <section style="display: flex; gap: 2rem; align-items: flex-start;">
+                <figure style="flex-shrink: 0;">
                     <img src="{{ entry.anime.image_url }}" 
                          alt="{{ entry.anime.title }}" 
                          style="width: 120px; height: 160px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-soft);">
-                </div>
+                </figure>
                 <div style="flex: 1;">
                     <h2 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); font-size: 1.5rem; margin-bottom: 0.5rem;">
                         {{ entry.anime.title }}
@@ -38,31 +37,38 @@
                             {{ entry.anime.title_english }}
                         </p>
                     {% endif %}
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted);">
+                    <dl style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted);">
                         {% if entry.anime.episodes %}
-                            <span>{{ entry.anime.episodes }} episódios</span>
+                            <div>
+                                <dt>Episódios</dt>
+                                <dd>{{ entry.anime.episodes }}</dd>
+                            </div>
                         {% endif %}
                         {% if entry.anime.year %}
-                            <span>{{ entry.anime.year }}</span>
+                            <div>
+                                <dt>Ano</dt>
+                                <dd>{{ entry.anime.year }}</dd>
+                            </div>
                         {% endif %}
                         {% if entry.anime.score %}
-                            <span>Nota: {{ entry.anime.score }}/10</span>
+                            <div>
+                                <dt>Nota</dt>
+                                <dd>{{ entry.anime.score }}/10</dd>
+                            </div>
                         {% endif %}
-                    </div>
+                    </dl>
                 </div>
-            </div>
-        </div>
+            </section>
+        </article>
 
-        <!-- Edit Form -->
-        <div class="edit-profile-form">
+        <section class="edit-profile-form">
             <form method="post" class="form">
                 {% csrf_token %}
-                
-                <div class="form-sections">
-                    <!-- Status Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">Status de Visualização</h3>
-                        
+
+                <section class="form-sections">
+
+                    <fieldset class="form-section">
+                        <legend class="section-title">Status de Visualização</legend>
                         <div class="form-group">
                             <label class="form-label" for="id_status">Status atual</label>
                             <select name="status" id="id_status" class="form-select">
@@ -73,12 +79,10 @@
                                 {% endfor %}
                             </select>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- Progress Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">Progresso</h3>
-                        
+                    <fieldset class="form-section">
+                        <legend class="section-title">Progresso</legend>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label" for="id_episodes_watched">
@@ -111,12 +115,10 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- Dates Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">Datas</h3>
-                        
+                    <fieldset class="form-section">
+                        <legend class="section-title">Datas</legend>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label" for="id_start_date">Data de início</label>
@@ -136,12 +138,10 @@
                                        value="{% if entry.finish_date %}{{ entry.finish_date|date:'Y-m-d' }}{% endif %}">
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    <!-- Notes Section -->
-                    <div class="form-section">
-                        <h3 class="section-title">Notas Pessoais</h3>
-                        
+                    <fieldset class="form-section">
+                        <legend class="section-title">Notas Pessoais</legend>
                         <div class="form-group">
                             <label class="form-label" for="id_notes">
                                 Suas anotações
@@ -157,27 +157,26 @@
                                 Use este espaço para anotar suas impressões, personagens favoritos, momentos marcantes, etc.
                             </p>
                         </div>
-                    </div>
-                </div>
+                    </fieldset>
 
-                <!-- Form Actions -->
-                <div class="form-actions">
+                </section>
+
+                <footer class="form-actions">
                     <a href="{% url 'lists:user_list' request.user.username %}" class="btn btn-secondary btn-large">
                         Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary btn-large">
                         Salvar Alterações
                     </button>
-                </div>
+                </footer>
             </form>
-        </div>
+        </section>
 
-        <!-- Quick Actions -->
-        <div class="card" style="margin-top: 2rem;">
+        <aside class="card" style="margin-top: 2rem;">
             <h3 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); margin-bottom: 1.5rem;">
                 Ações Rápidas
             </h3>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <nav style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" 
                    class="btn btn-secondary">
                     Ver Detalhes do Anime
@@ -187,61 +186,10 @@
                    onclick="return confirm('Tem certeza que deseja remover {{ entry.anime.title }} da sua lista?')">
                     Remover da Lista
                 </a>
-            </div>
-        </div>
+            </nav>
+        </aside>
     </div>
 </main>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Counter para as notas
-    const notesTextarea = document.getElementById('id_notes');
-    const notesCounter = document.getElementById('notesCounter');
-    
-    if (notesTextarea && notesCounter) {
-        notesTextarea.addEventListener('input', function() {
-            const currentLength = this.value.length;
-            notesCounter.textContent = currentLength + '/1000';
-            
-            if (currentLength > 900) {
-                notesCounter.style.color = 'var(--accent-coral)';
-            } else {
-                notesCounter.style.color = 'var(--text-muted)';
-            }
-        });
-    }
-
-    // Auto-ajustar datas baseado no status
-    const statusSelect = document.getElementById('id_status');
-    const startDateInput = document.getElementById('id_start_date');
-    const finishDateInput = document.getElementById('id_finish_date');
-    
-    if (statusSelect) {
-        statusSelect.addEventListener('change', function() {
-            const status = this.value;
-            const today = new Date().toISOString().split('T')[0];
-            
-            // Se mudou para "Assistindo" e não tem data de início, sugerir hoje
-            if (status === 'watching' && !startDateInput.value) {
-                startDateInput.value = today;
-            }
-            
-            // Se mudou para "Completo" e não tem data de conclusão, sugerir hoje
-            if (status === 'completed' && !finishDateInput.value) {
-                finishDateInput.value = today;
-                // Se não tem data de início, sugerir que começou hoje também
-                if (!startDateInput.value) {
-                    startDateInput.value = today;
-                }
-            }
-            
-            // Se mudou para "Planejo Assistir", limpar datas se foram preenchidas automaticamente
-            if (status === 'ptw') {
-                // Não limpar automaticamente, deixar o usuário decidir
-            }
-        });
-    }
-});
-</script>
-
+<script src="{% static 'lists/js/edit_entry' %}"></script>
 {% endblock %}
