@@ -14,27 +14,18 @@ def buscar_anime(request):
     if query:
         api_url = 'https://api.jikan.moe/v4/anime'
         
-        # Pegar o rating selecionado (padrão agora é "padrao")
         rating_selecionado = request.GET.get('rating', 'padrao')
         
-        # Parâmetros básicos
         params = {
             'q': query
         }
         
-        # LÓGICA NOVA:
-        if rating_selecionado == 'adulto':
-            # Adulto: Mostra TUDO TUDO (sem filtro nenhum)
-            pass
-        elif rating_selecionado == 'padrao':
-            # Padrão: Mostra tudo MENOS hentai
+        if rating_selecionado == 'padrao':
             params['genres_exclude'] = '12'
         else:
-            # Filtros específicos (G, PG, PG-13, R-17, R+)
             params['rating'] = rating_selecionado
             params['genres_exclude'] = '12'
-        
-        # Adicionar outros filtros
+
         if request.GET.get('type'):
             params['type'] = request.GET.get('type')
         
@@ -51,32 +42,28 @@ def buscar_anime(request):
             response = requests.get(api_url, params=params, timeout=10)
             response.raise_for_status()
             dados_api = response.json()
-
-            # LÓGICA NOVA: Filtro manual apenas quando necessário
+            
             if rating_selecionado == 'adulto':
-                # Adulto: Não filtra nada, mostra tudo
                 contexto['resultados'] = dados_api.get('data', [])
             elif rating_selecionado == 'padrao':
-                # Padrão: Remove hentai manualmente também (garantia)
                 resultados_filtrados = []
                 for anime in dados_api.get('data', []):
                     if anime.get('rating') != 'Rx - Hentai':
                         generos = anime.get('genres', [])
-                        tem_hentai = any(g.get('name', '').lower() == 'hentai' for g in generos)
+                        tem_adulto = any(g.get('name', '').lower() == 'hentai' for g in generos)
                         
-                        if not tem_hentai:
+                        if not tem_adulto:
                             resultados_filtrados.append(anime)
                 
                 contexto['resultados'] = resultados_filtrados
             else:
-                # Filtros específicos: Remove hentai também
                 resultados_filtrados = []
                 for anime in dados_api.get('data', []):
                     if anime.get('rating') != 'Rx - Hentai':
                         generos = anime.get('genres', [])
-                        tem_hentai = any(g.get('name', '').lower() == 'hentai' for g in generos)
+                        tem_adulto = any(g.get('name', '').lower() == 'hentai' for g in generos)
                         
-                        if not tem_hentai:
+                        if not tem_adulto:
                             resultados_filtrados.append(anime)
                 
                 contexto['resultados'] = resultados_filtrados
