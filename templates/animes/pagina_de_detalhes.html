@@ -202,7 +202,7 @@
                 </p>
                 {% if user_entry %}
                     <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-primary">
-                        Adicionar Nota e Comentário
+                        Adicionar Nota
                     </a>
                 {% else %}
                     <form method="post" action="{% url 'lists:add_to_list' anime.mal_id %}" style="display: flex; gap: 1rem; align-items: end;">

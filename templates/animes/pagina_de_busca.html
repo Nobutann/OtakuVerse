@@ -5,11 +5,107 @@
 
 {% block content %}
 <main class="main-content">
-    <section class="hero-section">
+    <header class="hero-section">
         <div class="hero-container">
             <h1 class="hero-title">Resultados para: <span class="highlight">{{ query }}</span></h1>
             <p class="hero-subtitle">Explore os animes encontrados na busca</p>
         </div>
+    </header>
+
+    <section class="filters-section" style="background: var(--dark-card); margin: 0 auto 2rem; max-width: 1200px; padding: 1.5rem; border-radius: var(--border-radius); box-shadow: var(--shadow-soft); border: 1px solid var(--dark-border);">
+        <form method="GET" class="advanced-filters">
+            <fieldset style="border: none; padding: 0; margin: 0;">
+                <legend style="font-size: 1.2rem; font-weight: 600; color: var(--text-accent); margin-bottom: 1rem; text-align: center;">Filtros de Busca</legend>
+                
+                <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+
+                    <div class="filter-group">
+                        <label for="q" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Nome do Anime:</label>
+                        <input type="text" id="q" name="q" value="{{ query }}" 
+                               placeholder="Ex: Naruto, Attack on Titan..."
+                               style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                    </div>
+
+                    <!-- Filtro de Rating -->
+                    <div class="filter-group">
+                        <label for="rating" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Classificação:</label>
+                        <select name="rating" id="rating" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                            <option value="padrao" {% if request.GET.rating == 'padrao' or not request.GET.rating %}selected{% endif %}>
+                                Padrão
+                            </option>
+                            <option value="g" {% if request.GET.rating == 'g' %}selected{% endif %}>
+                                Para Todas as Idades
+                            </option>
+                            <option value="pg" {% if request.GET.rating == 'pg' %}selected{% endif %}>
+                                Infantil
+                            </option>
+                            <option value="pg13" {% if request.GET.rating == 'pg13' %}selected{% endif %}>
+                                Adolescente
+                            </option>
+                            <option value="r17" {% if request.GET.rating == 'r17' %}selected{% endif %}>
+                                17+ Anos
+                            </option>
+                            <option value="r" {% if request.GET.rating == 'r' %}selected{% endif %}>
+                                Nudez Leve
+                            </option>
+                            <option value="adulto" {% if request.GET.rating == 'adulto' %}selected{% endif %}>
+                                Adulto +18
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="type" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Tipo:</label>
+                        <select name="type" id="type" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                            <option value="" {% if not request.GET.type %}selected{% endif %}>Todos os Tipos</option>
+                            <option value="tv" {% if request.GET.type == 'tv' %}selected{% endif %}>Série de TV</option>
+                            <option value="movie" {% if request.GET.type == 'movie' %}selected{% endif %}>Filme</option>
+                            <option value="ova" {% if request.GET.type == 'ova' %}selected{% endif %}>OVA</option>
+                            <option value="special" {% if request.GET.type == 'special' %}selected{% endif %}>Especial</option>
+                            <option value="ona" {% if request.GET.type == 'ona' %}selected{% endif %}>ONA</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro de Status -->
+                    <div class="filter-group">
+                        <label for="status" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Status:</label>
+                        <select name="status" id="status" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                            <option value="" {% if not request.GET.status %}selected{% endif %}>Qualquer Status</option>
+                            <option value="airing" {% if request.GET.status == 'airing' %}selected{% endif %}>Em Exibição</option>
+                            <option value="complete" {% if request.GET.status == 'complete' %}selected{% endif %}>Completo</option>
+                            <option value="upcoming" {% if request.GET.status == 'upcoming' %}selected{% endif %}>Em Breve</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="order_by" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Ordenar Por:</label>
+                        <select name="order_by" id="order_by" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                            <option value="" {% if not request.GET.order_by %}selected{% endif %}>Relevância</option>
+                            <option value="score" {% if request.GET.order_by == 'score' %}selected{% endif %}>Melhor Avaliado</option>
+                            <option value="popularity" {% if request.GET.order_by == 'popularity' %}selected{% endif %}>Mais Popular</option>
+                            <option value="start_date" {% if request.GET.order_by == 'start_date' %}selected{% endif %}>Mais Recente</option>
+                            <option value="title" {% if request.GET.order_by == 'title' %}selected{% endif %}>Ordem Alfabética</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="year" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Ano:</label>
+                        <input type="number" id="year" name="year" value="{{ request.GET.year }}" 
+                               placeholder="Ex: 2023" min="1960" max="2025"
+                               style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="filters-actions" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem; border: none; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem; background: var(--gradient-cute); color: white;">
+                    Aplicar Filtros
+                </button>
+                <a href="{% url 'animes:buscar_anime' %}" class="btn btn-secondary" style="padding: 0.8rem 1.5rem; border-radius: var(--border-radius); font-weight: 600; text-decoration: none; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem; background: transparent; color: var(--text-secondary); border: 1px solid var(--dark-border); display: inline-block; text-align: center;">
+                    Limpar Filtros
+                </a>
+            </div>
+        </form>
     </section>
 
     {% if resultados %}

@@ -1193,3 +1193,144 @@ anime-trailer-container {
     padding: 0.5rem 0.9rem;
     font-size: 0.8rem;
 }
+
+.filters-section {
+    background: var(--dark-card);
+    margin: 0 auto 2rem;
+    max-width: 1200px;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--dark-border);
+}
+
+.advanced-filters {
+    width: 100%;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 6px;
+    border: 1px solid var(--dark-border);
+    background: var(--dark-light);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 10px rgba(255, 182, 193, 0.3);
+}
+
+.filter-group input::placeholder {
+    color: var(--text-muted);
+}
+
+.filter-group select option {
+    background: var(--dark-card);
+    color: var(--text-primary);
+    padding: 0.5rem;
+}
+
+.filters-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filters-actions .btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.filters-actions .btn-primary {
+    background: var(--gradient-cute);
+    color: white;
+}
+
+.filters-actions .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.filters-actions .btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--dark-border);
+}
+
+.filters-actions .btn-secondary:hover {
+    background: var(--dark-light);
+    color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .filters-section {
+        margin: 0 1rem 2rem;
+        padding: 1rem;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .filters-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filters-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters-section {
+        margin: 0 0.5rem 1.5rem;
+        padding: 0.75rem;
+    }
+    
+    .filter-group label {
+        font-size: 0.85rem;
+    }
+    
+    .filter-group input,
+    .filter-group select {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+}
