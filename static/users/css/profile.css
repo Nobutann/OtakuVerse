@@ -1050,3 +1050,384 @@ body {
         font-size: 1.8rem;
     }
 }
+/* ===== Configurações de Perfil ===== */
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: calc(100vh - 80px);
+}
+
+.page.split {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ===== Card Principal ===== */
+.card {
+    background: rgba(58, 58, 58, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== Cabeçalho ===== */
+.h1 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-accent);
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+.sub {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+/* ===== Tabs de Navegação ===== */
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--dark-border);
+    padding-bottom: 0;
+}
+
+.tab {
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    transition: all 0.3s ease;
+    position: relative;
+    bottom: -1px;
+}
+
+.tab:hover {
+    color: var(--text-primary);
+    background: rgba(255, 182, 193, 0.05);
+}
+
+.tab.is-active {
+    color: var(--text-accent);
+    background: rgba(255, 182, 193, 0.1);
+    border-bottom: 2px solid var(--primary-pink);
+}
+
+/* ===== Formulário ===== */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.row {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+}
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ===== Seção do Avatar ===== */
+.grid:first-child {
+    align-items: center;
+    text-align: center;
+}
+
+#avatarPreview {
+    display: block;
+    transition: all 0.3s ease;
+}
+
+#avatarPreview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
+}
+
+/* ===== Campos do Formulário ===== */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field span {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--dark-border);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: var(--primary-pink);
+    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.field input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--dark-light);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+}
+
+.field small {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* ===== Botões ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: var(--gradient-cute);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(255, 182, 193, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--dark-border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary-pink);
+    color: var(--text-primary);
+    background: rgba(255, 182, 193, 0.05);
+}
+
+.btn-ghost {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid var(--dark-border);
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 182, 193, 0.1);
+    border-color: var(--primary-pink);
+    color: var(--text-primary);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #FF6B6B, #FF4757);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.btn-danger:hover {
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ===== Ações do Formulário ===== */
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dark-border);
+    margin-top: 1rem;
+}
+
+/* ===== Sidebar - Configurações da Conta ===== */
+aside.card {
+    padding: 1.5rem;
+}
+
+aside.card h3 {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-accent);
+    margin-bottom: 1.5rem;
+}
+
+aside.card .grid {
+    gap: 1rem;
+}
+
+aside.card .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+aside.card small {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: -0.5rem;
+}
+
+/* ===== Card de Perigo (Excluir Conta) ===== */
+aside .card {
+    margin-top: 1rem;
+    border: 1px solid #5a2a2a;
+}
+
+aside .card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ff6b6b;
+    margin-bottom: 0.5rem;
+}
+
+aside .card p.sub {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* ===== Divisores ===== */
+hr {
+    border: none;
+    border-top: 1px solid var(--dark-border);
+    margin: 1.5rem 0;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 1024px) {
+    .page.split {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .row {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 1rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    .h1 {
+        font-size: 1.8rem;
+    }
+    
+    .tabs {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .tab {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .page {
+        padding: 0.5rem;
+    }
+    
+    .card {
+        padding: 1rem;
+    }
+    
+    .h1 {
+        font-size: 1.6rem;
+    }
+    
+    .tabs {
+        justify-content: center;
+    }
+    
+    .tab {
+        flex: 1;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    
+    #avatarPreview {
+        width: 100px !important;
+        height: 100px !important;
+    }
+}

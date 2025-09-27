@@ -176,16 +176,39 @@ def profile_settings(request):
     profile = request.user.profile
 
     if request.method == 'POST':
-        is_public = request.POST.get('is_public') == 'on'
-        show_stats = request.POST.get('show_stats') == 'on'
+        # Campos básicos do perfil
+        bio = request.POST.get('bio', '')
+        is_public = request.POST.get('is_public') == 'True'
+        show_stats = request.POST.get('show_stats') == 'True'
+        avatar = request.FILES.get('avatar')
 
+        # Validações
+        if len(bio) > 500:
+            return render(request, 'users/profile_settings.html', {
+                'user': request.user,  # IMPORTANTE!
+                'profile': profile, 
+                'error': 'Bio deve ter no máximo 500 caracteres'
+            })
+
+        # Atualizar campos
+        profile.bio = bio
         profile.isPublic = is_public
         profile.showStats = show_stats
+
+        # Atualizar avatar se fornecido
+        if avatar:
+            profile.avatar = avatar
+
         profile.save()
 
-        return render(request, 'users/profile_settings.html', {'profile': profile, 'success': 'Configurações atualizadas com sucesso!'})
+        return render(request, 'users/profile_settings.html', {
+            'user': request.user,  # IMPORTANTE!
+            'profile': profile, 
+            'success': 'Configurações atualizadas com sucesso!'
+        })
     
     context = {
+        'user': request.user,  # IMPORTANTE!
         'profile': profile,
     }
 

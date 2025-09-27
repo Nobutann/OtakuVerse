@@ -4,39 +4,43 @@
 {% block title %}Configurações do perfil — OtakuVerse{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'users/account.css' %}">
+<link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
 <main class="page split">
   <section class="card">
     <h1 class="h1">Configurações</h1>
     <p class="sub">Atualize suas informações públicas e preferências.</p>
 
     <div class="tabs">
-      <a class="tab is-active" href="#">Perfil</a>
-      <a class="tab" href="{% url 'users:friends_list' %}">Amigos</a>
-      <a class="tab" href="{% url 'users:friends_requests' %}">Pedidos</a>
+      <a class="tab is-active" href="{% url 'users:profile_settings' %}">Perfil</a>
+      <a class="tab" href="{% url 'users:friends_list' user.username %}">Amigos</a>
+      <a class="tab" href="#">Pedidos</a>
     </div>
 
-    <form class="form" onsubmit="return false">
+    <!-- Formulário corrigido -->
+    <form class="form" method="post" action="{% url 'users:profile_settings' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      
       <div class="row" style="grid-template-columns:160px 1fr">
         <div class="grid">
-          <img id="avatarPreview" src="{{ user.profile.avatar_url|default_if_none:static('users/default-avatar.png') }}" alt="" style="width:140px;height:140px;border-radius:999px;border:2px solid transparent;background:linear-gradient(#1c1e24,#1c1e24) padding-box,var(--grad) border-box">
+          <img id="avatarPreview" src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'users/default-avatar.png' %}{% endif %}" alt="" style="width:140px;height:140px;border-radius:999px;border:2px solid transparent;background:linear-gradient(#1c1e24,#1c1e24) padding-box,var(--grad) border-box">
           <label class="btn btn-ghost">
-            <input id="avatarInput" type="file" accept="image/*" hidden>
+            <input id="avatarInput" name="avatar" type="file" accept="image/*" hidden>
             Trocar avatar
           </label>
         </div>
         <div class="grid">
           <label class="field">
             <span>Nome de exibição</span>
-            <input type="text" value="{{ user.profile.display_name }}" placeholder="Seu nome público">
+            <input type="text" name="display_name" value="{{ user.username }}" placeholder="Seu nome público" readonly>
           </label>
           <label class="field">
             <span>Bio</span>
-            <textarea rows="3" placeholder="Conte um pouco sobre você">{{ user.profile.bio }}</textarea>
+            <textarea name="bio" rows="3" placeholder="Conte um pouco sobre você">{{ user.profile.bio }}</textarea>
           </label>
           <label class="field">
             <span>Website</span>
-            <input type="url" value="{{ user.profile.website }}" placeholder="https://">
+            <input type="url" name="website" value="" placeholder="https://" disabled>
+            <small style="color: var(--text-secondary)">Campo não disponível no modelo atual</small>
           </label>
         </div>
       </div>
@@ -45,15 +49,23 @@
 
       <label class="field">
         <span>Visibilidade</span>
-        <select>
-          <option {% if user.profile.is_public %}selected{% endif %}>Público</option>
-          <option {% if not user.profile.is_public %}selected{% endif %}>Privado</option>
+        <select name="is_public">
+          <option value="True" {% if user.profile.isPublic %}selected{% endif %}>Público</option>
+          <option value="False" {% if not user.profile.isPublic %}selected{% endif %}>Privado</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Mostrar estatísticas</span>
+        <select name="show_stats">
+          <option value="True" {% if user.profile.showStats %}selected{% endif %}>Sim</option>
+          <option value="False" {% if not user.profile.showStats %}selected{% endif %}>Não</option>
         </select>
       </label>
 
       <div class="actions">
-        <button class="btn btn-primary" type="button">Salvar (UI)</button>
-        <a class="btn" href="{% url 'users:profile_view' user.username %}">Ver meu perfil</a>
+        <button class="btn btn-primary" type="submit">Salvar</button>
+        <a class="btn" href="{% url 'users:profile' user.username %}">Ver meu perfil</a>
       </div>
     </form>
   </section>
@@ -61,14 +73,18 @@
   <aside class="card">
     <h3 style="margin-top:0">Conta</h3>
     <div class="grid">
-      <a class="btn" href="{% url 'users:password_change' %}">Trocar senha</a>
-      <form method="post" action="{% url 'users:logout' %}">{% csrf_token %}
+      <button class="btn" disabled style="opacity: 0.5; cursor: not-allowed;">Trocar senha</button>
+      <small style="color: var(--text-secondary); margin-top: -8px;">Funcionalidade não implementada</small>
+      
+      <form method="post" action="{% url 'users:logout' %}">
+        {% csrf_token %}
         <button class="btn">Sair</button>
       </form>
+      
       <div class="card" style="background:#221314;border-color:#5a2a2a">
         <h4 style="margin:0 0 6px">Excluir conta</h4>
         <p class="sub">Ação irreversível.</p>
-        <button class="btn btn-danger" type="button">Excluir (UI)</button>
+        <button class="btn btn-danger" type="button" onclick="if(confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.')) { alert('Funcionalidade ainda não implementada'); }">Excluir conta</button>
       </div>
     </div>
   </aside>
@@ -78,8 +94,9 @@
   const input = document.getElementById('avatarInput');
   const img = document.getElementById('avatarPreview');
   if (input) {
-    input.addEventListener('change', e=>{
-      const f = e.target.files?.[0]; if(!f) return;
+    input.addEventListener('change', e => {
+      const f = e.target.files?.[0]; 
+      if (!f) return;
       img.src = URL.createObjectURL(f);
     });
   }

@@ -64,7 +64,7 @@
                                 </button>
                                 <div class="dropdown-menu" id="userDropdown">
                                     <a href="{% url 'users:profile' user.username %}" class="dropdown-item">Meu Perfil</a>
-                                    <a href="{% url 'users:edit_profile' %}" class="dropdown-item">Configurações</a>
+                                    <a href="{% url 'users:profile_settings' %}" class="dropdown-item">Configurações</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="{% url 'users:logout' %}" class="dropdown-item">Sair</a>
                                 </div>
