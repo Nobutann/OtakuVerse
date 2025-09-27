@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scrolling para links internos
     const internalLinks = document.querySelectorAll('a[href^="#"]');
     internalLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Lazy loading para imagens de amigos
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         card.classList.add('fade-in');
     });
 
-    // Confirmação para ações de amizade
     const friendshipActions = document.querySelectorAll('a[href*="remove_friend"], a[href*="reject_friend_request"]');
     friendshipActions.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -83,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Expandir/recolher bio longa
     const bioText = document.querySelector('.bio-text');
     if (bioText && bioText.textContent.length > 200) {
         const fullText = bioText.textContent;
@@ -119,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         bioText.parentNode.appendChild(expandBtn);
     }
 
-    // Destacar ação atual de amizade
     const currentUrl = window.location.pathname;
     const actionBtns = document.querySelectorAll('.btn[href]');
     actionBtns.forEach(btn => {
@@ -128,19 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Loading states para botões de amizade
     const friendBtns = document.querySelectorAll('.btn[href*="friend"]');
     friendBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const originalText = this.querySelector('span:last-child')?.textContent || this.textContent;
             const icon = this.querySelector('svg');
             
-            // Mostrar loading
             if (icon) {
                 icon.style.animation = 'spin 1s linear infinite';
             }
-            
-            // Opcional: adicionar texto de loading
+
             setTimeout(() => {
                 const textElement = this.querySelector('span:last-child') || this;
                 textElement.textContent = 'Processando...';
@@ -181,4 +173,73 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Avatar preview
+    const avatarInput = document.getElementById('id_avatar');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const currentAvatar = avatarPreview.src;
+    
+    avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarPreview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    document.querySelector('.current-avatar').addEventListener('click', function() {
+        avatarInput.click();
+    });
+    
+    const bioTextarea = document.getElementById('id_bio');
+    const bioCounter = document.getElementById('bioCounter');
+    
+    if (bioTextarea && bioCounter) {
+        bioTextarea.addEventListener('input', function() {
+            const length = this.value.length;
+            bioCounter.textContent = length;
+            
+            if (length > 450) {
+                bioCounter.style.color = '#ff453a';
+            } else if (length > 400) {
+                bioCounter.style.color = '#ff9500';
+            } else {
+                bioCounter.style.color = 'var(--text-muted)';
+            }
+        });
+    }
+    
+    // Mostrar/ocultar campo gênero personalizado
+    const genderSelect = document.getElementById('id_gender');
+    const customGenderGroup = document.getElementById('customGenderGroup');
+    
+    if (genderSelect && customGenderGroup) {
+        genderSelect.addEventListener('change', function() {
+            if (this.value === 'CUSTOM') {
+                customGenderGroup.style.display = 'block';
+                customGenderGroup.querySelector('input').focus();
+            } else {
+                customGenderGroup.style.display = 'none';
+                customGenderGroup.querySelector('input').value = '';
+            }
+        });
+    }
+    
+    // Validação de formulário
+    const form = document.querySelector('.edit-profile-form');
+    form.addEventListener('submit', function(e) {
+        const bio = bioTextarea.value;
+        
+        if (bio.length > 500) {
+            e.preventDefault();
+            alert('A biografia deve ter no máximo 500 caracteres.');
+            bioTextarea.focus();
+            return false;
+        }
+    });
 });
