@@ -21,7 +21,7 @@ load_dotenv(BASE_DIR / 'env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-TARGET_ENV = os.getenv('TARGET_ENV', 'dev')  # Default para dev se não definido
+TARGET_ENV = os.getenv('TARGET_ENV') 
 NOT_PROD = not TARGET_ENV.lower().startswith('prod')
 
 if NOT_PROD:
@@ -40,9 +40,10 @@ else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
     
+    # ALLOWED_HOSTS para Azure - incluindo IPs internos
     allowed_hosts = os.getenv('ALLOWED_HOSTS', '').split(' ')
     allowed_hosts.extend([
-        '169.254.129.2',  
+        '169.254.129.2',  # IPs internos do Azure
         '169.254.130.3',
         'localhost',
         '127.0.0.1'
@@ -61,10 +62,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('DB_USER'),
-            'PASSWORD': os.environ.get('DB_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
+            'NAME': os.environ.get('DBNAME'),  
+            'USER': os.environ.get('DBUSER'),  
+            'PASSWORD': os.environ.get('DBPASS'),
+            'HOST': os.environ.get('DBHOST'),
             'PORT': os.environ.get('DB_PORT', '5432'),
             'OPTIONS': {
                 'sslmode': 'require',
@@ -85,10 +86,11 @@ INSTALLED_APPS = [
     'main',
     'lists',
     'whitenoise.runserver_nostatic',
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # MOVIDO PARA CIMA - CRÍTICO!
+    'whitenoise.middleware.WhiteNoiseMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
