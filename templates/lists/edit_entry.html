@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar {{ entry.anime.title }} - OtakuVerse{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'users/css/profile.css' %}">
+
+<main class="profile-main">
+    <div class="container">
+        <!-- Header -->
+        <div class="edit-profile-header">
+            <div class="header-content">
+                <h1 class="page-title">Editar Entrada</h1>
+                <p class="page-subtitle">Atualize as informações de {{ entry.anime.title }}</p>
+            </div>
+            <div class="profile-actions">
+                <a href="{% url 'lists:user_list' request.user.username %}" class="btn btn-secondary">
+                    Voltar à Lista
+                </a>
+            </div>
+        </div>
+
+        <!-- Anime Info Card -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div style="display: flex; gap: 2rem; align-items: flex-start;">
+                <div style="flex-shrink: 0;">
+                    <img src="{{ entry.anime.image_url }}" 
+                         alt="{{ entry.anime.title }}" 
+                         style="width: 120px; height: 160px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-soft);">
+                </div>
+                <div style="flex: 1;">
+                    <h2 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); font-size: 1.5rem; margin-bottom: 0.5rem;">
+                        {{ entry.anime.title }}
+                    </h2>
+                    {% if entry.anime.title_english %}
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                            {{ entry.anime.title_english }}
+                        </p>
+                    {% endif %}
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted);">
+                        {% if entry.anime.episodes %}
+                            <span>{{ entry.anime.episodes }} episódios</span>
+                        {% endif %}
+                        {% if entry.anime.year %}
+                            <span>{{ entry.anime.year }}</span>
+                        {% endif %}
+                        {% if entry.anime.score %}
+                            <span>Nota: {{ entry.anime.score }}/10</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Form -->
+        <div class="edit-profile-form">
+            <form method="post" class="form">
+                {% csrf_token %}
+                
+                <div class="form-sections">
+                    <!-- Status Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">Status de Visualização</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="id_status">Status atual</label>
+                            <select name="status" id="id_status" class="form-select">
+                                {% for value, label in status_choices %}
+                                    <option value="{{ value }}" {% if entry.status == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Progress Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">Progresso</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="id_episodes_watched">
+                                    Episódios assistidos
+                                    {% if entry.anime.episodes %}
+                                        <span style="color: var(--text-muted); font-weight: 400;">
+                                            (máximo {{ entry.anime.episodes }})
+                                        </span>
+                                    {% endif %}
+                                </label>
+                                <input type="number" 
+                                       name="episodes_watched" 
+                                       id="id_episodes_watched" 
+                                       class="form-input"
+                                       value="{{ entry.episodes_watched }}"
+                                       min="0"
+                                       {% if entry.anime.episodes %}max="{{ entry.anime.episodes }}"{% endif %}>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="id_score">Sua nota (1-10)</label>
+                                <select name="score" id="id_score" class="form-select">
+                                    <option value="">Sem nota</option>
+                                    {% for i in "12345678910"|make_list %}
+                                        <option value="{{ forloop.counter }}" 
+                                                {% if entry.score == forloop.counter %}selected{% endif %}>
+                                            {{ forloop.counter }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dates Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">Datas</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="id_start_date">Data de início</label>
+                                <input type="date" 
+                                       name="start_date" 
+                                       id="id_start_date" 
+                                       class="form-input"
+                                       value="{% if entry.start_date %}{{ entry.start_date|date:'Y-m-d' }}{% endif %}">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="id_finish_date">Data de conclusão</label>
+                                <input type="date" 
+                                       name="finish_date" 
+                                       id="id_finish_date" 
+                                       class="form-input"
+                                       value="{% if entry.finish_date %}{{ entry.finish_date|date:'Y-m-d' }}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">Notas Pessoais</h3>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="id_notes">
+                                Suas anotações
+                                <span class="char-counter" id="notesCounter">{{ entry.notes|length }}/1000</span>
+                            </label>
+                            <textarea name="notes" 
+                                      id="id_notes" 
+                                      class="form-textarea"
+                                      maxlength="1000"
+                                      rows="4"
+                                      placeholder="Suas impressões, comentários ou lembretes sobre este anime...">{{ entry.notes }}</textarea>
+                            <p class="help-text">
+                                Use este espaço para anotar suas impressões, personagens favoritos, momentos marcantes, etc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{% url 'lists:user_list' request.user.username %}" class="btn btn-secondary btn-large">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-large">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="margin-top: 2rem;">
+            <h3 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); margin-bottom: 1.5rem;">
+                Ações Rápidas
+            </h3>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" 
+                   class="btn btn-secondary">
+                    Ver Detalhes do Anime
+                </a>
+                <a href="{% url 'lists:remove_entry' entry.id %}" 
+                   class="btn btn-danger"
+                   onclick="return confirm('Tem certeza que deseja remover {{ entry.anime.title }} da sua lista?')">
+                    Remover da Lista
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Counter para as notas
+    const notesTextarea = document.getElementById('id_notes');
+    const notesCounter = document.getElementById('notesCounter');
+    
+    if (notesTextarea && notesCounter) {
+        notesTextarea.addEventListener('input', function() {
+            const currentLength = this.value.length;
+            notesCounter.textContent = currentLength + '/1000';
+            
+            if (currentLength > 900) {
+                notesCounter.style.color = 'var(--accent-coral)';
+            } else {
+                notesCounter.style.color = 'var(--text-muted)';
+            }
+        });
+    }
+
+    // Auto-ajustar datas baseado no status
+    const statusSelect = document.getElementById('id_status');
+    const startDateInput = document.getElementById('id_start_date');
+    const finishDateInput = document.getElementById('id_finish_date');
+    
+    if (statusSelect) {
+        statusSelect.addEventListener('change', function() {
+            const status = this.value;
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Se mudou para "Assistindo" e não tem data de início, sugerir hoje
+            if (status === 'watching' && !startDateInput.value) {
+                startDateInput.value = today;
+            }
+            
+            // Se mudou para "Completo" e não tem data de conclusão, sugerir hoje
+            if (status === 'completed' && !finishDateInput.value) {
+                finishDateInput.value = today;
+                // Se não tem data de início, sugerir que começou hoje também
+                if (!startDateInput.value) {
+                    startDateInput.value = today;
+                }
+            }
+            
+            // Se mudou para "Planejo Assistir", limpar datas se foram preenchidas automaticamente
+            if (status === 'ptw') {
+                // Não limpar automaticamente, deixar o usuário decidir
+            }
+        });
+    }
+});
+</script>
+
+{% endblock %}

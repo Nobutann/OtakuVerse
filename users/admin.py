@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Friendship, FriendRequest
+from .models import UserProfile
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
@@ -7,30 +7,3 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter = ['isPublic', 'showStats', 'gender', 'joinedDate']
     search_fields = ['user__username', 'bio']
     readonly_fields = ['joinedDate', 'lastOnline']
-
-@admin.register(Friendship)
-class FriendshipAdmin(admin.ModelAdmin):
-    list_display = ['user1', 'user2', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['user1__username', 'user2__username']
-
-@admin.register(FriendRequest)
-class FriendRequestAdmin(admin.ModelAdmin):
-    list_display = ['from_user', 'to_user', 'status', 'timestamp']
-    list_filter = ['status', 'timestamp']
-    search_fields = ['from_user__username', 'to_user__username']
-    actions = ['accept', 'reject']
-
-    def accept(self, request, queryset):
-        for friend_request in queryset:
-            if friend_request.status == 'pending':
-                friend_request.accept()
-    
-    accept.short_description = "Aceitar pedidos"
-
-    def reject(self, request, queryset):
-        for friend_request in queryset:
-            if friend_request.status == 'pending':
-                friend_request.reject()
-
-    reject.short_description = "Rejeitar pedidos"

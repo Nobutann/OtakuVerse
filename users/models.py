@@ -64,63 +64,20 @@ class UserProfile(models.Model):
         today = date.today()
 
         return today.year - self.birthDate.year - ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
-
-class Friendship(models.Model):
-    user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships_as_user1')
-    user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='friendships_as_user2')
-    created_at = models.DateTimeField(auto_now_add=True)
     
-    class Meta:
-        unique_together = ('user1', 'user2')
-        verbose_name = 'Amizade'
-        verbose_name_plural = 'Amizades'
+    @property
+    def current_anime_count(self):
+        if hasattr(self.user, 'anime_entries'):
+            return self.user.anime_entries.count()
+        return 0
     
-    def __str__(self):
-        return f"{self.user1.username} amigou {self.user2.username}"
+    @property
+    def current_episodes_watched(self):
+        if hasattr(self.user, 'anime_entries'):
+            return sum(entry.episodes_watched or 0 for entry in self.user.anime_entries.all())
+        return 0
     
-    def save(self, *args, **kwargs):
-        if self.user1.id > self.user2.id:
-            self.user1, self.user2 = self.user2, self.user1
-        super().save(*args, **kwargs)
-
-    def get_other_user(self, user):
-        if self.user1 == user:
-            return self.user2
-        return self.user1
-    
-class FriendRequest(models.Model):
-    STATUS = [
-        ('pending', 'Pendente'),
-        ('accepted', 'Aceitado'),
-        ('rejected', 'Rejeitado'),
-    ]
-
-    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_friend_requests')
-    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_friend_requests')
-    status = models.CharField(max_length=10, choices=STATUS, default='pending')
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('from_user', 'to_user')
-
-    def accept(self):
-        self.status = 'accepted'
-        self.save()
-
-        Friendship.objects.get_or_create(
-            user1 = self.from_user,
-            user2 = self.to_user
-        )
-
-        return True
-    
-    def reject(self):
-        self.status = 'rejected'
-        self.save()
-
-        return True
-    
-    def cancel(self):
-        self.delete()
-        
-        return True
+    def update_stats(self):
+        self.animeCount = self.current_anime_count
+        self.episodesWatched = self.current_episodes_watched
+        self.save(update_fields=['animeCount', 'episodesWatched'])

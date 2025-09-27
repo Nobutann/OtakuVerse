@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'anime/css/detalhes.css' %}">
 <meta name="csrf-token" content="{{ csrf_token }}">
 {% endblock %}
 
@@ -235,5 +234,4 @@
     </div>
     {% endif %}
 </main>
-<script src="{% static 'anime/js/detalhes.js' %}"></script>
 {% endblock %}

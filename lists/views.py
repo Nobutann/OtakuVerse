@@ -185,7 +185,7 @@ def edit_entry(request, entry_id):
         entry.save()
         messages.success(request, f"{entry.anime.title} foi atualizado!")
 
-        return redirect("lists:my_list")
+        return redirect("lists:user_list", request.user.username)
     
     context = {
         'entry': entry,

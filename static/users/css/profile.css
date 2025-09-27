@@ -266,12 +266,6 @@ body {
     cursor: not-allowed;
 }
 
-.friend-request-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
 .profile-content {
     display: grid;
     grid-template-columns: 350px 1fr;
@@ -304,7 +298,7 @@ body {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
 
@@ -388,48 +382,6 @@ body {
     color: var(--primary-pink);
 }
 
-.friends-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 1.5rem;
-}
-
-.friend-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.friend-card:hover {
-    background: rgba(255, 182, 193, 0.1);
-    transform: translateY(-2px);
-}
-
-.friend-link {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-.friend-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--primary-pink);
-}
-
-.friend-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
@@ -460,141 +412,6 @@ body {
     font-size: 1.1rem;
 }
 
-@media (max-width: 1024px) {
-    .profile-content {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .profile-sidebar {
-        order: 2;
-    }
-    
-    .profile-main-content {
-        order: 1;
-    }
-}
-
-.anime-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.anime-preview-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius);
-    padding: 1rem;
-    transition: all 0.3s ease;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
-
-.anime-preview-item:hover {
-    background: rgba(255, 182, 193, 0.1);
-    transform: translateY(-2px);
-}
-
-.anime-poster-small {
-    position: relative;
-    flex-shrink: 0;
-}
-
-.anime-poster-small img {
-    width: 60px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 6px;
-}
-
-.anime-score-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: var(--primary-pink);
-    color: white;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 2px 6px;
-    border-radius: 10px;
-    min-width: 20px;
-    text-align: center;
-}
-
-.anime-info-small {
-    flex: 1;
-    min-width: 0;
-}
-
-.anime-title-small {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    line-height: 1.3;
-}
-
-.anime-status {
-    margin-bottom: 0.3rem;
-}
-
-.status-badge {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.status-watching {
-    background: rgba(152, 251, 152, 0.2);
-    color: var(--primary-mint);
-}
-
-.status-completed {
-    background: rgba(255, 182, 193, 0.2);
-    color: var(--primary-pink);
-}
-
-.status-ptw {
-    background: rgba(221, 160, 221, 0.2);
-    color: var(--primary-lavender);
-}
-
-.progress-info {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-
-.anime-preview-footer {
-    text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--dark-border);
-}
-
-.preview-count {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-style: italic;
-}
-
-@media (max-width: 768px) {
-    .anime-preview {
-        grid-template-columns: 1fr;
-    }
-    
-    .anime-preview-item {
-        padding: 0.8rem;
-        gap: 0.8rem;
-    }
-}
 .anime-card-link {
     display: block;
     text-decoration: none;
@@ -611,7 +428,13 @@ body {
     box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
 }
 
-/* ===== Anime preview item ===== */
+.anime-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
 .anime-preview-item {
     background: rgba(58, 58, 58, 0.6);
     border-radius: 8px;
@@ -625,7 +448,6 @@ body {
     border-color: rgba(255, 182, 193, 0.3);
 }
 
-/* ===== Poster pequeno ===== */
 .anime-poster-small {
     position: relative;
     aspect-ratio: 3/4;
@@ -643,7 +465,6 @@ body {
     transform: scale(1.05);
 }
 
-/* ===== Badge de score ===== */
 .anime-score-badge {
     position: absolute;
     top: 0.5rem;
@@ -657,7 +478,6 @@ body {
     backdrop-filter: blur(5px);
 }
 
-/* ===== Informações do anime ===== */
 .anime-info-small {
     padding: 1rem;
 }
@@ -689,7 +509,6 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Cores dos status badges */
 .status-watching {
     background: linear-gradient(135deg, #98fb98, #00fa9a);
     color: #2F2F2F;
@@ -711,36 +530,19 @@ body {
     font-weight: 500;
 }
 
-/* ===== Grid do anime preview ===== */
-.anime-preview {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+.anime-preview-footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dark-border);
 }
 
-/* ===== Responsividade ===== */
-@media (max-width: 768px) {
-    .anime-preview {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 0.8rem;
-    }
-    
-    .anime-info-small {
-        padding: 0.8rem;
-    }
-    
-    .anime-title-small {
-        font-size: 0.85rem;
-    }
+.preview-count {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
-@media (max-width: 480px) {
-    .anime-preview {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.7rem;
-    }
-}
+/* ===== Edit Profile Styles ===== */
 .edit-profile-header {
     background: rgba(58, 58, 58, 0.8);
     backdrop-filter: blur(20px);
@@ -1009,48 +811,7 @@ body {
     font-weight: 600;
 }
 
-/* ===== Responsividade ===== */
-@media (max-width: 768px) {
-    .edit-profile-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .avatar-section {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-    
-    .form-actions {
-        flex-direction: column-reverse;
-    }
-    
-    .btn-large {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0 1rem;
-    }
-    
-    .edit-profile-form {
-        padding: 1.5rem;
-    }
-    
-    .header-content h1.page-title {
-        font-size: 1.8rem;
-    }
-}
-/* ===== Configurações de Perfil ===== */
+/* ===== Profile Settings Styles ===== */
 .page {
     max-width: 1200px;
     margin: 0 auto;
@@ -1065,7 +826,6 @@ body {
     align-items: start;
 }
 
-/* ===== Card Principal ===== */
 .card {
     background: rgba(58, 58, 58, 0.8);
     backdrop-filter: blur(20px);
@@ -1075,7 +835,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ===== Cabeçalho ===== */
 .h1 {
     font-family: 'Comfortaa', cursive;
     font-size: 2.2rem;
@@ -1092,7 +851,6 @@ body {
     margin-top: 0;
 }
 
-/* ===== Tabs de Navegação ===== */
 .tabs {
     display: flex;
     gap: 0.5rem;
@@ -1123,7 +881,6 @@ body {
     border-bottom: 2px solid var(--primary-pink);
 }
 
-/* ===== Formulário ===== */
 .form {
     display: flex;
     flex-direction: column;
@@ -1142,7 +899,6 @@ body {
     gap: 1rem;
 }
 
-/* ===== Seção do Avatar ===== */
 .grid:first-child {
     align-items: center;
     text-align: center;
@@ -1158,7 +914,6 @@ body {
     box-shadow: 0 0 20px rgba(255, 182, 193, 0.4);
 }
 
-/* ===== Campos do Formulário ===== */
 .field {
     display: flex;
     flex-direction: column;
@@ -1215,24 +970,6 @@ body {
     font-size: 0.8rem;
     color: var(--text-muted);
     margin-top: 0.25rem;
-}
-
-/* ===== Botões ===== */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    font-family: inherit;
-    white-space: nowrap;
 }
 
 .btn:hover {
@@ -1292,7 +1029,6 @@ body {
     box-shadow: none !important;
 }
 
-/* ===== Ações do Formulário ===== */
 .actions {
     display: flex;
     gap: 1rem;
@@ -1303,7 +1039,6 @@ body {
     margin-top: 1rem;
 }
 
-/* ===== Sidebar - Configurações da Conta ===== */
 aside.card {
     padding: 1.5rem;
 }
@@ -1332,7 +1067,6 @@ aside.card small {
     margin-top: -0.5rem;
 }
 
-/* ===== Card de Perigo (Excluir Conta) ===== */
 aside .card {
     margin-top: 1rem;
     border: 1px solid #5a2a2a;
@@ -1350,7 +1084,6 @@ aside .card p.sub {
     font-size: 0.9rem;
 }
 
-/* ===== Divisores ===== */
 hr {
     border: none;
     border-top: 1px solid var(--dark-border);
@@ -1359,6 +1092,19 @@ hr {
 
 /* ===== Responsividade ===== */
 @media (max-width: 1024px) {
+    .profile-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .profile-sidebar {
+        order: 2;
+    }
+    
+    .profile-main-content {
+        order: 1;
+    }
+    
     .page.split {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -1371,6 +1117,44 @@ hr {
 }
 
 @media (max-width: 768px) {
+    .anime-preview {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .anime-info-small {
+        padding: 0.8rem;
+    }
+    
+    .anime-title-small {
+        font-size: 0.85rem;
+    }
+    
+    .edit-profile-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .avatar-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+    
     .page {
         padding: 1rem;
     }
@@ -1404,6 +1188,23 @@ hr {
 }
 
 @media (max-width: 480px) {
+    .anime-preview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .edit-profile-form {
+        padding: 1.5rem;
+    }
+    
+    .header-content h1.page-title {
+        font-size: 1.8rem;
+    }
+    
     .page {
         padding: 0.5rem;
     }

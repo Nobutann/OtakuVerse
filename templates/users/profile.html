@@ -46,32 +46,8 @@
             <div class="profile-actions">
                 {% if request.user == user %}
                     <a href="{% url 'users:edit_profile' %}" class="btn btn-primary">
-                        <!-- Ícone de edição -->
                         Editar Perfil
                     </a>
-                {% else %}
-                    {% if friendship_status == 'friends' %}
-                        <a href="{% url 'users:remove_friend' user.username %}" class="btn btn-secondary">
-                            Remover Amizade
-                        </a>
-                    {% elif friendship_status == 'request_sent' %}
-                        <button class="btn btn-disabled" disabled>
-                            Pedido Enviado
-                        </button>
-                    {% elif friendship_status == 'request_received' %}
-                        <div class="friend-request-actions">
-                            <a href="{% url 'users:accept_friend_request' pending_request.id %}" class="btn btn-primary">
-                                Aceitar
-                            </a>
-                            <a href="{% url 'users:reject_friend_request' pending_request.id %}" class="btn btn-secondary">
-                                Recusar
-                            </a>
-                        </div>
-                    {% else %}
-                        <a href="{% url 'users:send_friend_request' user.username %}" class="btn btn-primary">
-                            Adicionar Amigo
-                        </a>
-                    {% endif %}
                 {% endif %}
             </div>
         </div>
@@ -83,16 +59,12 @@
                         <h3 class="card-title">Estatísticas</h3>
                         <div class="stats-grid">
                             <div class="stat-item">
-                                <span class="stat-number">{{ user.profile.animeCount }}</span>
+                                <span class="stat-number">{{ user.profile.current_anime_count }}</span>
                                 <span class="stat-label">Animes</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number">{{ user.profile.episodesWatched }}</span>
+                                <span class="stat-number">{{ user.profile.current_episodes_watched }}</span>
                                 <span class="stat-label">Episódios</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-number">{{ friends_count }}</span>
-                                <span class="stat-label">Amigos</span>
                             </div>
                         </div>
                     </section>
@@ -116,37 +88,6 @@
             </div>
 
             <div class="profile-main-content">
-                <section class="friends-section">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            Amigos 
-                            {% if friends_count %}
-                                <span class="count">({{ friends_count }})</span>
-                            {% endif %}
-                        </h2>
-                        {% if friends_count > 6 %}
-                            <a href="{% url 'users:friends_list' user.username %}" class="view-all">Ver todos</a>
-                        {% endif %}
-                    </div>
-                    
-                    {% if friends %}
-                        <div class="friends-grid">
-                            {% for friend in friends %}
-                                <div class="friend-card">
-                                    <a href="{% url 'users:profile' friend.username %}" class="friend-link">
-                                        <img src="{{ friend.profile.avatar.url }}" alt="{{ friend.username }}" class="friend-avatar">
-                                        <span class="friend-name">{{ friend.username }}</span>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="empty-state">
-                            <p class="empty-text">{{ user.username }} ainda não tem amigos adicionados.</p>
-                        </div>
-                    {% endif %}
-                </section>
-
                 <section class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title">Lista de Animes</h2>
@@ -161,36 +102,35 @@
                     
                     {% if user.anime_entries.exists %}
                         <div class="anime-preview">
-    {% for entry in user.anime_entries.all|slice:":6" %}
-        <div class="anime-preview-item">
-            <!-- Link envolvendo todo o card do anime -->
-            <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" class="anime-card-link">
-                <div class="anime-poster-small">
-                    <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
-                    {% if entry.score %}
-                        <div class="anime-score-badge">{{ entry.score }}</div>
-                    {% endif %}
-                </div>
-                <div class="anime-info-small">
-                    <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
-                    <div class="anime-status">
-                        <span class="status-badge status-{{ entry.status }}">
-                            {% if entry.status == 'watching' %}Assistindo
-                            {% elif entry.status == 'completed' %}Completo
-                            {% elif entry.status == 'ptw' %}Planejo Assistir
-                            {% endif %}
-                        </span>
-                    </div>
-                    {% if entry.episodes_watched and entry.anime.episodes %}
-                        <div class="progress-info">
-                            {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
+                            {% for entry in user.anime_entries.all|slice:":6" %}
+                                <div class="anime-preview-item">
+                                    <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" class="anime-card-link">
+                                        <div class="anime-poster-small">
+                                            <img src="{{ entry.anime.image_url }}" alt="{{ entry.anime.title }}" loading="lazy">
+                                            {% if entry.score %}
+                                                <div class="anime-score-badge">{{ entry.score }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="anime-info-small">
+                                            <h4 class="anime-title-small">{{ entry.anime.title }}</h4>
+                                            <div class="anime-status">
+                                                <span class="status-badge status-{{ entry.status }}">
+                                                    {% if entry.status == 'watching' %}Assistindo
+                                                    {% elif entry.status == 'completed' %}Completo
+                                                    {% elif entry.status == 'ptw' %}Planejo Assistir
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            {% if entry.episodes_watched and entry.anime.episodes %}
+                                                <div class="progress-info">
+                                                    {{ entry.episodes_watched }}/{{ entry.anime.episodes }} eps
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
                         </div>
-                    {% endif %}
-                </div>
-            </a>
-        </div>
-    {% endfor %}
-</div>
                         
                         {% if user.anime_entries.count > 6 %}
                             <div class="anime-preview-footer">
