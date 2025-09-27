@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Amigos — OtakuVerse{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'users/account.css' %}">
+<main class="page">
+  <h1 class="h1">Seus amigos</h1>
+  <p class="sub">Gerencie conexões e encontre novos otakus.</p>
+
+  <div class="tabs">
+    <a class="tab is-active" href="{% url 'users:friends_list' %}">Lista</a>
+    <a class="tab" href="{% url 'users:friends_requests' %}">Pedidos</a>
+  </div>
+
+  <section class="card grid">
+    <div class="actions">
+      <a href="#" class="btn btn-ghost">Procurar pessoas</a>
+      <span class="tag">Total: {{ friends|length }}</span>
+    </div>
+
+    <div class="list">
+      {% for f in friends %}
+      <article class="item">
+        <img src="{{ f.avatar_url|default_if_none:static('users/default-avatar.png') }}" alt="">
+        <div>
+          <h4>{{ f.display_name }}</h4>
+          <p>@{{ f.username }} • {{ f.mutual_count }} amigos em comum</p>
+        </div>
+        <div class="actions">
+          <a href="{% url 'users:profile_view' f.username %}" class="btn">Ver perfil</a>
+          <form method="post" action="{% url 'users:friend_remove' f.username %}">{% csrf_token %}
+            <button class="btn btn-danger">Remover</button>
+          </form>
+        </div>
+      </article>
+      {% empty %}
+      <div class="center">
+        <p class="sub">Ainda sem amigos por aqui.</p>
+        <a class="btn btn-primary" href="#">Descobrir perfis</a>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}
