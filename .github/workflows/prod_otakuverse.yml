@@ -31,6 +31,11 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Cleaning testing files
+        run: |
+            zip release.zip ./* -r
+            mv release.zip
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -68,4 +73,5 @@ jobs:
         with:
           app-name: 'OtakuVerse'
           slot-name: 'Production'
+
           
