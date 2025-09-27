@@ -26,7 +26,6 @@
                                style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
                     </div>
 
-                    <!-- Filtro de Rating -->
                     <div class="filter-group">
                         <label for="rating" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Classificação:</label>
                         <select name="rating" id="rating" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
@@ -46,10 +45,7 @@
                                 17+ Anos
                             </option>
                             <option value="r" {% if request.GET.rating == 'r' %}selected{% endif %}>
-                                Nudez Leve
-                            </option>
-                            <option value="adulto" {% if request.GET.rating == 'adulto' %}selected{% endif %}>
-                                Adulto +18
+                                Ecchi
                             </option>
                         </select>
                     </div>
@@ -65,8 +61,6 @@
                             <option value="ona" {% if request.GET.type == 'ona' %}selected{% endif %}>ONA</option>
                         </select>
                     </div>
-
-                    <!-- Filtro de Status -->
                     <div class="filter-group">
                         <label for="status" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary); font-size: 0.9rem;">Status:</label>
                         <select name="status" id="status" style="width: 100%; padding: 0.7rem; border-radius: 6px; border: 1px solid var(--dark-border); background: var(--dark-light); color: var(--text-primary); font-size: 0.9rem; transition: all 0.3s ease;">
