@@ -5,7 +5,6 @@ from django.http import JsonResponse
 from django.contrib import messages
 from .models import Anime, AnimeList
 import requests
-from reviews.models import Review
 from django.db.models import Avg
 
 def get_anime(mal_id):
@@ -65,12 +64,24 @@ def detalhes_anime(request, anime_id):
         user_entry = AnimeList.objects.filter(user=request.user, anime=anime).first()
         contexto['user_entry'] = user_entry
 
-    reviews = Review.objects.filter(anime=anime).order_by('-created_at')
-    contexto['reviews'] = reviews
-    contexto['average_score'] = reviews.aggregate(Avg('score'))['score__avg']
+    # USAR ANIMELIST AO INVÉS DE REVIEW
+    # Buscar todas as entradas que têm score E comment (ou só score se quiser)
+    anime_entries_with_reviews = AnimeList.objects.filter(
+        anime=anime, 
+        score__isnull=False
+    ).exclude(
+        notes=''  # Se quiser apenas entradas com comentários
+    ).select_related('user').order_by('-updated_at')
+    
+    contexto['reviews'] = anime_entries_with_reviews
+    
+    # Calcular média das notas do AnimeList
+    scores = AnimeList.objects.filter(anime=anime, score__isnull=False).values_list('score', flat=True)
+    if scores:
+        contexto['average_score'] = sum(scores) / len(scores)
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
-    
+
 def add_to_list(request, mal_id):
     if request.method == 'POST':
         anime = get_anime(mal_id)

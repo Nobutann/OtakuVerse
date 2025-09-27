@@ -172,61 +172,60 @@
     <hr class="divider">
 
     <section class="reviews-section" style="max-width: 1200px; margin: 2rem auto; padding: 0 2rem;">
-        <h2 class="section-title-sm">Avaliações</h2>
-
-        {% if reviews %}
-            {% for review in reviews %}
-                <div class="review-card">
-                    <div class="review-header">
-                        <strong class="review-user">{{ review.user.username }}</strong>
-                        <span class="review-score">Nota: {{ review.score }}</span>
-                    </div>
-                    {% if review.comment %}
-                        <p class="review-comment">{{ review.comment }}</p>
-                    {% endif %}
+    {% if user.is_authenticated %}
+        {% if user_entry and user_entry.score %}
+            <div class="review-form-container" style="background: rgba(152, 251, 152, 0.1); border: 1px solid var(--primary-mint);">
+                <h3 class="form-title">Sua Avaliação</h3>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <span style="font-size: 1.2rem; font-weight: bold; color: var(--primary-mint);">
+                        Sua nota: {{ user_entry.score }}/10
+                    </span>
+                    <span class="status-badge status-{{ user_entry.status }}">
+                        {{ user_entry.get_status_display }}
+                    </span>
                 </div>
-            {% empty %}
-                <p class="no-reviews">Nenhuma avaliação ainda.</p>
-            {% endfor %}
-        {% else %}
-            <p class="no-reviews">Nenhuma avaliação ainda.</p>
-        {% endif %}
-
-        {% if user.is_authenticated %}
-            <div class="review-form-container">
-                <h3 class="form-title">Deixe sua avaliação</h3>
-                {% with mal_id=anime.mal_id %}
-                    <form method="post" action="{% url 'avaliar_anime' mal_id %}" class="review-form">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="score"><strong>Nota:</strong></label>
-                            <select name="score" id="score" required class="form-select">
-                                <option value="10">10 - Obra-Prima</option>
-                                <option value="9">9 - Ótimo</option>
-                                <option value="8">8 - Muito Bom</option>
-                                <option value="7">7 - Bom</option>
-                                <option value="6">6 - Aceitável</option>
-                                <option value="5">5 - Mediano</option>
-                                <option value="4">4 - Ruim</option>
-                                <option value="3">3 - Péssimo</option>
-                                <option value="2">2 - Horrível</option>
-                                <option value="1">1 - Abominável</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="comment"><strong>Comentário:</strong></label>
-                            <textarea name="comment" id="comment" rows="4" class="form-textarea"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                        Enviar Avaliação
-                        </button>
-                    </form>
-                {% endwith %}
+                {% if user_entry.notes %}
+                    <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>Suas anotações:</strong>
+                        <p style="margin-top: 0.5rem;">{{ user_entry.notes|linebreaks }}</p>
+                    </div>
+                {% endif %}
+                <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-secondary">
+                    Editar Avaliação
+                </a>
             </div>
         {% else %}
-            <p class="login-prompt">Você precisa <a href="{% url 'users:login' %}">entrar</a> para avaliar este anime.</p>
+            <div class="review-form-container">
+                <h3 class="form-title">Deixe sua avaliação</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Para avaliar este anime, você precisa adicioná-lo à sua lista primeiro.
+                </p>
+                {% if user_entry %}
+                    <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-primary">
+                        Adicionar Nota e Comentário
+                    </a>
+                {% else %}
+                    <form method="post" action="{% url 'lists:add_to_list' anime.mal_id %}" style="display: flex; gap: 1rem; align-items: end;">
+                        {% csrf_token %}
+                        <div style="flex: 1;">
+                            <label for="status">Status:</label>
+                            <select name="status" id="status" class="form-select">
+                                <option value="ptw">Planejo Assistir</option>
+                                <option value="watching">Assistindo</option>
+                                <option value="completed">Completo</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Adicionar à Lista
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
         {% endif %}
-    </section>
+    {% else %}
+        <p class="login-prompt">Você precisa <a href="{% url 'users:login' %}">entrar</a> para avaliar este anime.</p>
+    {% endif %}
+</section>
 
     {% else %}
     <div class="error-banner" role="alert">

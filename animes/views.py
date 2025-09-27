@@ -1,6 +1,5 @@
 from django.shortcuts import render
 import requests
-from reviews.models import Review, SCORE_CHOICES
 from django.db.models import Avg
 from lists.models import Anime, AnimeList
 
@@ -34,7 +33,6 @@ def detalhes_anime(request, anime_id):
         'erro': None,
         'reviews': [],
         'average_score': None,
-        'score_choices': SCORE_CHOICES,
         'user_review': None,
         'user_entry': None,
     }
@@ -63,14 +61,6 @@ def detalhes_anime(request, anime_id):
                 contexto['user_entry'] = None
 
     except requests.exceptions.RequestException as e:
-        contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
-
-    reviews_qs = Review.objects.filter(anime_id=anime_id).order_by('-created_at')
-    contexto['reviews'] = reviews_qs
-    contexto['average_score'] = reviews_qs.aggregate(Avg('score'))['score__avg']
-
-    user = getattr(request, "user", None)
-    if user and user.is_authenticated:
-        contexto['user_review'] = reviews_qs.filter(user=user).first()
+        contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"   
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)

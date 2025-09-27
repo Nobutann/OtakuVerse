@@ -8,7 +8,6 @@
 
 <main class="profile-main">
     <div class="container">
-
         <header class="edit-profile-header">
             <div class="header-content">
                 <h1 class="page-title">Editar Entrada</h1>
@@ -22,13 +21,13 @@
         </header>
 
         <article class="card" style="margin-bottom: 2rem;">
-            <section style="display: flex; gap: 2rem; align-items: flex-start;">
+            <div style="display: flex; gap: 2rem; align-items: flex-start;">
                 <figure style="flex-shrink: 0;">
                     <img src="{{ entry.anime.image_url }}" 
                          alt="{{ entry.anime.title }}" 
                          style="width: 120px; height: 160px; object-fit: cover; border-radius: 8px; box-shadow: var(--shadow-soft);">
                 </figure>
-                <div style="flex: 1;">
+                <section style="flex: 1;">
                     <h2 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); font-size: 1.5rem; margin-bottom: 0.5rem;">
                         {{ entry.anime.title }}
                     </h2>
@@ -37,38 +36,28 @@
                             {{ entry.anime.title_english }}
                         </p>
                     {% endif %}
-                    <dl style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted);">
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted);">
                         {% if entry.anime.episodes %}
-                            <div>
-                                <dt>Episódios</dt>
-                                <dd>{{ entry.anime.episodes }}</dd>
-                            </div>
+                            <span>{{ entry.anime.episodes }} episódios</span>
                         {% endif %}
                         {% if entry.anime.year %}
-                            <div>
-                                <dt>Ano</dt>
-                                <dd>{{ entry.anime.year }}</dd>
-                            </div>
+                            <span>{{ entry.anime.year }}</span>
                         {% endif %}
                         {% if entry.anime.score %}
-                            <div>
-                                <dt>Nota</dt>
-                                <dd>{{ entry.anime.score }}/10</dd>
-                            </div>
+                            <span>Nota: {{ entry.anime.score }}/10</span>
                         {% endif %}
-                    </dl>
-                </div>
-            </section>
+                    </div>
+                </section>
+            </div>
         </article>
 
         <section class="edit-profile-form">
             <form method="post" class="form">
                 {% csrf_token %}
-
-                <section class="form-sections">
-
-                    <fieldset class="form-section">
-                        <legend class="section-title">Status de Visualização</legend>
+                
+                <div class="form-sections">
+                    <section class="form-section">
+                        <h3 class="section-title">Status de Visualização</h3>
                         <div class="form-group">
                             <label class="form-label" for="id_status">Status atual</label>
                             <select name="status" id="id_status" class="form-select">
@@ -79,10 +68,10 @@
                                 {% endfor %}
                             </select>
                         </div>
-                    </fieldset>
+                    </section>
 
-                    <fieldset class="form-section">
-                        <legend class="section-title">Progresso</legend>
+                    <section class="form-section">
+                        <h3 class="section-title">Progresso</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label" for="id_episodes_watched">
@@ -106,7 +95,7 @@
                                 <label class="form-label" for="id_score">Sua nota (1-10)</label>
                                 <select name="score" id="id_score" class="form-select">
                                     <option value="">Sem nota</option>
-                                    {% for i in "12345678910"|make_list %}
+                                    {% for i in "1234567890"|make_list %}
                                         <option value="{{ forloop.counter }}" 
                                                 {% if entry.score == forloop.counter %}selected{% endif %}>
                                             {{ forloop.counter }}
@@ -115,10 +104,10 @@
                                 </select>
                             </div>
                         </div>
-                    </fieldset>
+                    </section>
 
-                    <fieldset class="form-section">
-                        <legend class="section-title">Datas</legend>
+                    <section class="form-section">
+                        <h3 class="section-title">Datas</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label" for="id_start_date">Data de início</label>
@@ -138,10 +127,10 @@
                                        value="{% if entry.finish_date %}{{ entry.finish_date|date:'Y-m-d' }}{% endif %}">
                             </div>
                         </div>
-                    </fieldset>
+                    </section>
 
-                    <fieldset class="form-section">
-                        <legend class="section-title">Notas Pessoais</legend>
+                    <section class="form-section">
+                        <h3 class="section-title">Notas Pessoais</h3>
                         <div class="form-group">
                             <label class="form-label" for="id_notes">
                                 Suas anotações
@@ -157,18 +146,17 @@
                                 Use este espaço para anotar suas impressões, personagens favoritos, momentos marcantes, etc.
                             </p>
                         </div>
-                    </fieldset>
+                    </section>
+                </div>
 
-                </section>
-
-                <footer class="form-actions">
+                <div class="form-actions">
                     <a href="{% url 'lists:user_list' request.user.username %}" class="btn btn-secondary btn-large">
                         Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary btn-large">
                         Salvar Alterações
                     </button>
-                </footer>
+                </div>
             </form>
         </section>
 
@@ -176,7 +164,7 @@
             <h3 style="font-family: 'Comfortaa', cursive; color: var(--text-accent); margin-bottom: 1.5rem;">
                 Ações Rápidas
             </h3>
-            <nav style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                 <a href="{% url 'animes:detalhes_anime' entry.anime.mal_id %}" 
                    class="btn btn-secondary">
                     Ver Detalhes do Anime
@@ -186,10 +174,9 @@
                    onclick="return confirm('Tem certeza que deseja remover {{ entry.anime.title }} da sua lista?')">
                     Remover da Lista
                 </a>
-            </nav>
+            </div>
         </aside>
     </div>
 </main>
-
 <script src="{% static 'lists/js/edit_entry' %}"></script>
 {% endblock %}
