@@ -47,25 +47,34 @@ def homepage(request):
 def search_sugestions(request):
     query = request.GET.get('q', '').strip()
     suggestions = []
-
     if query and len(query) >= 2:
         try:
             api_url = "https://api.jikan.moe/v4/anime"
-            params = {'q': query, 'limit': 5}
-
+            params = {
+                'q': query, 
+                'genres_exclude': '12'
+            }
             response = requests.get(api_url, params=params, timeout=5)
             response.raise_for_status()
             data = response.json()
-
-            for anime in data.get('data', [])[:5]:
-                suggestions.append({
-                    'id': anime.get('mal_id'),
-                    'title': anime.get('title'),
-                    'image': anime.get('images', {}).get('jpg', {}).get('small_image_url'),
-                    'year': anime.get('year'),
-                    'type': anime.get('type'),
-                })
-
+            
+            for anime in data.get('data', []):
+                if anime.get('rating') != 'Rx - Hentai':
+                    generos = anime.get('genres', [])
+                    tem_hentai = any(g.get('name', '').lower() == 'hentai' for g in generos)
+                    
+                    if not tem_hentai:
+                        suggestions.append({
+                            'id': anime.get('mal_id'),
+                            'title': anime.get('title'),
+                            'image': anime.get('images', {}).get('jpg', {}).get('small_image_url'),
+                            'year': anime.get('year'),
+                            'type': anime.get('type'),
+                        })
+                        
+                        if len(suggestions) >= 5:
+                            break
+                    
         except requests.exceptions.RequestException as e:
             print(f"Erro nas sugestões: {e}")
     
