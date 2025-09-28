@@ -54,9 +54,9 @@ Nosso board:
 
 <details>
 <summary>🚀 SEGUNDA ENTREGA</summary>
+
 Nessa entrega começamos a implementação real do projeto, escolhendo 3 histórias de usuário para darmos deploy.
 
----
 
 ## Histórias implementadas:
 
@@ -143,5 +143,19 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
     Editar ou remover da lista:
 
     ![RemoverouEditar](img/removereditar.png)
+
+---
+
+## Jira
+
+Atualizamos o Jira com a nova sprint para gerenciar o andamento de nosso projeto e organizar nossas atividades.
+
+Backlog:
+
+![backlogjira](img/backlogjira2.png)
+
+Board:
+
+![boardjira](img/boardjira2.png)
 
 </details>
