@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // validação do formulário
     form.addEventListener('submit', function(e) {
         const username = usernameInput.value.trim();
         const password = passwordInput.value;
@@ -80,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.style.animation = 'pulse 1s infinite';
     }
 
-    // animações extras (igual no signup.js)
     const style = document.createElement('style');
     style.textContent = `
         @keyframes shake {

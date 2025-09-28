@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(BASE_DIR / 'env')
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -40,10 +40,9 @@ else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     DEBUG = os.getenv('DEBUG', '0').lower() in ['true', 't', '1']
     
-    # ALLOWED_HOSTS para Azure - incluindo IPs internos
     allowed_hosts = os.getenv('ALLOWED_HOSTS', '').split(' ')
     allowed_hosts.extend([
-        '169.254.129.2',  # IPs internos do Azure
+        '169.254.129.2',
         '169.254.130.3',
         'localhost',
         '127.0.0.1'

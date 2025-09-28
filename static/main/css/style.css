@@ -1104,7 +1104,6 @@ anime-trailer-container {
     border: 1px solid rgba(255, 182, 193, 0.2);
 }
 
-/* Botões do contador - COM HOVER */
 .btn-episode {
     width: 36px;
     height: 36px;
@@ -1145,7 +1144,6 @@ anime-trailer-container {
 .episode-separator { color: var(--text-muted); }
 .total-episodes { color: var(--text-secondary); }
 
-/* Ações - COM HOVER NOS BOTÕES */
 .entry-actions {
     display: flex;
     gap: 0.6rem;

@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         imageObserver.observe(img);
     });
 
-    // Animações suaves para cards
     const cards = document.querySelectorAll('.friend-card, .stat-item');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Tooltip para estatísticas
     const statItems = document.querySelectorAll('.stat-item');
     statItems.forEach(item => {
         const label = item.querySelector('.stat-label').textContent.toLowerCase();
@@ -140,7 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Adicionar animação de spin
     const style = document.createElement('style');
     style.textContent = `
         @keyframes spin {
@@ -176,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Avatar preview
     const avatarInput = document.getElementById('id_avatar');
     const avatarPreview = document.getElementById('avatarPreview');
     const currentAvatar = avatarPreview.src;
@@ -214,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Mostrar/ocultar campo gênero personalizado
     const genderSelect = document.getElementById('id_gender');
     const customGenderGroup = document.getElementById('customGenderGroup');
     
@@ -230,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Validação de formulário
     const form = document.querySelector('.edit-profile-form');
     form.addEventListener('submit', function(e) {
         const bio = bioTextarea.value;
