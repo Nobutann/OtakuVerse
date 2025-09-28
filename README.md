@@ -162,4 +162,9 @@ Board:
 
 Neste screencast apresentamos o OtakuVerse, destacando as funcionalidades de pesquisa de animes, sistema de avaliação e criação de listas personalizadas para organizar o que já foi assistido. Você pode acessa-lo [clicando aqui](https://link-do-seu-screencast.com)
 
+
+## Bugtracker
+
+Utilizamos o bug tracker do GitHub para registrar erros encontrados no projeto, acompanhar correções e documentar melhorias realizadas no OtakuVerse.
+![bugtracker](img/issues-bugtracker.png)
 </details>
