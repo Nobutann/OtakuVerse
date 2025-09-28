@@ -160,7 +160,7 @@ Board:
 
 ## Screencast
 
-Neste screencast apresentamos o OtakuVerse, destacando as funcionalidades de pesquisa de animes, sistema de avaliação e criação de listas personalizadas para organizar o que já foi assistido. Você pode acessa-lo [clicando aqui](https://link-do-seu-screencast.com)
+Neste screencast apresentamos o OtakuVerse, destacando as funcionalidades de pesquisa de animes, sistema de avaliação e criação de listas personalizadas para organizar o que já foi assistido. Você pode acessa-lo [clicando aqui](https://link-do-seu-screencast.com).
 
 
 ## Bugtracker
@@ -170,17 +170,17 @@ Utilizamos o bug tracker do GitHub para registrar erros encontrados no projeto, 
 
 Redirecionamento incorreto nas listas:
 
-Anteriormente, ao adicionar ou acessar um anime, o sistema encaminhava o usuário para a página errada, exibindo sempre o primeiro registro em vez do anime selecionado. Após a correção, o fluxo foi ajustado: agora o redirecionamento leva corretamente para a página do anime escolhido, preservando a navegação esperada.
+- Anteriormente, ao adicionar ou acessar um anime, o sistema encaminhava o usuário para a página errada, exibindo sempre o primeiro registro em vez do anime selecionado. Após a correção, o fluxo foi ajustado: agora o redirecionamento leva corretamente para a página do anime escolhido, preservando a navegação esperada.
 
 Duplicidade de animes no banco:
 
-Havia um problema em que o código não validava se o anime já estava cadastrado, o que resultava em entradas duplicadas no banco de dados. Essa lógica foi revisada, e atualmente o sistema verifica a existência do anime antes de criar um novo registro, garantindo a integridade das informações.
+- Havia um problema em que o código não validava se o anime já estava cadastrado, o que resultava em entradas duplicadas no banco de dados. Essa lógica foi revisada, e atualmente o sistema verifica a existência do anime antes de criar um novo registro, garantindo a integridade das informações.
 
 Erro após cadastro de usuário:
 
-Durante os testes, foi identificado que, ao concluir o processo de cadastro, o sistema até registrava corretamente os dados no banco, mas redirecionava o usuário para uma página de erro. Esse comportamento gerava confusão, pois dava a impressão de que o cadastro não havia sido realizado.
+- Durante os testes, foi identificado que, ao concluir o processo de cadastro, o sistema até registrava corretamente os dados no banco, mas redirecionava o usuário para uma página de erro. Esse comportamento gerava confusão, pois dava a impressão de que o cadastro não havia sido realizado.
 
 
 ## Relatório Pair programing
-- Durante o desenvolvimento do OtakuVerse, adotamos a prática de Pair Programming como estratégia para aumentar a colaboração e a qualidade do código. Trabalhando em 		duplas, um integrante assumia o papel de driver, escrevendo o código, enquanto o outro atuava como navigator, revisando e sugerindo melhorias em tempo real. Essa 			dinâmica favoreceu a troca de conhecimento, a rápida detecção de falhas e a integração entre os membros da equipe. Para acessa-lo, [Abra o pdf](docs/pair_programming.pdf)
+- Durante o desenvolvimento do OtakuVerse, adotamos a prática de Pair Programming como estratégia para aumentar a colaboração e a qualidade do código. Trabalhando em 		duplas, um integrante assumia o papel de driver, escrevendo o código, enquanto o outro atuava como navigator, revisando e sugerindo melhorias em tempo real. Essa 			dinâmica favoreceu a troca de conhecimento, a rápida detecção de falhas e a integração entre os membros da equipe. Para acessa-lo, [Abra o pdf](docs/pair_programming.pdf).
 </details>
