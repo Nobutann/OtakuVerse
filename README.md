@@ -182,5 +182,5 @@ Durante os testes, foi identificado que, ao concluir o processo de cadastro, o s
 
 
 ## Relatório Pair programing
-- Durante o desenvolvimento do OtakuVerse, adotamos a prática de Pair Programming como estratégia para aumentar a colaboração e a qualidade do código. Trabalhando em 		duplas, um integrante assumia o papel de driver, escrevendo o código, enquanto o outro atuava como navigator, revisando e sugerindo melhorias em tempo real. Essa 			dinâmica favoreceu a troca de conhecimento, a rápida detecção de falhas e a integração entre os membros da equipe. Para acessa-lo, [Abra o pdf]()
+- Durante o desenvolvimento do OtakuVerse, adotamos a prática de Pair Programming como estratégia para aumentar a colaboração e a qualidade do código. Trabalhando em 		duplas, um integrante assumia o papel de driver, escrevendo o código, enquanto o outro atuava como navigator, revisando e sugerindo melhorias em tempo real. Essa 			dinâmica favoreceu a troca de conhecimento, a rápida detecção de falhas e a integração entre os membros da equipe. Para acessa-lo, [Abra o pdf](docs/documento.pdf)
 </details>
