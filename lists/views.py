@@ -64,18 +64,15 @@ def detalhes_anime(request, anime_id):
         user_entry = AnimeList.objects.filter(user=request.user, anime=anime).first()
         contexto['user_entry'] = user_entry
 
-    # USAR ANIMELIST AO INVÉS DE REVIEW
-    # Buscar todas as entradas que têm score E comment (ou só score se quiser)
     anime_entries_with_reviews = AnimeList.objects.filter(
         anime=anime, 
         score__isnull=False
     ).exclude(
-        notes=''  # Se quiser apenas entradas com comentários
+        notes='' 
     ).select_related('user').order_by('-updated_at')
     
     contexto['reviews'] = anime_entries_with_reviews
     
-    # Calcular média das notas do AnimeList
     scores = AnimeList.objects.filter(anime=anime, score__isnull=False).values_list('score', flat=True)
     if scores:
         contexto['average_score'] = sum(scores) / len(scores)
