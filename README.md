@@ -159,3 +159,7 @@ Board:
 ![boardjira](img/boardjira2.png)
 
 </details>
+
+## Screencast
+
+Neste screencast apresentamos o OtakuVerse, destacando as funcionalidades de pesquisa de animes, sistema de avaliação e criação de listas personalizadas para organizar o que já foi assistido. Você pode acessa-lo [clicando aqui](https://link-do-seu-screencast.com)
