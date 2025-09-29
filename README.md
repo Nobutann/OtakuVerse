@@ -78,15 +78,15 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 - Então devo ver uma lista de animes cujo título contenha a parte do título que pesquisei.
 
 
-    #### Pesquisa com resultados:
+    ### Pesquisa com resultados:
 
     ![Resultados](img/pesquisacomresultados.png)
 
-    #### Pesquisa sem resultados:
+    ### Pesquisa sem resultados:
 
     ![SemResultados](img/pesquisasemresultados.png)
 
-    #### Pesquisa parcial:
+    ### Pesquisa parcial:
 
     ![Parcial](img/partetitulo.png)
 
@@ -107,15 +107,15 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 - Quando tento selecionar uma nota;
 - Então o sistema deve mostrar uma mensagem de que não se pode avaliar antes de assistir o anime;
 
-    #### Avaliar sem ter assistido:
+    ### Avaliar sem ter assistido:
 
     ![naoassistiu](img/naoassistiu.png)
 
-    #### Mostrar nota:
+    ### Mostrar nota:
 
     ![mostrarnota](img/avaliado.png)
 
-    #### Trocar nota:
+    ### Trocar nota:
 
     ![trocarnota](img/editou.png)
 
@@ -136,15 +136,15 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 - Quando eu acesso a área “Minha Lista”;
 - Então devo ver as listas “Quero Assistir”, “Assistindo” e “Concluídos”
 
-    #### Adicionar à lista:
+    ### Adicionar à lista:
 
     ![adicionar](img/adicionarlista.png)
 
-    #### Página de listas:
+    ### Página de listas:
 
     ![Listas](img/listaanimes.png)
 
-    #### Editar ou remover da lista:
+    ### Editar ou remover da lista:
 
     ![RemoverouEditar](img/removereditar.png)
 
