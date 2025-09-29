@@ -62,10 +62,12 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
 ### 1. Eu como usuário gostaria de pesquisar animes.
 
-	<h4>Cenário 1: Usuário pesquisa um anime existente</h4>
-	- Dado que estou logado no sistema e estou na página de pesquisa;
-	- Quando eu digito o nome de um anime existente e clico em pesquisar;
-	- Então devo ver uma lista de títulos com o nome que pesquisei.
+<div style="margin-left: 20px">
+
+#### Usuário pesquisa um anime existente
+- Dado que estou logado no sistema e estou na página de pesquisa;
+- Quando eu digito o nome de um anime existente e clico em pesquisar;
+- Então devo ver uma lista de títulos com o nome que pesquisei.
 
 #### Cenário 2: Pesquisa sem resultados
 - Dado que estou logado no sistema e estou na página de pesquisa;
@@ -76,6 +78,8 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 - Dado que estou logado no sistema e estou na página de pesquisa;
 - Quando eu digito uma parte do título de um anime e clico em pesquisar;
 - Então devo ver uma lista de animes cujo título contenha a parte do título que pesquisei.
+
+</div>
 
 
     Pesquisa com resultados:
