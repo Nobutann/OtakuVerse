@@ -61,7 +61,7 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 ## Histórias implementadas:
 
 1. Eu como usuário gostaria de pesquisar animes.
-   		<span style="font-size: 18px; font-weight: bold;">Cenário 1: Usuário pesquisa um anime existente</span>
+   ### Cenário 1: Usuário pesquisa um anime existente;
         - Dado que estou logado no sistema e estou na página de pesquisa;
         - Quando eu digito o nome de um anime existente e clico em pesquisar;
         - Então devo ver uma lista de títulos com o nome que pesquisei.
