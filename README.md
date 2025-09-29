@@ -60,19 +60,23 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
 ## Histórias implementadas:
 
-###1. Eu como usuário gostaria de pesquisar animes.
-	#### Cenário 1: Usuário pesquisa um anime existente;
-    - Dado que estou logado no sistema e estou na página de pesquisa;
-	- Quando eu digito o nome de um anime existente e clico em pesquisar;
-    - Então devo ver uma lista de títulos com o nome que pesquisei.
-	#### Cenário 2: Pesquisa sem resultados;
-    - Dado que estou logado no sistema e estou na página de pesquisa;
-    - Quando eu digito um nome de um anime inexistente e clico em pesquisar;
-	- Então devo ver uma mensagem indicando que nenhum resultado foi encontrado.
- 	#### Cenário 3: Usuário pesquisa um anime com parte do título;
-	- Dado que estou logado no sistema e estou na página de pesquisa;
-	- Quando eu digito uma parte do título de um anime e clico em pesquisar;    
-	- Então devo ver uma lista de animes cujo título contenha a parte do título que pesquisei.
+### 1. Eu como usuário gostaria de pesquisar animes.
+
+#### Cenário 1: Usuário pesquisa um anime existente
+- Dado que estou logado no sistema e estou na página de pesquisa;
+- Quando eu digito o nome de um anime existente e clico em pesquisar;
+- Então devo ver uma lista de títulos com o nome que pesquisei.
+
+#### Cenário 2: Pesquisa sem resultados
+- Dado que estou logado no sistema e estou na página de pesquisa;
+- Quando eu digito um nome de um anime inexistente e clico em pesquisar;
+- Então devo ver uma mensagem indicando que nenhum resultado foi encontrado.
+
+#### Cenário 3: Usuário pesquisa um anime com parte do título
+- Dado que estou logado no sistema e estou na página de pesquisa;
+- Quando eu digito uma parte do título de um anime e clico em pesquisar;
+- Então devo ver uma lista de animes cujo título contenha a parte do título que pesquisei.
+
 
     Pesquisa com resultados:
 
