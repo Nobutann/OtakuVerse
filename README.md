@@ -134,7 +134,7 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 #### - Cenário 3: Usuário visualiza suas listas;
 - Dado que estou logado no sistema;
 - Quando eu acesso a área “Minha Lista”;
-- Então devo ver as listas “Quero Assistir”, “Assistindo” e “Concluídos”
+- Então devo ver as listas “Quero Assistir”, “Assistindo” e “Concluídos”;
 
     ### Adicionar à lista:
 
