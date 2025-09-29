@@ -154,11 +154,11 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
 Atualizamos o Jira com a nova sprint para gerenciar o andamento de nosso projeto e organizar nossas atividades.
 
-Backlog:
+### Backlog:
 
 ![backlogjira](img/backlogjira2.png)
 
-Board:
+### Board:
 
 ![boardjira](img/boardjira2.png)
 
