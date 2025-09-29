@@ -62,9 +62,7 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
 ### 1. Eu como usuário gostaria de pesquisar animes.
 
-<div style="margin-left: 20px">
-
-#### Usuário pesquisa um anime existente
+#### Cenário 1: Usuário pesquisa um anime existente
 - Dado que estou logado no sistema e estou na página de pesquisa;
 - Quando eu digito o nome de um anime existente e clico em pesquisar;
 - Então devo ver uma lista de títulos com o nome que pesquisei.
@@ -79,8 +77,6 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 - Quando eu digito uma parte do título de um anime e clico em pesquisar;
 - Então devo ver uma lista de animes cujo título contenha a parte do título que pesquisei.
 
-</div>
-
 
     Pesquisa com resultados:
 
@@ -94,21 +90,22 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
     ![Parcial](img/partetitulo.png)
 
-2. Eu, como usuário, quero poder avaliar os animes que assisti.
-    - Cenário 1: Usuário avalia um anime com nota;
-        - Dado que estou logado no sistema e estou na página de detalhes de um anime que eu assisti;
-        - Quando eu seleciono uma nota de 1 a 10;
-        - Então a minha avaliação deve ser registrada e ser exibida em meu perfil;
+### 2. Eu, como usuário, quero poder avaliar os animes que assisti.
 
-    - Cenário 2: Usuário altera sua avaliação;
-        - Dado que já avaliei um anime;
-        - Quando eu seleciono uma nova nota;
-        - Então a nova avaliação deve substituir a antiga e ser exibida corretamente no meu perfil;
+#### - Cenário 1: Usuário avalia um anime com nota;
+- Dado que estou logado no sistema e estou na página de detalhes de um anime que eu assisti;
+- Quando eu seleciono uma nota de 1 a 10;
+- Então a minha avaliação deve ser registrada e ser exibida em meu perfil;
 
-    - Cenário 3: O usuário tenta avaliar um anime que não assistiu;
-        - Dado que estou logado no sistema e estou na página de detalhes de um anime que eu não comecei;
-        - Quando tento selecionar uma nota;
-        - Então o sistema deve mostrar uma mensagem de que não se pode avaliar antes de assistir o anime;
+#### - Cenário 2: Usuário altera sua avaliação;
+- Dado que já avaliei um anime;
+- Quando eu seleciono uma nova nota;
+- Então a nova avaliação deve substituir a antiga e ser exibida corretamente no meu perfil;
+
+#### - Cenário 3: O usuário tenta avaliar um anime que não assistiu;
+- Dado que estou logado no sistema e estou na página de detalhes de um anime que eu não comecei;
+- Quando tento selecionar uma nota;
+- Então o sistema deve mostrar uma mensagem de que não se pode avaliar antes de assistir o anime;
 
     Avaliar sem ter assistido:
 
@@ -122,21 +119,22 @@ Nessa entrega começamos a implementação real do projeto, escolhendo 3 histór
 
     ![trocarnota](img/editou.png)
 
-2. Eu, como usuário, quero poder salvar animes em listas personalizadas.
-    - Cenário 1: Usuário adiciona ou atualiza um anime em uma lista;
-	    - Dado que estou logado no sistema e estou na página de detalhes de um anime;
-	    - Quando eu seleciono a opção de adicionar a lista e escolho a lista desejada;
-	    - Então o anime deve aparecer na lista desejada e estar associado ao meu perfil e se o anime já estava em outra lista deve ser removido de lá;
+### 3. Eu, como usuário, quero poder salvar animes em listas personalizadas.
 
-    - Cenário 2: Usuário remove um anime de uma lista;
-        - Dado que estou logado no sistema e tenho o anime em uma lista;
-        - Quando eu removo o anime dessa lista;
-        - Então ele não deve mais aparecer lá;
+#### - Cenário 1: Usuário adiciona ou atualiza um anime em uma lista;
+- Dado que estou logado no sistema e estou na página de detalhes de um anime;
+- Quando eu seleciono a opção de adicionar a lista e escolho a lista desejada;
+- Então o anime deve aparecer na lista desejada e estar associado ao meu perfil e se o anime já estava em outra lista deve ser removido de lá;
 
-    - Cenário 3: Usuário visualiza suas listas;
-        - Dado que estou logado no sistema;
-        - Quando eu acesso a área “Minha Lista”;
-        - Então devo ver as listas “Quero Assistir”, “Assistindo” e “Concluídos”
+#### - Cenário 2: Usuário remove um anime de uma lista;
+- Dado que estou logado no sistema e tenho o anime em uma lista;
+- Quando eu removo o anime dessa lista;
+- Então ele não deve mais aparecer lá;
+
+#### - Cenário 3: Usuário visualiza suas listas;
+- Dado que estou logado no sistema;
+- Quando eu acesso a área “Minha Lista”;
+- Então devo ver as listas “Quero Assistir”, “Assistindo” e “Concluídos”
 
     Adicionar à lista:
 
