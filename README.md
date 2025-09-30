@@ -28,6 +28,9 @@
     <a href="https://www.figma.com/design/6Q4DkRQeQO5bq2jOZrwhfO/OtakuVerse?t=B29iLpEUN9gL3O8G-1">
         <img src="https://img.shields.io/badge/Figma-4B0082?style=for-the-badge&logo=Figma&logoColor=white" alt="Figma">
     </a>
+    <a href="https://otakuverse-bbbrhsg8c6hkgch5.brazilsouth-01.azurewebsites.net">
+        <img src="https://img.shields.io/badge/OtakuVerse-AnimeHub-ff69b4?style=for-the-badge&logo=data:image/x-icon;base64,AAABAAYAAAAAAAEAIABVjAAAZgAAAICAAAABACAAKAgBALuMAABAQAAAAQAgAChCAADjlAEAMDAAAAEAIACoJQAAC9cBACAgAAABACAAqBAAALP8AQAQEAAAAQAgAGgEAABbDQIAiVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAACAAElEQVR42uz9eZBl13kfCH7fOefu974t98zagVpRKCzFRZQoukRSlEEKHHnJ6LbUcCPU04i23ZwwwwpbExMxUREznmnRstltjOVutCRDpilbUd2WSEqCREkURHMTwQKKWApAoQq1V+75trvfe86ZP+6aWQUQVagN4PshHrLy5ct87y7nO9/y+34fwAgjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCOMMMIII4wwwggjjDDCCCPcFuCd/gB3CvPz86Rx8SIKVSUB5xjEMQohwHIcAEIQGUNCKQIARGEo4zgGRiloiiK5qkoppcQ0lZxz2UhT6U5Pi2PHjsk7fVwjjHA9+LEwAPPz80wbDKhNKVOZw5hJFU0STVNVgyqoKQRVCUBQIkVCKVLCKKWUIlJARC6E4IJzkFJIkCkXIk0THvNUxKngccrjKIzjIASIJWIKnsdhZSV96vhxcaePfYQR3g7vSwMwPz/PnChi" alt="OtakuVerse">
+    </a>
 </div>
 
 ---
