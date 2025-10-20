@@ -1,6 +1,6 @@
 from django.shortcuts import render
 import requests
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from lists.models import Anime, AnimeList
 
 def buscar_anime(request):
@@ -109,3 +109,18 @@ def detalhes_anime(request, anime_id):
         contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
+
+def top_animes(request):
+    try:
+        response = requests.get('https://api.jikan.moe/v4/top/anime', timeout=10)
+        response.raise_for_status()
+        ranking_data = response.json()['data'][:100]
+    except requests.RequestException:
+        ranking_data = []
+    
+    context = {
+        'ranking': ranking_data,
+        'titulo_pagina': 'Ranking: Melhores Animes (Jikan API)',
+    }
+    
+    return render(request, 'animes/top_animes.html', context)
