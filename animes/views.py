@@ -2,6 +2,7 @@ from django.shortcuts import render
 import requests
 from lists.models import Anime, AnimeList
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from datetime import datetime 
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
@@ -132,3 +133,62 @@ def top_animes(request):
     }
 
     return render(request, 'animes/top_animes.html', context)
+
+def arquivo_de_temporadas(request):
+    temporadas_en = ['winter', 'spring', 'summer', 'fall']
+    temporadas_pt_map = {
+        'winter': 'Inverno',
+        'spring': 'Primavera',
+        'summer': 'Verão',
+        'fall': 'Outono'
+    }
+
+    now = datetime.now()
+    ano_atual = now.year
+    indice_temporada_atual = (now.month - 1) // 3
+
+    numero_de_temporadas = 4
+    temporadas_para_buscar = []
+    ano_iter = ano_atual
+    indice_iter = indice_temporada_atual
+
+    for _ in range(numero_de_temporadas):
+        season_en = temporadas_en[indice_iter]
+        temporadas_para_buscar.append({'year': ano_iter, 'season': season_en})
+
+        indice_iter -= 1
+        if indice_iter < 0:
+            indice_iter = 3
+            ano_iter -= 1
+
+    dados_completos = []
+    erro = None
+
+    try:
+        for temporada in temporadas_para_buscar:
+            year = temporada['year']
+            season = temporada['season']
+            
+            api_url = f'https://api.jikan.moe/v4/seasons/{year}/{season}'
+            
+            params = {'limit': 10, 'sfw': True}
+            
+            response = requests.get(api_url, params=params, timeout=10)
+            response.raise_for_status()
+            dados_api = response.json()
+            
+            dados_completos.append({
+                'season_pt': temporadas_pt_map.get(season),
+                'year': year,
+                'animes': dados_api.get('data', [])
+            })
+
+    except requests.exceptions.RequestException as e:
+        erro = f"Ocorreu um erro ao buscar os animes: {e}"
+
+    contexto = {
+        'dados_completos': dados_completos,
+        'erro': erro
+    }
+    
+    return render(request, 'animes/arquivo_de_temporadas.html', contexto)
