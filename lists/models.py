@@ -42,3 +42,16 @@ class AnimeList(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.anime.title} ({self.status})"
+
+class FavoriteCharacter(models.Model):
+    """Guarda um personagem favorito para um usuário específico."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    mal_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+    image_url = models.URLField()
+
+    class Meta:
+        unique_together = ('user', 'mal_id')
+
+    def __str__(self):
+        return f"{self.name} (Favorito de {self.user.username})"
