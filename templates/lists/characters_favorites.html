@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Meus Personagens Favoritos{% endblock %}
+
+{% block content %}
+<style>
+    /* CSS embutido para a página de personagens favoritos */
+    .character-page-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .section-title { text-align: center; margin: 2rem 0; color: #fff; }
+    .character-search-container { text-align: center; margin-bottom: 2.5rem; display: none; /* Começa escondido */ }
+    #character-search-input { padding: 12px 15px; width: 60%; max-width: 500px; border-radius: 8px; border: 1px solid #555; background-color: #1e1e21; color: #fff; font-size: 1rem; }
+    .results-grid, .favorites-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+    .char-card { background-color: #2a2a2e; border-radius: 10px; padding: 15px; width: 180px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,.4); transition: transform .2s ease-in-out; display: flex; flex-direction: column; justify-content: space-between; }
+    .char-card:hover { transform: translateY(-8px); }
+    .char-card img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+    .char-card h3 { font-size: 1rem; margin-bottom: 15px; color: #f8f8f2; min-height: 40px; flex-grow: 1; }
+    .btn-add { background-color: #ff79c6; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; width: 100%; transition: background-color .2s; }
+    .btn-add:hover { background-color: #e66ab2; }
+    .btn-remove { background-color: #ff5555; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; width: 100%; }
+    .empty-list-container { text-align: center; padding: 4rem 1rem; border: 2px dashed #444; border-radius: 10px; margin-top: 2rem; }
+    .empty-list-message { color: #999; font-style: italic; margin-bottom: 1.5rem; }
+</style>
+
+<div class="character-page-container">
+    <h1 class="section-title">❤️ Meus Personagens Favoritos</h1>
+
+    <section class="character-search-container" id="search-section">
+        <input type="text" id="character-search-input" placeholder="Buscar personagem para adicionar...">
+        <button onclick="searchCharacters()" class="btn btn-primary">Buscar</button>
+    </section>
+
+    <section id="results" class="results-grid"></section>
+    
+    <hr id="results-divider" style="display: none; margin: 3rem 0; border-color: #444;">
+
+    <section id="favorites" class="favorites-grid">
+        {% if not favorites %}
+            <div class="empty-list-container" id="empty-list-view">
+                <p class="empty-list-message">Sua lista de favoritos está vazia.</p>
+                <button class="btn btn-success" onclick="showSearch()">Adicionar Personagens</button>
+            </div>
+        {% else %}
+            {% for fav in favorites %}
+                <div class="char-card" id="fav-card-{{ fav.mal_id }}">
+                    <img src="{{ fav.image_url }}" alt="{{ fav.name }}">
+                    <h3>{{ fav.name }}</h3>
+                    <button class="btn-remove" onclick="removeFavorite('{{ fav.mal_id }}')">Remover ❌</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if user.is_authenticated %}
+<script>
+    const csrfToken = '{{ csrf_token }}';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if favorites %}
+            showSearch();
+        {% endif %}
+    });
+
+    function showSearch() {
+        document.getElementById('search-section').style.display = 'block';
+        const emptyView = document.getElementById('empty-list-view');
+        if (emptyView) {
+            emptyView.style.display = 'none';
+        }
+    }
+
+    async function searchCharacters() {
+        const query = document.getElementById("character-search-input").value;
+        if (!query) return;
+        const response = await fetch(`https://api.jikan.moe/v4/characters?q=${query}&limit=12`);
+        const data = await response.json();
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
+        document.getElementById('results-divider').style.display = 'block';
+        data.data.forEach(char => {
+            const safeName = char.name.replace(/'/g, "\\'");
+            const card = document.createElement("div");
+            card.className = "char-card";
+            card.innerHTML = `<img src="${char.images.jpg.image_url}" alt="${char.name}"><h3>${char.name}</h3><button class="btn-add" onclick="addFavorite('${char.mal_id}', '${safeName}', '${char.images.jpg.image_url}')">Adicionar ⭐</button>`;
+            resultsDiv.appendChild(card);
+        });
+    }
+
+    async function addFavorite(id, name, imageUrl) {
+        const response = await fetch("{% url 'lists:add_favorite_character' %}", { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken }, body: JSON.stringify({ id, name, image: imageUrl }) });
+        const result = await response.json();
+        if (result.status === 'success') {
+            location.reload();
+        } else {
+            alert(result.message);
+        }
+    }
+
+    async function removeFavorite(id) {
+        if (!confirm("Tem certeza que deseja remover este personagem?")) return;
+        const response = await fetch("{% url 'lists:remove_favorite_character' %}", { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken }, body: JSON.stringify({ id }) });
+        const result = await response.json();
+        if (result.status === 'success') {
+            document.getElementById(`fav-card-${id}`).remove();
+            alert('Personagem removido!');
+        } else {
+            alert(result.message);
+        }
+    }
+</script>
+{% endif %}
+{% endblock scripts %}

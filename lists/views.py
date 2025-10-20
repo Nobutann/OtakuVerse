@@ -1,9 +1,10 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.contrib import messages
-from .models import Anime, AnimeList
+from .models import Anime, AnimeList, FavoriteCharacter
 import requests
 from django.db.models import Avg
 from django.db.models import Avg
@@ -80,6 +81,7 @@ def detalhes_anime(request, anime_id):
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
 
+@login_required
 def add_to_list(request, mal_id):
     if request.method == 'POST':
         anime = get_anime(mal_id)
@@ -143,10 +145,7 @@ def add_to_list(request, mal_id):
 @login_required
 def user_list(request, username):
     user = get_object_or_404(User, username=username)
-
-    
     status_filter = request.GET.get("status", "all")
-
     entries = user.anime_entries.select_related('anime').order_by('-updated_at')
 
     if status_filter != 'all':
@@ -167,7 +166,6 @@ def user_list(request, username):
         'stats': stats,
         'is_own_list': request.user == user,
     }
-
     return render(request, 'lists/user_list.html', context)
 
 @login_required
@@ -207,7 +205,6 @@ def edit_entry(request, entry_id):
         entry.start_date = start_date if start_date else None
         entry.finish_date = finish_date if finish_date else None
         entry.notes = notes
-
         entry.save()
 
         if (status == 'completed' and old_status != 'completed' and 
@@ -222,7 +219,6 @@ def edit_entry(request, entry_id):
         'entry': entry,
         'status_choices': AnimeList.STATUS,
     }
-
     return render(request, 'lists/edit_entry.html', context)
 
 @login_required
@@ -236,7 +232,6 @@ def remove_entry(request, entry_id):
         return redirect('lists:user_list', request.user.username)
     
     context = {'entry':entry}
-
     return render(request, 'lists/confirm_remove.html', context)
 
 @login_required
@@ -248,7 +243,6 @@ def update_status(request, entry_id):
         if new_status in [choice[0] for choice in AnimeList.STATUS]:
             entry.status = new_status
             entry.save()
-
             return JsonResponse({
                 'success': True,
                 'message': f"Status atualizado para {entry.get_status_display()}"
@@ -261,7 +255,6 @@ def update_score(request, entry_id):
     if request.method == 'POST':
         entry = get_object_or_404(AnimeList, id=entry_id, user=request.user)
         new_score = request.POST.get('score')
-
         try:
             if new_score:
                 score = int(new_score)
@@ -274,9 +267,7 @@ def update_score(request, entry_id):
                     })
             else:
                 entry.score = None
-
             entry.save()
-
             return JsonResponse({
                 'success': True,
                 'message': "Nota atualizada!",
@@ -295,10 +286,8 @@ def update_score(request, entry_id):
 def update_episodes(request, entry_id):
     if request.method == 'POST':
         entry = get_object_or_404(AnimeList, id=entry_id, user=request.user)
-
         try:
             episodes_watched = int(request.POST.get('episodes_watched', 0))
-
             if episodes_watched < 0:
                 return JsonResponse({
                     'success': False,
@@ -313,7 +302,6 @@ def update_episodes(request, entry_id):
             
             entry.episodes_watched = episodes_watched
             entry.save()
-
             return JsonResponse({
                 'success': True,
                 'episodes_watched': entry.episodes_watched,
@@ -327,3 +315,57 @@ def update_episodes(request, entry_id):
             })
         
     return JsonResponse({'success': False, 'error': "Método não permitido"})
+  
+# --- NOVAS FUNÇÕES PARA A LISTA DE PERSONAGENS FAVORITOS ---
+
+@login_required
+def character_favorites_view(request):
+    """
+    Exibe a página de personagens favoritos, já carregando a lista
+    do usuário que está logado.
+    """
+    favorites = FavoriteCharacter.objects.filter(user=request.user).order_by('name')
+    context = {
+        'favorites': favorites
+    }
+    return render(request, "lists/characters_favorites.html", context)
+
+
+@login_required
+def add_favorite_character(request):
+    """
+    Recebe uma requisição POST (via JavaScript) para adicionar
+    um personagem ao banco de dados para o usuário logado.
+    """
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        obj, created = FavoriteCharacter.objects.get_or_create(
+            user=request.user,
+            mal_id=data.get('id'),
+            defaults={
+                'name': data.get('name'),
+                'image_url': data.get('image')
+            }
+        )
+        if created:
+            return JsonResponse({'status': 'success', 'message': 'Personagem adicionado!'})
+        else:
+            return JsonResponse({'status': 'exists', 'message': 'Este personagem já está nos seus favoritos.'})
+    return JsonResponse({'status': 'error', 'message': 'Requisição inválida.'}, status=400)
+
+
+@login_required
+def remove_favorite_character(request):
+    """
+    Recebe uma requisição POST (via JavaScript) para remover
+    um personagem do banco de dados do usuário logado.
+    """
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        mal_id = data.get('id')
+        deleted_count, _ = FavoriteCharacter.objects.filter(user=request.user, mal_id=mal_id).delete()
+        if deleted_count > 0:
+            return JsonResponse({'status': 'success', 'message': 'Personagem removido.'})
+        else:
+            return JsonResponse({'status': 'not_found', 'message': 'Personagem não encontrado nos seus favoritos.'})
+    return JsonResponse({'status': 'error', 'message': 'Requisição inválida.'}, status=400)

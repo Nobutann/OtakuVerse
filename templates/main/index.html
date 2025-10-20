@@ -12,9 +12,7 @@
     </section>
 
     {% if erro %}
-    <div class="error-banner" role="alert">
-        <p>Ops! Não conseguimos carregar as recomendações no momento.</p>
-    </div>
+    <div class="error-banner" role="alert"><p>Ops! Não conseguimos carregar as recomendações no momento.</p></div>
     {% endif %}
 
     {% if featured_anime %}
@@ -30,19 +28,11 @@
                 <article class="anime-card">
                     <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
                         <div class="anime-poster">
-                            <img 
-                                src="{{ anime.images.jpg.image_url }}" 
-                                alt="{{ anime.title }}"
-                                loading="lazy"
-                            >
+                            <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}" loading="lazy">
                             <div class="anime-overlay">
                                 <div class="anime-info">
                                     <div class="anime-score">
-                                        {% if anime.score %}
-                                            ⭐ {{ anime.score }}
-                                        {% else %}
-                                            N/A
-                                        {% endif %}
+                                        {% if anime.score %}⭐ {{ anime.score|floatformat:2 }}{% else %}N/A{% endif %}
                                     </div>
                                     <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
                                 </div>
@@ -52,9 +42,7 @@
                             <h3 class="anime-title">{{ anime.title }}</h3>
                             <div class="anime-meta">
                                 <span class="anime-type">{{ anime.type|default:"TV" }}</span>
-                                {% if anime.episodes %}
-                                    <span class="anime-episodes">{{ anime.episodes }} eps</span>
-                                {% endif %}
+                                {% if anime.episodes %}<span class="anime-episodes">{{ anime.episodes }} eps</span>{% endif %}
                             </div>
                         </div>
                     </a>
@@ -81,3 +69,6 @@
     {% endif %}
 </main>
 {% endblock %}
+
+{% block scripts %}
+{% endblock scripts %}
