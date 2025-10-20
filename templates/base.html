@@ -73,7 +73,7 @@
         const suggestionsBox = document.getElementById('searchSuggestions');
         const searchForm = document.getElementById('main-search-form');
         const searchTypeRadios = document.querySelectorAll('input[name="search_type"]');
-        let debounceTimer; // Variável para controlar o timer do debounce
+        let debounceTimer;
 
         function fetchSuggestions() {
             const query = searchInput.value.trim();
@@ -117,10 +117,8 @@
         }
 
         if (searchInput) {
-            // --- CORREÇÃO APLICADA AQUI: Lógica de Debounce ---
             searchInput.addEventListener('keyup', () => {
-                clearTimeout(debounceTimer); // Cancela o timer anterior
-                // Cria um novo timer para executar a busca após 300ms
+                clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(() => {
                     fetchSuggestions();
                 }, 300);
