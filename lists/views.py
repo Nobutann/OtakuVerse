@@ -6,7 +6,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from .models import Anime, AnimeList, FavoriteCharacter
 import requests
-from django.db.models import Avg, Count
+from django.db.models import Avg
+from django.db.models import Avg
 
 def get_anime(mal_id):
     try:
@@ -314,31 +315,7 @@ def update_episodes(request, entry_id):
             })
         
     return JsonResponse({'success': False, 'error': "Método não permitido"})
-
-def ranking_melhores_animes(request):
-    ranking_data = AnimeList.objects.filter(
-        score__isnull=False 
-    ).values(
-        'anime__mal_id',
-        'anime__title',
-        'anime__image_url',
-    ).annotate(
-        average_score=Avg('score'), 
-        vote_count=Count('score') 
-    ).filter(
-        vote_count__gte=5 
-    ).order_by(
-        '-average_score', 
-        '-vote_count' 
-    )[:100]
-    
-    context = {
-        'ranking': ranking_data,
-        'titulo_pagina': 'Ranking: Melhores Animes Votados por Membros',
-        'min_votes': 5
-    }
-    return render(request, 'lists/ranking_membros.html', context)
-
+  
 # --- NOVAS FUNÇÕES PARA A LISTA DE PERSONAGENS FAVORITOS ---
 
 @login_required

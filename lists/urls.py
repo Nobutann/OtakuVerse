@@ -12,7 +12,6 @@ urlpatterns = [
     path('update-status/<int:entry_id>/', views.update_status, name='update_status'),
     path('update-score/<int:entry_id>/', views.update_score, name='update_score'),
     path('update-episodes/<int:entry_id>/', views.update_episodes, name='update_episodes'),
-    path('ranking/animes/', views.ranking_melhores_animes, name='ranking_membros'),
     path("personagens/", views.character_favorites_view, name="personagens_favoritos"),
     path("personagens/add/", views.add_favorite_character, name="add_favorite_character"),
     path("personagens/remove/", views.remove_favorite_character, name="remove_favorite_character"),

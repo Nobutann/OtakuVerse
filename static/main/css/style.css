@@ -1326,3 +1326,247 @@ anime-trailer-container {
         font-size: 0.85rem;
     }
 }
+
+.ranking-hero {
+    padding: 4rem 0 3rem;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.15) 0%, rgba(221, 160, 221, 0.15) 50%, rgba(152, 251, 152, 0.1) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.ranking-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(221, 160, 221, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.ranking-header {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.ranking-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.ranking-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ranking-section {
+    padding: 3rem 0 4rem;
+}
+
+.rank-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 10;
+    background: var(--gradient-cute);
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.anime-card:hover .rank-badge {
+    transform: scale(1.05);
+}
+
+.rank-number {
+    font-family: 'Comfortaa', cursive;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pagination-nav {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    background: var(--dark-card);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--dark-border);
+}
+
+.page-item {
+    display: flex;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+    background: var(--dark-light);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--dark-border);
+    font-weight: 500;
+}
+
+.page-link:hover {
+    background: var(--gradient-cute);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+    border-color: transparent;
+}
+
+.page-link svg {
+    display: block;
+}
+
+.current-page {
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    cursor: default;
+    font-weight: 600;
+    padding: 0 1rem;
+}
+
+.current-page:hover {
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.page-item.active .page-link {
+    background: var(--gradient-cute);
+    color: white;
+    border-color: transparent;
+}
+
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--dark-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.no-results-text {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .ranking-hero {
+        padding: 3rem 0 2rem;
+    }
+    
+    .ranking-title {
+        font-size: 2.2rem;
+    }
+    
+    .ranking-subtitle {
+        font-size: 1rem;
+    }
+    
+    .rank-badge {
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.3rem 0.55rem;
+    }
+    
+    .rank-number {
+        font-size: 0.85rem;
+    }
+    
+    .pagination {
+        padding: 0.75rem 1rem;
+        gap: 0.25rem;
+    }
+    
+    .page-link {
+        min-width: 36px;
+        height: 36px;
+    }
+    
+    .current-page {
+        font-size: 0.85rem;
+        padding: 0 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ranking-title {
+        font-size: 1.8rem;
+    }
+    
+    .ranking-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .rank-badge {
+        top: 0.4rem;
+        left: 0.4rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .rank-number {
+        font-size: 0.8rem;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anime-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.anime-card:nth-child(1) { animation-delay: 0.05s; }
+.anime-card:nth-child(2) { animation-delay: 0.1s; }
+.anime-card:nth-child(3) { animation-delay: 0.15s; }
+.anime-card:nth-child(4) { animation-delay: 0.2s; }
+.anime-card:nth-child(5) { animation-delay: 0.25s; }
+.anime-card:nth-child(6) { animation-delay: 0.3s; }
+.anime-card:nth-child(7) { animation-delay: 0.35s; }
+.anime-card:nth-child(8) { animation-delay: 0.4s; }
+.anime-card:nth-child(9) { animation-delay: 0.45s; }
+.anime-card:nth-child(10) { animation-delay: 0.5s; }
+.anime-card:nth-child(n+11) { animation-delay: 0.55s; }
