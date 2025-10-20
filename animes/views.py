@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import requests
-from django.db.models import Avg, Count
 from lists.models import Anime, AnimeList
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
@@ -111,16 +111,24 @@ def detalhes_anime(request, anime_id):
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
 
 def top_animes(request):
+    top_url = "https://api.jikan.moe/v4/top/anime"
+
+    response = requests.get(top_url, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+    animes_list = data.get('data', [])
+    paginator = Paginator(animes_list, 20)
+    page_number = request.GET.get('page')
+
     try:
-        response = requests.get('https://api.jikan.moe/v4/top/anime', timeout=10)
-        response.raise_for_status()
-        ranking_data = response.json()['data'][:100]
-    except requests.RequestException:
-        ranking_data = []
-    
+        animes = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        animes = paginator.get_page(1)
+    except EmptyPage:
+        animes = paginator.get_page(paginator.num_pages)
+
     context = {
-        'ranking': ranking_data,
-        'titulo_pagina': 'Ranking: Melhores Animes (Jikan API)',
+        'animes': animes
     }
-    
+
     return render(request, 'animes/top_animes.html', context)

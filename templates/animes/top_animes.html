@@ -1,94 +1,122 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Top Animes{% endblock %}
 
 {% block content %}
-<main class="ranking-page">
+<main class="main-content">
     <section class="ranking-hero">
         <div class="container">
-            <header class="hero-content">
-                <h1 class="page-title">
-                    <span class="trophy-icon" aria-hidden="true">🏆</span>
-                    Top Animes
+            <header class="ranking-header">
+                <h1 class="ranking-title">
+                    <span class="highlight">Top Animes</span>
                 </h1>
-                <p class="page-subtitle">
-                    Melhores animes de acordo com a comunidade!
+                <p class="ranking-subtitle">
+                    Os animes mais bem avaliados pelos otakus do mundo
                 </p>
-                <div class="ranking-stats">
-                    <div class="stat-badge">
-                        <span class="stat-number">{{ ranking|length }}</span>
-                        <span class="stat-label">Animes Ranqueados</span>
-                    </div>
-                    <div class="stat-badge">
-                        <span class="stat-number">{{ min_votes }}+</span>
-                        <span class="stat-label">Votos Mínimos</span>
-                    </div>
-                </div>
             </header>
         </div>
     </section>
 
-    <div class="container">
-        {% if ranking %}
-            <ol class="ranking-list">
-                {% for anime in ranking %}
-                <li class="ranking-item {% if forloop.counter <= 3 %}ranking-item-top{% endif %}" data-position="{{ forloop.counter }}">
-                    <div class="ranking-position">
-                        <span class="position-number {% if forloop.counter == 1 %}gold{% elif forloop.counter == 2 %}silver{% elif forloop.counter == 3 %}bronze{% endif %}">
-                            #{{ forloop.counter }}
-                        </span>
-                        {% if forloop.counter == 1 %}
-                            <span class="medal" aria-label="Primeiro lugar">1</span>
-                        {% elif forloop.counter == 2 %}
-                            <span class="medal" aria-label="Segundo lugar">2</span>
-                        {% elif forloop.counter == 3 %}
-                            <span class="medal" aria-label="Terceiro lugar">3</span>
-                        {% endif %}
+    <section class="ranking-section">
+        <div class="container">
+            {% if animes %}
+            <div class="anime-grid">
+                {% for anime in animes %}
+                <article class="anime-card">
+                    <div class="rank-badge">
+                        <span class="rank-number">#{{ animes.start_index|add:forloop.counter0 }}</span>
                     </div>
-
-                    <a href="{% url 'animes:anime_detail' anime.anime__mal_id %}" class="ranking-card" aria-label="Ver detalhes de {{ anime.anime__title }}">
-                        <figure class="ranking-poster">
+                    <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
+                        <div class="anime-poster">
                             <img 
-                                src="{{ anime.anime__image_url }}" 
-                                alt="Poster de {{ anime.anime__title }}"
+                                src="{{ anime.images.jpg.image_url }}" 
+                                alt="{{ anime.title }}"
                                 loading="lazy"
+                                class="poster-image"
                             >
-                            <figcaption class="poster-overlay">
-                                <span class="view-details">Ver detalhes</span>
-                            </figcaption>
-                        </figure>
-
-                        <div class="ranking-info">
-                            <h2 class="anime-title-ranking">{{ anime.anime__title }}</h2>
-                            
-                            <dl class="ranking-metrics">
-                                <div class="metric-item score-metric">
-                                    <svg class="metric-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                    </svg>
-                                    <dt class="metric-label">Nota:</dt>
-                                    <dd class="metric-value score-value">{{ anime.average_score|floatformat:2 }}</dd>
+                            <div class="anime-overlay">
+                                <div class="anime-info">
+                                    <div class="anime-score">
+                                        ⭐ {{ anime.score|default:"N/A" }}
+                                    </div>
+                                    {% if anime.year %}
+                                    <div class="anime-year">
+                                        {{ anime.year }}
+                                    </div>
+                                    {% endif %}
                                 </div>
-
-                                <div class="metric-item votes-metric">
-                                    <svg class="metric-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
-                                    </svg>
-                                    <dt class="metric-label">Votos:</dt>
-                                    <dd class="metric-value">{{ anime.vote_count }}</dd>
-                                </div>
-                            </dl>
+                            </div>
+                        </div>
+                        
+                        <div class="anime-details">
+                            <h2 class="anime-title">{{ anime.title }}</h2>
+                            <div class="anime-meta">
+                                <span class="anime-type">{{ anime.type|default:"TV" }}</span>
+                                {% if anime.episodes %}
+                                    <span class="anime-episodes">{{ anime.episodes }} eps</span>
+                                {% endif %}
+                            </div>
                         </div>
                     </a>
-                </li>
+                </article>
                 {% endfor %}
-            </ol>
-        {% else %}
-            <section class="empty-state">
-                <div class="empty-icon" aria-hidden="true">📊</div>
-                <h2 class="empty-title">Nenhum anime ranqueado ainda</h2>
-            </section>
-        {% endif %}
-    </div>
+            </div>
+
+                {% if animes.has_other_pages %}
+                <nav class="pagination-nav" aria-label="Navegação de páginas">
+                    <ul class="pagination">
+                        {% if animes.has_previous %}
+                        <li class="page-item">
+                            <a href="?page=1" class="page-link" aria-label="Primeira página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ animes.previous_page_number }}" class="page-link" aria-label="Página anterior">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link current-page">
+                                Página {{ animes.number }} de {{ animes.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if animes.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ animes.next_page_number }}" class="page-link" aria-label="Próxima página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ animes.paginator.num_pages }}" class="page-link" aria-label="Última página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                    <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% else %}
+                <div class="no-results">
+                    <p class="no-results-text">Nenhum anime encontrado no momento.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 </main>
+
+<link rel="stylesheet" href="{% static 'animes/css/ranking.css' %}">
 {% endblock %}
