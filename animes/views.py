@@ -3,6 +3,7 @@ import requests
 from lists.models import Anime, AnimeList
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from datetime import datetime 
+import time
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
@@ -145,7 +146,18 @@ def arquivo_de_temporadas(request):
 
     now = datetime.now()
     ano_atual = now.year
-    indice_temporada_atual = (now.month - 1) // 3
+    mes_atual = now.month
+    
+    if mes_atual in [12, 1, 2]:  
+        indice_temporada_atual = 0 
+        if mes_atual == 12: 
+            ano_atual = ano_atual + 1
+    elif mes_atual in [3, 4, 5]: 
+        indice_temporada_atual = 1  
+    elif mes_atual in [6, 7, 8]:  
+        indice_temporada_atual = 2 
+    else:  
+        indice_temporada_atual = 3 
 
     numero_de_temporadas = 4
     temporadas_para_buscar = []
@@ -170,8 +182,8 @@ def arquivo_de_temporadas(request):
             season = temporada['season']
             
             api_url = f'https://api.jikan.moe/v4/seasons/{year}/{season}'
-            
-            params = {'limit': 10, 'sfw': True}
+          
+            params = {'limit': 10, 'sfw': 'true'}
             
             response = requests.get(api_url, params=params, timeout=10)
             response.raise_for_status()
@@ -182,6 +194,8 @@ def arquivo_de_temporadas(request):
                 'year': year,
                 'animes': dados_api.get('data', [])
             })
+            
+            time.sleep(0.5)
 
     except requests.exceptions.RequestException as e:
         erro = f"Ocorreu um erro ao buscar os animes: {e}"
@@ -191,4 +205,4 @@ def arquivo_de_temporadas(request):
         'erro': erro
     }
     
-    return render(request, 'animes/arquivo_de_temporadas.html', contexto)
+    return render(request, 'animes/sazonais.html', contexto)
