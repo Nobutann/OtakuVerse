@@ -235,13 +235,6 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 
 ---
 
-## Relatório Pair Programming
-
-Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
-📄 [Acesse o PDF](docs/pair_programming.pdf)
-
----
-
 ## 🧪 Testes de Sistema (E2E) Automatizados
 
 Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
@@ -280,6 +273,13 @@ Abaixo, um print da nossa aba de *Issues* no GitHub, onde centralizamos os relat
 ![bugtracker](img/issues-bugtracker3.png)
 
 > 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento — garantindo um fluxo claro de manutenção e evolução do sistema.
+
+---
+
+## Relatório Pair Programming
+
+Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
+📄 [Acesse o PDF](docs/pair_programming.pdf)
 
 </details>
 
