@@ -30,6 +30,7 @@
                         <div class="search-filters">
                             <label><input type="radio" name="search_type" value="anime" checked> Anime</label>
                             <label><input type="radio" name="search_type" value="character"> Personagem</label>
+                            <label><input type="radio" name="search_type" value="user"> Usuário</label>
                         </div>
                     </form>
                 </div>
@@ -45,7 +46,7 @@
                             <li class="nav-item dropdown">
                                 <button class="nav-link user-menu" id="userMenuBtn">
                                     <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="user-avatar">
-                                    <span class="username">{{ user.username }}</span>
+                                    <span class="nav-username">{{ request.user.username }}</span>
                                 </button>
                                 <div class="dropdown-menu" id="userDropdown">
                                     <a href="{% url 'users:profile' user.username %}" class="dropdown-item">Meu Perfil</a>
@@ -71,73 +72,5 @@
         </footer>
 
     <script src="{% static 'main/js/scripts.js' %}"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const suggestionsBox = document.getElementById('searchSuggestions');
-        const searchForm = document.getElementById('main-search-form');
-        const searchTypeRadios = document.querySelectorAll('input[name="search_type"]');
-        let debounceTimer;
-
-        function fetchSuggestions() {
-            const query = searchInput.value.trim();
-            const searchType = document.querySelector('input[name="search_type"]:checked').value;
-
-            if (query.length < 3) {
-                suggestionsBox.innerHTML = '';
-                suggestionsBox.style.display = 'none';
-                return;
-            }
-
-            fetch(`{% url 'main:search_suggestions' %}?q=${encodeURIComponent(query)}&type=${searchType}`)
-                .then(response => response.json())
-                .then(data => {
-                    suggestionsBox.innerHTML = '';
-                    if (data.suggestions && data.suggestions.length > 0) {
-                        data.suggestions.forEach(item => {
-                            const suggestionItem = document.createElement('a');
-                            suggestionItem.className = 'suggestion-item';
-
-                            if (item.type === 'anime') {
-                                suggestionItem.href = `/animes/animes/${item.id}/`;
-                            } else if (item.type === 'personagem') {
-                                const characterSearchURL = `{% url 'main:character_search_results' %}?q=${encodeURIComponent(item.title)}`;
-                                suggestionItem.href = characterSearchURL;
-                            }
-                            
-                            suggestionItem.innerHTML = `
-                                <img src="${item.image}" alt="${item.title}">
-                                <span>${item.title}</span>
-                                <span class="suggestion-type">${item.type}</span>
-                            `;
-                            suggestionsBox.appendChild(suggestionItem);
-                        });
-                        suggestionsBox.style.display = 'block';
-                    } else {
-                        suggestionsBox.style.display = 'none';
-                    }
-                })
-                .catch(error => console.error('Erro ao buscar sugestões:', error));
-        }
-
-        if (searchInput) {
-            searchInput.addEventListener('keyup', () => {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(() => {
-                    fetchSuggestions();
-                }, 300);
-            });
-
-            searchTypeRadios.forEach(radio => radio.addEventListener('change', fetchSuggestions));
-            document.addEventListener('click', function(event) {
-                if (!searchForm.contains(event.target)) {
-                    suggestionsBox.style.display = 'none';
-                }
-            });
-        }
-    });
-    </script>
-    
-    {% block scripts %}{% endblock scripts %}
 </body>
 </html>

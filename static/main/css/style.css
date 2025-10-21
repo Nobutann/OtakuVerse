@@ -58,6 +58,12 @@ body {
     padding: 1rem 0;
 }
 
+.nav-username {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: var(--text-secondary);
+}
+
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -1664,5 +1670,133 @@ anime-trailer-container {
     }
     .section-title {
         font-size: 1.8rem;
+    }
+}
+
+.search-results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.results-title {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.results-query {
+    color: #ff79c6;
+}
+
+.results-count {
+    color: #999;
+    margin-top: 0.5rem;
+}
+
+.results-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.user-card {
+    background-color: #2a2a2e;
+    border-radius: 10px;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+}
+
+.user-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--primary-pink);
+    margin-bottom: 10px;
+}
+
+.user-card h3 {
+    font-size: 1.1rem;
+    color: #f8f8f2;
+    font-weight: 600;
+    margin: 0;
+}
+
+.user-bio {
+    font-size: 0.85rem;
+    color: #999;
+    line-height: 1.4;
+    min-height: 40px;
+    margin: 0;
+}
+
+.user-stats {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.stat-item {
+    font-size: 0.85rem;
+    color: #ccc;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.user-badge {
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-lavender));
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3);
+    margin-top: 8px;
+}
+
+.no-results {
+    text-align: center;
+    color: #999;
+    margin-top: 3rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .results-grid {
+        gap: 15px;
+    }
+    
+    .user-card {
+        width: 180px;
+        padding: 15px;
+    }
+    
+    .user-card img {
+        width: 100px;
+        height: 100px;
     }
 }
