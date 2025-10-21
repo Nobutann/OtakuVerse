@@ -4,16 +4,24 @@ from lists.models import Anime, AnimeList
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from datetime import datetime 
 import time
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
     contexto = {
         'query': query,
         'resultados': [],
+        'users': [],
         'erro': None,
     }
 
     if query:
+
+        users = User.objects.select_related('profile').filter(Q(username__icontains=query) | Q(profile__bio__icontains=query)).order_by('username')[:10]
+
+        contexto['users'] = users
+        
         api_url = 'https://api.jikan.moe/v4/anime'
         
         rating_selecionado = request.GET.get('rating', 'padrao')

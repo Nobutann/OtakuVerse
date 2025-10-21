@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 import requests
 from django.http import JsonResponse
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def homepage(request):
     context = {'featured_anime': [], 'erro': None}
@@ -42,7 +44,6 @@ def search_sugestions(request):
             return []
 
     if search_type == 'anime':
-        # --- CORREÇÃO APLICADA AQUI: REMOVIDO o parâmetro 'sfw' ---
         results = fetch_jikan('anime', {'q': query, 'limit': 5})
         for item in results:
             suggestions.append({
@@ -61,6 +62,20 @@ def search_sugestions(request):
                 'type': 'personagem'
             })
 
+    elif search_type == 'user':
+        users = User.objects.select_related('profile').filter(
+            Q(username__icontains=query)
+        )[:5]
+        
+        for user in users:
+            suggestions.append({
+                'id': user.username,
+                'title': user.username,
+                'image': user.profile.avatar.url if hasattr(user, 'profile') else '/static/avatars/default.jpg',
+                'type': 'usuário'
+            })
+
+
     return JsonResponse({'suggestions': suggestions})
 
 def search_redirect(request):
@@ -70,6 +85,9 @@ def search_redirect(request):
         return redirect('main:homepage')
     if search_type == 'character':
         redirect_url = f"{reverse('main:character_search_results')}?q={query}"
+        return redirect(redirect_url)
+    elif search_type == 'user':
+        redirect_url = f"{reverse('main:user_search_results')}?q={query}"
         return redirect(redirect_url)
     redirect_url = f"{reverse('animes:buscar_anime')}?q={query}"
     return redirect(redirect_url)
@@ -86,3 +104,22 @@ def character_search_results(request):
         except requests.exceptions.RequestException as e:
             context['error'] = f"Ocorreu um erro ao buscar os personagens: {e}"
     return render(request, 'main/character_search_results.html', context)
+
+def user_search_results(request):
+    query = request.GET.get('q', '').strip()
+    
+    context = {
+        'query': query,
+        'users': [],
+        'total_results': 0
+    }
+    
+    if query:
+        users = User.objects.select_related('profile').filter(
+            Q(username__icontains=query) | Q(profile__bio__icontains=query)
+        ).order_by('username')
+        
+        context['users'] = users
+        context['total_results'] = users.count()
+    
+    return render(request, 'main/user_search_results.html', context)

@@ -10,7 +10,6 @@ class UserProfile(models.Model):
     birthDate = models.DateField(blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/default.jpg')
 
-    isPublic = models.BooleanField(default=True)
     showStats = models.BooleanField(default=True)
 
     animeCount = models.PositiveIntegerField(default=0)
@@ -81,7 +80,3 @@ class UserProfile(models.Model):
         self.animeCount = self.current_anime_count
         self.episodesWatched = self.current_episodes_watched
         self.save(update_fields=['animeCount', 'episodesWatched'])
-
-
-class Friendship(models.Model):
-    pass
