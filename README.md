@@ -259,7 +259,7 @@ A execução automatizada desses testes garante:
 ---
 
 📌 *Ferramentas utilizadas*:  
-- Framework de testes E2E (ex.: Cypress, Playwright ou Selenium)  
+- Framework de testes E2E (Cypress)  
 - Execução automatizada no ambiente do projeto  
 - Cenários baseados em histórias de usuário reais
 ---
