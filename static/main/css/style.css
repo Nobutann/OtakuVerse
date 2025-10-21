@@ -1570,3 +1570,15 @@ anime-trailer-container {
 .anime-card:nth-child(9) { animation-delay: 0.45s; }
 .anime-card:nth-child(10) { animation-delay: 0.5s; }
 .anime-card:nth-child(n+11) { animation-delay: 0.55s; }
+
+.featured-section {
+    padding: 2rem 0;
+}
+
+.featured-section:first-of-type {
+    padding-top: 4rem;
+}
+
+.featured-section:last-of-type {
+    padding-bottom: 4rem;
+}
