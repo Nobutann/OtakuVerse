@@ -199,31 +199,24 @@ Utilizamos o bug tracker do GitHub para registrar erros encontrados no projeto, 
 
 Nesta terceira entrega, ampliamos significativamente as funcionalidades do **OtakuVerse**, aprimorando a experiência do usuário e consolidando o sistema com novas histórias implementadas e melhorias gerais.
 
-## Histórias implementadas:
+# Histórias implementadas:
 
-### 1. Eu, como usuário, quero marcar episódios como “assistidos”.
+## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
 - Implementamos uma funcionalidade que permite ao usuário marcar episódios individualmente como concluídos.
 - O sistema exibe um indicador visual de progresso, permitindo que o usuário saiba exatamente até onde assistiu.
 - Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
 
-### 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
+## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
 - Adicionamos uma área dedicada com título da temporada, data de lançamento, número de episódios e sinopse.
 - Isso permite que o usuário acompanhe o lançamento e evolução das séries de forma clara.
 
-### 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
+## 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
 - Criamos um ranking dinâmico, exibindo os animes com as notas mais altas dadas pela comunidade.
 - O ranking apresenta posição, nota média e número de avaliações, tornando a descoberta de novos títulos mais prática.
 
 ---
 
-## Screencast
-
-Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
-📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
-
----
-
-## Jira
+# Jira
 
 Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
@@ -232,6 +225,14 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 
 ### Board:
 ![board3](img/board3.png)
+
+---
+
+## Screencast
+
+Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
+📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
+
 
 ---
 
@@ -257,22 +258,21 @@ A execução automatizada desses testes garante:
 - Cenários baseados em histórias de usuário reais
 ---
 
-## 🐞 Issue / Bug Tracker Atualizado
+# Bugtracker
 
-Durante o desenvolvimento, utilizamos o **Bug Tracker do GitHub** para registrar, acompanhar e corrigir problemas encontrados na aplicação.  
-Esse acompanhamento contínuo permite:
+Implementamos uma nova seção de bug tracker para gerenciar de forma organizada as falhas identificadas e as melhorias realizadas nesta sprint.
 
-- Rastrear bugs e falhas de forma organizada;  
-- Documentar correções e melhorias realizadas;  
-- Facilitar a comunicação e a colaboração entre os membros da equipe;  
-- Garantir maior estabilidade e qualidade no produto final.
+## Open
+![bugtracker](img/issues-bugtracker3-open.png)
 
-📌 **Exemplo de uso do Bug Tracker:**  
-Abaixo, um print da nossa aba de *Issues* no GitHub, onde centralizamos os relatos e acompanhamos as correções em andamento:
+---
 
+## Closed
 ![bugtracker](img/issues-bugtracker3.png)
 
-> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento — garantindo um fluxo claro de manutenção e evolução do sistema.
+---
+
+> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento
 
 ---
 
