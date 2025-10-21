@@ -182,8 +182,9 @@ def arquivo_de_temporadas(request):
             season = temporada['season']
             
             api_url = f'https://api.jikan.moe/v4/seasons/{year}/{season}'
-          
+            
             params = {'limit': 10, 'sfw': 'true'}
+
             
             response = requests.get(api_url, params=params, timeout=10)
             response.raise_for_status()
