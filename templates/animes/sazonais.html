@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sazonais{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    <section class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">
+                <span class="highlight">Sazonais</span>
+            </h1>
+            <p class="hero-subtitle">Descubra os melhores animes das temporadas desse ano!</p>
+        </div>
+    </section>
+
+    {% if erro %}
+    <div class="error-banner" role="alert">
+        <p>{{ erro }}</p>
+    </div>
+    {% endif %}
+
+    {% if dados_completos %}
+        {% for temporada in dados_completos %}
+        <section class="featured-section">
+            <div class="container">
+                <header class="section-header">
+                    <h2 class="section-title">{{ temporada.season_pt }} {{ temporada.year }}</h2>
+                    <p class="section-subtitle">Os melhores lançamentos da temporada</p>
+                </header>
+                
+                {% if temporada.animes %}
+                <div class="anime-grid">
+                    {% for anime in temporada.animes %}
+                    <article class="anime-card">
+                        <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
+                            <div class="anime-poster">
+                                <img 
+                                    src="{{ anime.images.jpg.image_url }}" 
+                                    alt="{{ anime.title }}"
+                                    loading="lazy"
+                                >
+                                <div class="anime-overlay">
+                                    <div class="anime-info">
+                                        <div class="anime-score">
+                                            {% if anime.score %}
+                                                ⭐ {{ anime.score }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </div>
+                                        <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="anime-details">
+                                <h3 class="anime-title">{{ anime.title }}</h3>
+                                <div class="anime-meta">
+                                    <span class="anime-type">{{ anime.type|default:"TV" }}</span>
+                                    {% if anime.episodes %}
+                                        <span class="anime-episodes">{{ anime.episodes }} eps</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="error-banner" role="alert">
+                    <p>Nenhum anime disponível para esta temporada.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        {% endfor %}
+    {% else %}
+    <div class="error-banner" role="alert">
+        <p>Nenhuma temporada disponível no momento.</p>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}
