@@ -1571,11 +1571,6 @@ anime-trailer-container {
 .anime-card:nth-child(10) { animation-delay: 0.5s; }
 .anime-card:nth-child(n+11) { animation-delay: 0.55s; }
 
-
-/* ======================================================
-   SEASON PAGE — ARQUIVO DE TEMPORADAS (OtakuVerse)
-   ====================================================== */
-
 .season-hero {
     padding: 4rem 0 3rem;
     text-align: center;
@@ -1604,7 +1599,6 @@ anime-trailer-container {
     padding: 4rem 0;
 }
 
-/* Cada bloco de temporada */
 .season-block {
     margin-bottom: 5rem;
     background: rgba(58, 58, 58, 0.7);
@@ -1621,7 +1615,6 @@ anime-trailer-container {
     border-bottom: 1px solid var(--dark-border);
 }
 
-/* Gradientes sazonais (mesma estética pastel) */
 .season-block-header.inverno {
     background: linear-gradient(135deg, #87CEEB, #4682B4);
 }
@@ -1652,7 +1645,6 @@ anime-trailer-container {
     color: rgba(255,255,255,0.9);
 }
 
-/* Sinopse curta dos animes */
 .anime-synopsis {
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -1660,7 +1652,6 @@ anime-trailer-container {
     margin-top: 0.5rem;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .season-title {
         font-size: 2.2rem;
