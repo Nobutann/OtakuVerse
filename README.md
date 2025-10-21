@@ -240,5 +240,46 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
 📄 [Acesse o PDF](docs/pair_programming.pdf)
 
+---
+
+## 🧪 Testes de Sistema (E2E) Automatizados
+
+Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
+Esses testes verificam **fluxos completos**, como login, pesquisa de animes, marcação de episódios assistidos, exibição de temporadas e gerenciamento de listas.
+
+A execução automatizada desses testes garante:
+- Maior **confiabilidade** no funcionamento do sistema;
+- **Detecção rápida** de falhas após atualizações;
+- **Padronização** dos cenários de validação;
+- **Economia de tempo** nas verificações manuais.
+
+🎥 **Assista à execução dos testes E2E:**  
+[👉 Clique aqui para ver o screencast no YouTube](https://youtu.be/SEU_LINK_AQUI)
+
+---
+
+📌 *Ferramentas utilizadas*:  
+- Framework de testes E2E (ex.: Cypress, Playwright ou Selenium)  
+- Execução automatizada no ambiente do projeto  
+- Cenários baseados em histórias de usuário reais
+---
+
+## 🐞 Issue / Bug Tracker Atualizado
+
+Durante o desenvolvimento, utilizamos o **Bug Tracker do GitHub** para registrar, acompanhar e corrigir problemas encontrados na aplicação.  
+Esse acompanhamento contínuo permite:
+
+- Rastrear bugs e falhas de forma organizada;  
+- Documentar correções e melhorias realizadas;  
+- Facilitar a comunicação e a colaboração entre os membros da equipe;  
+- Garantir maior estabilidade e qualidade no produto final.
+
+📌 **Exemplo de uso do Bug Tracker:**  
+Abaixo, um print da nossa aba de *Issues* no GitHub, onde centralizamos os relatos e acompanhamos as correções em andamento:
+
+![bugtracker](img/issues-bugtracker3.png)
+
+> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento — garantindo um fluxo claro de manutenção e evolução do sistema.
+
 </details>
 
