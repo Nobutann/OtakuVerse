@@ -228,7 +228,7 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 
 ---
 
-## Screencast
+# Screencast
 
 Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
 📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
@@ -236,7 +236,7 @@ Gravamos um screencast apresentando as novas funcionalidades implementadas nesta
 
 ---
 
-## 🧪 Testes de Sistema (E2E) Automatizados
+# 🧪 Testes de Sistema (E2E) Automatizados
 
 Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
 Esses testes verificam **fluxos completos**, como login, pesquisa de animes, marcação de episódios assistidos, exibição de temporadas e gerenciamento de listas.
@@ -276,10 +276,13 @@ Implementamos uma nova seção de bug tracker para gerenciar de forma organizada
 
 ---
 
-## Relatório Pair Programming
+# Relatório Pair Programming
 
 Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
 📄 [Acesse o PDF](docs/pair_programming.pdf)
+
+---
+---
 
 </details>
 
