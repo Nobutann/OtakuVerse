@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchSuggestions = document.getElementById('searchSuggestions');
     const userMenuBtn = document.getElementById('userMenuBtn');
     const userDropdown = document.getElementById('userDropdown');
+    const searchTypeRadios = document.querySelectorAll('input[name="search_type"]');
     
     let searchTimeout;
     let currentFocus = -1;
@@ -42,6 +43,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 hideSuggestions();
             }
         });
+
+        if (searchTypeRadios) {
+            searchTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const query = searchInput.value.trim();
+                    if (query.length >= 2) {
+                        fetchSuggestions(query);
+                    }
+                });
+            });
+        }
 
         searchInput.addEventListener('keydown', function(e) {
             const suggestions = searchSuggestions.querySelectorAll('.suggestion-item');
@@ -88,7 +100,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchSuggestions(query) {
-        fetch(`/api/suggestions/?q=${encodeURIComponent(query)}`)
+        const searchType = document.querySelector('input[name="search_type"]:checked');
+        const type = searchType ? searchType.value : 'anime';
+        
+        fetch(`/api/suggestions/?q=${encodeURIComponent(query)}&type=${type}`)
             .then(response => response.json())
             .then(data => showSuggestions(data))
             .catch(err => console.error('Erro ao buscar sugestões:', err));
@@ -107,11 +122,42 @@ document.addEventListener('DOMContentLoaded', function() {
         items.forEach(item => {
             const div = document.createElement('div');
             div.classList.add('suggestion-item');
-            div.innerHTML = `<img src="${item.image}" width="40"> ${item.title} (${item.year || '-'})`;
+            
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.title;
+            img.style.width = '40px';
+            img.style.height = '56px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '4px';
+            img.style.marginRight = '10px';
+            
+            if (item.type === 'usuário') {
+                img.style.borderRadius = '50%';
+            }
+            
+            const title = document.createElement('span');
+            title.textContent = item.title;
+            
+            const badge = document.createElement('span');
+            badge.className = 'suggestion-type';
+            badge.textContent = item.type;
+            
+            div.appendChild(img);
+            div.appendChild(title);
+            div.appendChild(badge);
+            
             div.addEventListener('click', () => {
                 hideSuggestions();
-                window.location.href = `/animes/animes/${item.id}/`;
+                if (item.type === 'anime') {
+                    window.location.href = `/animes/animes/${item.id}/`;
+                } else if (item.type === 'personagem') {
+                    window.location.href = `/search/characters/?q=${encodeURIComponent(item.title)}`;
+                } else if (item.type === 'usuário') {
+                    window.location.href = `/users/${item.id}/`;
+                }
             });
+            
             searchSuggestions.appendChild(div);
         });
 

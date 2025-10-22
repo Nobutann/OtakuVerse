@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Resultados para "{{ query }}"{% endblock %}
+
+{% block content %}
+<main class="search-results-container">
+    <header class="results-header">
+        {% if query %}
+            <h1 class="results-title">Resultados da busca por <span class="results-query">"{{ query }}"</span></h1>
+            <p class="results-count">{{ total_results }} usuário(s) encontrado(s)</p>
+        {% else %}
+            <h1 class="results-title">Buscar Usuários</h1>
+        {% endif %}
+    </header>
+    
+    {% if users %}
+        <div class="results-grid">
+            {% for usuario in users %}
+                <a href="{% url 'users:profile' usuario.username %}" class="user-card">
+                    <img src="{{ usuario.profile.avatar.url }}" alt="{{ usuario.username }}">
+                    <h3>{{ usuario.username }}</h3>
+                    
+                    {% if usuario.profile.bio %}
+                        <p class="user-bio">{{ usuario.profile.bio|truncatewords:15 }}</p>
+                    {% endif %}
+                    
+                    {% if usuario.profile.showStats %}
+                        <div class="user-stats">
+                            <span class="stat-item"> {{ usuario.profile.animeCount }}</span>
+                            <span class="stat-item"> {{ usuario.profile.episodesWatched }}</span>
+                        </div>
+                    {% endif %}
+                    
+                    <span class="user-badge">Usuário</span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-results">Nenhum usuário encontrado para "{{ query }}".</p>
+    {% endif %}
+</main>
+{% endblock %}

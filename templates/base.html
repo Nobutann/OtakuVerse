@@ -3,79 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OtakuVerse - A plataforma definitiva para otakus organizarem suas listas de anime e conectarem com outros fãs">
     <title>{% block title %}OtakuVerse{% endblock %}</title>
     {% load static %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Comfortaa:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-
+    <style>
+        .search-filters { display: flex; justify-content: center; gap: 1rem; margin-top: 10px; color: #ccc; font-size: 0.85rem; }
+        .search-filters label { cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .suggestion-item img { width: 40px; height: 56px; object-fit: cover; border-radius: 4px; margin-right: 10px; }
+        .suggestion-type { margin-left: auto; font-size: 0.8em; padding: 2px 6px; background-color: #555; color: #fff; border-radius: 4px; text-transform: capitalize; }
+    </style>
 </head>
 <body>
     <header class="main-header">
         <nav class="navbar">
             <div class="nav-container">
-                <div class="nav-left">
-                    <a href="{% url 'main:homepage' %}" class="logo">
-                        <span class="logo-otaku">Otaku</span><span class="logo-verse">Verse</span>
-                    </a>
-                </div>
-
+                <div class="nav-left"><a href="{% url 'main:homepage' %}" class="logo"><span class="logo-otaku">Otaku</span><span class="logo-verse">Verse</span></a></div>
                 <div class="nav-center">
-                    <form 
-                        id="anime-search-form"
-                        class="search-form" 
-                        action="{% url 'animes:buscar_anime' %}" 
-                        method="get"
-                    >
+                    <form id="main-search-form" class="search-form" action="{% url 'main:search_redirect' %}" method="get">
                         <div class="search-container">
-                            <input 
-                                type="text" 
-                                name="q" 
-                                class="search-input" 
-                                placeholder="Buscar anime..."
-                                autocomplete="off"
-                                id="searchInput"
-                                value="{{ query|default:'' }}"
-                            >
-                            <button type="submit" class="search-btn" aria-label="Buscar">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
+                            <input type="text" name="q" class="search-input" placeholder="Buscar..." autocomplete="off" id="searchInput" value="{{ query|default:'' }}">
+                            <button type="submit" class="search-btn" aria-label="Buscar"><svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg></button>
                             <div class="search-suggestions" id="searchSuggestions"></div>
+                        </div>
+                        <div class="search-filters">
+                            <label><input type="radio" name="search_type" value="anime" checked> Anime</label>
+                            <label><input type="radio" name="search_type" value="character"> Personagem</label>
+                            <label><input type="radio" name="search_type" value="user"> Usuário</label>
                         </div>
                     </form>
                 </div>
-
                 <div class="nav-right">
                     <ul class="nav-menu">
-                        <li class="nav-item coming-soon">
-                            <a href="#" class="nav-link">Top Animes</a>
+                        <li class="nav-item">
+                            <a href="{% url 'animes:anime_ranking' %}" class="nav-link">Top Animes</a>
                         </li>
-                        <li class="nav-item coming-soon">
-                            <a href="#" class="nav-link">Sazonais</a>
+                        <li class="nav-item">
+                            <a href="{% url 'animes:sazonais' %}" class="nav-link">Sazonais</a>
                         </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
                                 <button class="nav-link user-menu" id="userMenuBtn">
                                     <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="user-avatar">
-                                    <span class="username">{{ user.username }}</span>
+                                    <span class="nav-username">{{ request.user.username }}</span>
                                 </button>
                                 <div class="dropdown-menu" id="userDropdown">
                                     <a href="{% url 'users:profile' user.username %}" class="dropdown-item">Meu Perfil</a>
+                                    <a href="{% url 'lists:personagens_favoritos' %}" class="dropdown-item">Personagens Favoritos</a>
                                     <a href="{% url 'users:edit_profile' %}" class="dropdown-item">Configurações</a>
                                     <div class="dropdown-divider"></div>
                                     <a href="{% url 'users:logout' %}" class="dropdown-item">Sair</a>
                                 </div>
                             </li>
                         {% else %}
-                            <li class="nav-item">
-                                <a href="{% url 'users:login' %}" class="nav-link login-btn">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{% url 'users:signup' %}" class="nav-link signup-btn">Cadastrar</a>
-                            </li>
+                            <li class="nav-item"><a href="{% url 'users:login' %}" class="nav-link login-btn">Login</a></li>
+                            <li class="nav-item"><a href="{% url 'users:signup' %}" class="nav-link signup-btn">Cadastrar</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -83,34 +66,10 @@
         </nav>
     </header>
 
-    {% block content %}
-    {% endblock %}
-
-    <<footer class="main-footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3 class="footer-title">OtakuVerse</h3>
-                <p class="footer-text">A plataforma definitiva para otakus organizarem suas listas e conectarem com a comunidade.</p>
-            </div>
-            
-            <div class="footer-section footer-links">
-                <h3 class="footer-title">Desenvolvedores</h3>
-                <ul class="footer-menu">
-                    <li><a href="https://www.linkedin.com/in/danilo-duleba-432ba81a9/" target="_blank" rel="noopener noreferrer">Danilo Duleba</a></li>
-                    <li><a href="https://www.linkedin.com/in/filipecorreiasantos/" target="_blank" rel="noopener noreferrer">Filipe Santos</a></li>
-                    <li><a href="https://www.linkedin.com/in/jcvg2104/" target="_blank" rel="noopener noreferrer">João Carlos</a></li>
-                    <li><a href="http://www.linkedin.com/in/gonzaga07" target="_blank" rel="noopener noreferrer">Luiz Gonzaga</a></li>
-                    <li><a href="https://www.linkedin.com/in/marco-aur%C3%A9lio-82475a35a/" target="_blank" rel="noopener noreferrer">Marco Aurélio</a></li>
-                    <li><a href="https://www.linkedin.com/in/walter-maia-/" target="_blank" rel="noopener noreferrer">Walter Maia</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 OtakuVerse. Feito com 💜 para a comunidade otaku.</p>
-        </div>
-    </div>
-</footer>
+    {% block content %}{% endblock %}
+    
+    <footer class="main-footer">
+        </footer>
 
     <script src="{% static 'main/js/scripts.js' %}"></script>
 </body>

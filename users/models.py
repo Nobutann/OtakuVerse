@@ -10,7 +10,6 @@ class UserProfile(models.Model):
     birthDate = models.DateField(blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/default.jpg')
 
-    isPublic = models.BooleanField(default=True)
     showStats = models.BooleanField(default=True)
 
     animeCount = models.PositiveIntegerField(default=0)

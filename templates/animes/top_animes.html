@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Top Animes{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    <section class="ranking-hero">
+        <div class="container">
+            <header class="ranking-header">
+                <h1 class="ranking-title">
+                    <span class="highlight">Top Animes</span>
+                </h1>
+                <p class="ranking-subtitle">
+                    Os animes mais bem avaliados pelos otakus do mundo
+                </p>
+            </header>
+        </div>
+    </section>
+
+    <section class="ranking-section">
+        <div class="container">
+            {% if animes %}
+            <div class="anime-grid">
+                {% for anime in animes %}
+                <article class="anime-card">
+                    <div class="rank-badge">
+                        <span class="rank-number">#{{ animes.start_index|add:forloop.counter0 }}</span>
+                    </div>
+                    <a href="{% url 'animes:detalhes_anime' anime.mal_id %}" class="anime-link">
+                        <div class="anime-poster">
+                            <img 
+                                src="{{ anime.images.jpg.image_url }}" 
+                                alt="{{ anime.title }}"
+                                loading="lazy"
+                                class="poster-image"
+                            >
+                            <div class="anime-overlay">
+                                <div class="anime-info">
+                                    <div class="anime-score">
+                                        ⭐ {{ anime.score|default:"N/A" }}
+                                    </div>
+                                    {% if anime.year %}
+                                    <div class="anime-year">
+                                        {{ anime.year }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="anime-details">
+                            <h2 class="anime-title">{{ anime.title }}</h2>
+                            <div class="anime-meta">
+                                <span class="anime-type">{{ anime.type|default:"TV" }}</span>
+                                {% if anime.episodes %}
+                                    <span class="anime-episodes">{{ anime.episodes }} eps</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                {% endfor %}
+            </div>
+
+                {% if animes.has_other_pages %}
+                <nav class="pagination-nav" aria-label="Navegação de páginas">
+                    <ul class="pagination">
+                        {% if animes.has_previous %}
+                        <li class="page-item">
+                            <a href="?page=1" class="page-link" aria-label="Primeira página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ animes.previous_page_number }}" class="page-link" aria-label="Página anterior">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link current-page">
+                                Página {{ animes.number }} de {{ animes.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if animes.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ animes.next_page_number }}" class="page-link" aria-label="Próxima página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a href="?page={{ animes.paginator.num_pages }}" class="page-link" aria-label="Última página">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                    <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            {% else %}
+                <div class="no-results">
+                    <p class="no-results-text">Nenhum anime encontrado no momento.</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

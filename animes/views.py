@@ -1,17 +1,27 @@
 from django.shortcuts import render
 import requests
-from django.db.models import Avg
 from lists.models import Anime, AnimeList
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from datetime import datetime 
+import time
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def buscar_anime(request):
     query = request.GET.get('q', '')
     contexto = {
         'query': query,
         'resultados': [],
+        'users': [],
         'erro': None,
     }
 
     if query:
+
+        users = User.objects.select_related('profile').filter(Q(username__icontains=query) | Q(profile__bio__icontains=query)).order_by('username')[:10]
+
+        contexto['users'] = users
+        
         api_url = 'https://api.jikan.moe/v4/anime'
         
         rating_selecionado = request.GET.get('rating', 'padrao')
@@ -109,3 +119,99 @@ def detalhes_anime(request, anime_id):
         contexto['erro'] = f"Ocorreu um erro ao buscar os detalhes do anime: {e}"
 
     return render(request, 'animes/pagina_de_detalhes.html', contexto)
+
+def top_animes(request):
+    top_url = "https://api.jikan.moe/v4/top/anime"
+
+    response = requests.get(top_url, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+    animes_list = data.get('data', [])
+    paginator = Paginator(animes_list, 20)
+    page_number = request.GET.get('page')
+
+    try:
+        animes = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        animes = paginator.get_page(1)
+    except EmptyPage:
+        animes = paginator.get_page(paginator.num_pages)
+
+    context = {
+        'animes': animes
+    }
+
+    return render(request, 'animes/top_animes.html', context)
+
+def arquivo_de_temporadas(request):
+    temporadas_en = ['winter', 'spring', 'summer', 'fall']
+    temporadas_pt_map = {
+        'winter': 'Inverno',
+        'spring': 'Primavera',
+        'summer': 'Verão',
+        'fall': 'Outono'
+    }
+
+    now = datetime.now()
+    ano_atual = now.year
+    mes_atual = now.month
+    
+    if mes_atual in [12, 1, 2]:  
+        indice_temporada_atual = 0 
+        if mes_atual == 12: 
+            ano_atual = ano_atual + 1
+    elif mes_atual in [3, 4, 5]: 
+        indice_temporada_atual = 1  
+    elif mes_atual in [6, 7, 8]:  
+        indice_temporada_atual = 2 
+    else:  
+        indice_temporada_atual = 3 
+
+    numero_de_temporadas = 4
+    temporadas_para_buscar = []
+    ano_iter = ano_atual
+    indice_iter = indice_temporada_atual
+
+    for _ in range(numero_de_temporadas):
+        season_en = temporadas_en[indice_iter]
+        temporadas_para_buscar.append({'year': ano_iter, 'season': season_en})
+
+        indice_iter -= 1
+        if indice_iter < 0:
+            indice_iter = 3
+            ano_iter -= 1
+
+    dados_completos = []
+    erro = None
+
+    try:
+        for temporada in temporadas_para_buscar:
+            year = temporada['year']
+            season = temporada['season']
+            
+            api_url = f'https://api.jikan.moe/v4/seasons/{year}/{season}'
+            
+            params = {'limit': 10, 'sfw': 'true'}
+
+            
+            response = requests.get(api_url, params=params, timeout=10)
+            response.raise_for_status()
+            dados_api = response.json()
+            
+            dados_completos.append({
+                'season_pt': temporadas_pt_map.get(season),
+                'year': year,
+                'animes': dados_api.get('data', [])
+            })
+            
+            time.sleep(0.5)
+
+    except requests.exceptions.RequestException as e:
+        erro = f"Ocorreu um erro ao buscar os animes: {e}"
+
+    contexto = {
+        'dados_completos': dados_completos,
+        'erro': erro
+    }
+    
+    return render(request, 'animes/sazonais.html', contexto)

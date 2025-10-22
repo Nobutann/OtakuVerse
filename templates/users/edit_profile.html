@@ -117,38 +117,6 @@
                         <p class="help-text">Descreva seus gostos, animes favoritos ou qualquer coisa interessante sobre você.</p>
                     </div>
                 </section>
-
-                <section class="form-section">
-                    <h2 class="section-title">Configurações de Privacidade</h2>
-                    
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" 
-                                   name="is_public" 
-                                   {% if profile.isPublic %}checked{% endif %}
-                                   class="checkbox-input">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">
-                                <strong>Perfil Público</strong>
-                                <p>Permite que outros usuários vejam seu perfil e informações</p>
-                            </span>
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" 
-                                   name="show_stats" 
-                                   {% if profile.showStats %}checked{% endif %}
-                                   class="checkbox-input">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">
-                                <strong>Mostrar Estatísticas</strong>
-                                <p>Exibe suas estatísticas de animes (total assistido, episódios, etc.)</p>
-                            </span>
-                        </label>
-                    </div>
-                </section>
             </div>
 
             <div class="form-actions">

@@ -181,7 +181,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.username {
+.profile-header .username {
     font-family: 'Comfortaa', cursive;
     font-size: 2.2rem;
     font-weight: 700;

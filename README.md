@@ -191,3 +191,98 @@ Utilizamos o bug tracker do GitHub para registrar erros encontrados no projeto, 
 ## Relatório Pair programing
 - Durante o desenvolvimento do OtakuVerse, adotamos a prática de Pair Programming como estratégia para aumentar a colaboração e a qualidade do código. Trabalhando em 		duplas, um integrante assumia o papel de driver, escrevendo o código, enquanto o outro atuava como navigator, revisando e sugerindo melhorias em tempo real. Essa 			dinâmica favoreceu a troca de conhecimento, a rápida detecção de falhas e a integração entre os membros da equipe. Para acessa-lo, [Abra o pdf](docs/pair_programming.pdf).
 </details>
+
+---
+
+<details>
+<summary>🚀 TERCEIRA ENTREGA</summary>
+
+Nesta terceira entrega, ampliamos significativamente as funcionalidades do **OtakuVerse**, aprimorando a experiência do usuário e consolidando o sistema com novas histórias implementadas e melhorias gerais.
+
+# Histórias implementadas:
+
+## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
+- Implementamos uma funcionalidade que permite ao usuário marcar episódios individualmente como concluídos.
+- O sistema exibe um indicador visual de progresso, permitindo que o usuário saiba exatamente até onde assistiu.
+- Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
+
+## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
+- Adicionamos uma área dedicada com título da temporada, data de lançamento, número de episódios e sinopse.
+- Isso permite que o usuário acompanhe o lançamento e evolução das séries de forma clara.
+
+## 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
+- Criamos um ranking dinâmico, exibindo os animes com as notas mais altas dadas pela comunidade.
+- O ranking apresenta posição, nota média e número de avaliações, tornando a descoberta de novos títulos mais prática.
+
+---
+
+# Jira
+
+Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
+
+### Backlog:
+![backlog3](img/backlog3.png)
+
+### Board:
+![board3](img/board3.png)
+
+---
+
+# Screencast
+
+Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
+📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
+
+
+---
+
+# 🧪 Testes de Sistema (E2E) Automatizados
+
+Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
+Esses testes verificam **fluxos completos**, como login, pesquisa de animes, marcação de episódios assistidos, exibição de temporadas e gerenciamento de listas.
+
+A execução automatizada desses testes garante:
+- Maior **confiabilidade** no funcionamento do sistema;
+- **Detecção rápida** de falhas após atualizações;
+- **Padronização** dos cenários de validação;
+- **Economia de tempo** nas verificações manuais.
+
+🎥 **Assista à execução dos testes E2E:**  
+[👉 Clique aqui para ver o screencast no YouTube](https://youtu.be/SEU_LINK_AQUI)
+
+---
+
+📌 *Ferramentas utilizadas*:  
+- Framework de testes E2E (Cypress)  
+- Execução automatizada no ambiente do projeto  
+- Cenários baseados em histórias de usuário reais
+---
+
+# Bugtracker
+
+Implementamos uma nova seção de bug tracker para gerenciar de forma organizada as falhas identificadas e as melhorias realizadas nesta sprint.
+
+## Open
+![bugtracker](img/issues-bugtracker3-open.png)
+
+---
+
+## Closed
+![bugtracker](img/issues-bugtracker3.png)
+
+---
+
+> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento
+
+---
+
+# Relatório Pair Programming
+
+Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
+📄 [Acesse o PDF](docs/pair_programming.pdf)
+
+---
+---
+
+</details>
+

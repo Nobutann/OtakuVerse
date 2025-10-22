@@ -58,6 +58,12 @@ body {
     padding: 1rem 0;
 }
 
+.nav-username {
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    color: var(--text-secondary);
+}
+
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -1324,5 +1330,473 @@ anime-trailer-container {
     .filter-group select {
         padding: 0.6rem;
         font-size: 0.85rem;
+    }
+}
+
+.ranking-hero {
+    padding: 4rem 0 3rem;
+    background: linear-gradient(135deg, rgba(255, 182, 193, 0.15) 0%, rgba(221, 160, 221, 0.15) 50%, rgba(152, 251, 152, 0.1) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.ranking-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(221, 160, 221, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.ranking-header {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.ranking-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.ranking-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.ranking-section {
+    padding: 3rem 0 4rem;
+}
+
+.rank-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 10;
+    background: var(--gradient-cute);
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.anime-card:hover .rank-badge {
+    transform: scale(1.05);
+}
+
+.rank-number {
+    font-family: 'Comfortaa', cursive;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pagination-nav {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    background: var(--dark-card);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--dark-border);
+}
+
+.page-item {
+    display: flex;
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+    background: var(--dark-light);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--dark-border);
+    font-weight: 500;
+}
+
+.page-link:hover {
+    background: var(--gradient-cute);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+    border-color: transparent;
+}
+
+.page-link svg {
+    display: block;
+}
+
+.current-page {
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    cursor: default;
+    font-weight: 600;
+    padding: 0 1rem;
+}
+
+.current-page:hover {
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.page-item.active .page-link {
+    background: var(--gradient-cute);
+    color: white;
+    border-color: transparent;
+}
+
+.no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--dark-card);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+}
+
+.no-results-text {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .ranking-hero {
+        padding: 3rem 0 2rem;
+    }
+    
+    .ranking-title {
+        font-size: 2.2rem;
+    }
+    
+    .ranking-subtitle {
+        font-size: 1rem;
+    }
+    
+    .rank-badge {
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.3rem 0.55rem;
+    }
+    
+    .rank-number {
+        font-size: 0.85rem;
+    }
+    
+    .pagination {
+        padding: 0.75rem 1rem;
+        gap: 0.25rem;
+    }
+    
+    .page-link {
+        min-width: 36px;
+        height: 36px;
+    }
+    
+    .current-page {
+        font-size: 0.85rem;
+        padding: 0 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ranking-title {
+        font-size: 1.8rem;
+    }
+    
+    .ranking-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .rank-badge {
+        top: 0.4rem;
+        left: 0.4rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .rank-number {
+        font-size: 0.8rem;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anime-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.anime-card:nth-child(1) { animation-delay: 0.05s; }
+.anime-card:nth-child(2) { animation-delay: 0.1s; }
+.anime-card:nth-child(3) { animation-delay: 0.15s; }
+.anime-card:nth-child(4) { animation-delay: 0.2s; }
+.anime-card:nth-child(5) { animation-delay: 0.25s; }
+.anime-card:nth-child(6) { animation-delay: 0.3s; }
+.anime-card:nth-child(7) { animation-delay: 0.35s; }
+.anime-card:nth-child(8) { animation-delay: 0.4s; }
+.anime-card:nth-child(9) { animation-delay: 0.45s; }
+.anime-card:nth-child(10) { animation-delay: 0.5s; }
+.anime-card:nth-child(n+11) { animation-delay: 0.55s; }
+
+.season-hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,182,193,0.1) 0%, rgba(221,160,221,0.1) 100%);
+}
+
+.season-header {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.season-title {
+    font-family: 'Comfortaa', cursive;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.season-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.seasons-container {
+    padding: 4rem 0;
+}
+
+.season-block {
+    margin-bottom: 5rem;
+    background: rgba(58, 58, 58, 0.7);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.season-block-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+.season-block-header.inverno {
+    background: linear-gradient(135deg, #87CEEB, #4682B4);
+}
+
+.season-block-header.primavera {
+    background: linear-gradient(135deg, #DDA0DD, #FFB6C1);
+}
+
+.season-block-header.verão {
+    background: linear-gradient(135deg, #98FB98, #00FA9A);
+}
+
+.season-block-header.outono {
+    background: linear-gradient(135deg, #FFA07A, #FF6347);
+}
+
+.season-block-header.próxima,
+.season-block-header.proxima {
+    background: linear-gradient(135deg, var(--primary-pink), var(--accent-coral));
+}
+
+.season-block-header .section-title {
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.season-block-header .section-subtitle {
+    color: rgba(255,255,255,0.9);
+}
+
+.anime-synopsis {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .season-title {
+        font-size: 2.2rem;
+    }
+    .season-subtitle {
+        font-size: 1rem;
+    }
+    .season-block-header {
+        padding: 1.5rem 1rem;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+.search-results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.results-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.results-title {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.results-query {
+    color: #ff79c6;
+}
+
+.results-count {
+    color: #999;
+    margin-top: 0.5rem;
+}
+
+.results-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.user-card {
+    background-color: #2a2a2e;
+    border-radius: 10px;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+}
+
+.user-card img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--primary-pink);
+    margin-bottom: 10px;
+}
+
+.user-card h3 {
+    font-size: 1.1rem;
+    color: #f8f8f2;
+    font-weight: 600;
+    margin: 0;
+}
+
+.user-bio {
+    font-size: 0.85rem;
+    color: #999;
+    line-height: 1.4;
+    min-height: 40px;
+    margin: 0;
+}
+
+.user-stats {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.stat-item {
+    font-size: 0.85rem;
+    color: #ccc;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.user-badge {
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-lavender));
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3);
+    margin-top: 8px;
+}
+
+.no-results {
+    text-align: center;
+    color: #999;
+    margin-top: 3rem;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .results-grid {
+        gap: 15px;
+    }
+    
+    .user-card {
+        width: 180px;
+        padding: 15px;
+    }
+    
+    .user-card img {
+        width: 100px;
+        height: 100px;
     }
 }
