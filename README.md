@@ -234,7 +234,7 @@ Nesta entrega, produzimos um screencast demonstrando as funcionalidades recém-i
 
 <p align="center">
   
-[![Deploy](https://img.shields.io/badge/DEPLOY-43B581?style=for-the-badge&logo=vercel&logoColor=white)]()
+[![Deploy](https://img.shields.io/badge/DEPLOY-43B581?style=for-the-badge&logo=vercel&logoColor=white)](https://youtu.be/TUo69KgQFFQ)
 [![Cypress](https://img.shields.io/badge/CYPRESS-6A0DAD?style=for-the-badge&logo=cypress&logoColor=white)]()
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-007BFF?style=for-the-badge&logo=githubactions&logoColor=white)]()
 
