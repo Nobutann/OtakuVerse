@@ -201,19 +201,40 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 
 # Histórias implementadas:
 
-## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
-- Implementamos uma funcionalidade que permite ao usuário marcar episódios individualmente como concluídos.
-- O sistema exibe um indicador visual de progresso, permitindo que o usuário saiba exatamente até onde assistiu.
-- Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
+## 1. Visualizar o ranking dos animes com as maiores notas
 
-## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
-- Adicionamos uma área dedicada com título da temporada, data de lançamento, número de episódios e sinopse.
-- Isso permite que o usuário acompanhe o lançamento e evolução das séries de forma clara.
+- Cenário 1: Visualizar o top ranking dos animes de acordo com a avaliação
+  
+  - Dado que o usuário está logado e deseja visualizar a ordem do top ranking dos animes com maiores notas;
+  - Quando seleciona a aba de top animes;
+  - Então uma lista crescente dos animes aparecerá.
 
-## 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
-- Criamos um ranking dinâmico, exibindo os animes com as notas mais altas dadas pela comunidade.
-- O ranking apresenta posição, nota média e número de avaliações, tornando a descoberta de novos títulos mais prática.
+### Top animes:
+![top-animes](img/top-animes.png)
 
+---
+## História 2: Eu como usuário gostaria de ver o perfil de outras pessoas da comunidade
+
+- Cenário 1: Pesquisar e visualizar o perfil de outro usuário
+
+  - Dado que o usuário está logado e deseja acessar o perfil de outro usuário;
+  - Quando pesquisa o nome do usuário desejado na barra de pesquisa;
+  - Então o perfil correspondente será exibido com as informações disponíveis.
+ 
+- Cenário 2: Exibir mensagem quando o perfil pesquisado não for encontrado
+
+  - Dado que o usuário está logado e deseja acessar o perfil de outro usuário;
+  - Quando pesquisa por um nome que não corresponde a nenhum usuário cadastrado;
+  - Então uma mensagem informando que “nenhum usuário foi encontrado” será exibida na tela.
+ 
+### Pesquisar e visualizar perfil:
+![cenario-correto](img/cenario-correto.png)
+
+### Pesquisa de usuário não encontrado:
+![cenario-errado](img/cenario-errado.png)
+
+
+---
 ---
 
 # Jira
@@ -230,33 +251,20 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 
 # Screencast
 
-Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
-📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
+Nesta entrega, produzimos um screencast demonstrando as funcionalidades recém-implementadas, além de apresentar o fluxo de deploy, os testes realizados no Cypress e a integração com o CI/CD.
+
+<p align="center">
+  
+[![Deploy](https://img.shields.io/badge/DEPLOY-43B581?style=for-the-badge&logo=vercel&logoColor=white)](https://youtu.be/TUo69KgQFFQ)
+[![Cypress](https://img.shields.io/badge/CYPRESS-6A0DAD?style=for-the-badge&logo=cypress&logoColor=white)]()
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-007BFF?style=for-the-badge&logo=githubactions&logoColor=white)]()
+
+</p>
 
 
----
-
-# 🧪 Testes de Sistema (E2E) Automatizados
-
-Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
-Esses testes verificam **fluxos completos**, como login, pesquisa de animes, marcação de episódios assistidos, exibição de temporadas e gerenciamento de listas.
-
-A execução automatizada desses testes garante:
-- Maior **confiabilidade** no funcionamento do sistema;
-- **Detecção rápida** de falhas após atualizações;
-- **Padronização** dos cenários de validação;
-- **Economia de tempo** nas verificações manuais.
-
-🎥 **Assista à execução dos testes E2E:**  
-[👉 Clique aqui para ver o screencast no YouTube](https://youtu.be/SEU_LINK_AQUI)
 
 ---
 
-📌 *Ferramentas utilizadas*:  
-- Framework de testes E2E (Cypress)  
-- Execução automatizada no ambiente do projeto  
-- Cenários baseados em histórias de usuário reais
----
 
 # Bugtracker
 

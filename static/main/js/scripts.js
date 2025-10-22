@@ -419,3 +419,168 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 });
+
+function getGlobalCsrfToken() {
+    let token = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (token && token.value) {
+        return token.value;
+    }
+    
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            return decodeURIComponent(value);
+        }
+    }
+    return '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const favoritesSection = document.getElementById('favorites');
+    if (favoritesSection) {
+        const hasFavorites = favoritesSection.querySelectorAll('.char-card').length > 0;
+        if (hasFavorites) {
+            showSearch();
+        }
+    }
+
+    const searchResultButtons = document.querySelectorAll('.btn-add');
+    searchResultButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            addFavoriteCharacter(this.dataset.id, this.dataset.name, this.dataset.image);
+        });
+    });
+});
+
+function showSearch() {
+    const searchSection = document.getElementById('search-section');
+    if (searchSection) {
+        searchSection.style.display = 'block';
+        const emptyView = document.getElementById('empty-list-view');
+        if (emptyView) {
+            emptyView.style.display = 'none';
+        }
+    }
+}
+
+async function searchCharacters() {
+    const input = document.getElementById("character-search-input");
+    if (!input) return;
+    
+    const query = input.value;
+    if (!query) return;
+    
+    try {
+        const response = await fetch(`https://api.jikan.moe/v4/characters?q=${encodeURIComponent(query)}&limit=12`);
+        const data = await response.json();
+        const resultsDiv = document.getElementById("results");
+        resultsDiv.innerHTML = "";
+        document.getElementById('results-divider').style.display = 'block';
+        
+        data.data.forEach(char => {
+            const card = document.createElement("div");
+            card.className = "char-card";
+            card.innerHTML = `
+                <img src="${char.images.jpg.image_url}" alt="${char.name}">
+                <h3>${char.name}</h3>
+                <button class="btn-add" data-id="${char.mal_id}" data-name="${char.name}" data-image="${char.images.jpg.image_url}">
+                    Adicionar ⭐
+                </button>
+            `;
+            
+            card.querySelector('.btn-add').addEventListener('click', function() {
+                addFavoriteCharacter(this.dataset.id, this.dataset.name, this.dataset.image);
+            });
+            
+            resultsDiv.appendChild(card);
+        });
+    } catch (error) {
+        console.error('Erro ao buscar personagens:', error);
+        alert('Erro ao buscar personagens. Tente novamente.');
+    }
+}
+
+async function addFavoriteCharacter(id, name, imageUrl) {
+    console.log('addFavoriteCharacter chamada com:', id, name, imageUrl);
+    
+    const csrfToken = getGlobalCsrfToken();
+    console.log('CSRF Token:', csrfToken);
+    
+    try {
+        const response = await fetch("/lists/personagens/add/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ id: id, name: name, image: imageUrl })
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Erro do servidor:', errorText);
+            throw new Error(`Erro do servidor: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        console.log('Result:', result);
+        
+        if (result.status === 'success') {
+            alert(`${name} foi adicionado aos seus favoritos!`);
+            if (window.location.pathname.includes('personagens-favoritos')) {
+                location.reload();
+            } else {
+                window.location.href = '/lists/personagens/';
+            }
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Erro completo:', error);
+        alert('Não foi possível adicionar o favorito.');
+    }
+}
+
+async function removeFavorite(id) {
+    if (!confirm("Tem certeza que deseja remover este personagem?")) return;
+    
+    const csrfToken = getGlobalCsrfToken();
+    
+    try {
+        const response = await fetch("/lists/personagens/remove/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ id: id })
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            const cardToRemove = document.getElementById(`fav-card-${id}`);
+            if (cardToRemove) {
+                cardToRemove.remove();
+            }
+            
+            const favoritesSection = document.getElementById('favorites');
+            const remainingCards = favoritesSection.querySelectorAll('.char-card');
+            
+            if (remainingCards.length === 0) {
+                location.reload();
+            } else {
+                alert('Personagem removido!');
+            }
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('Erro ao remover favorito:', error);
+        alert('Erro ao remover favorito. Tente novamente.');
+    }
+}
