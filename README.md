@@ -199,31 +199,24 @@ Utilizamos o bug tracker do GitHub para registrar erros encontrados no projeto, 
 
 Nesta terceira entrega, ampliamos significativamente as funcionalidades do **OtakuVerse**, aprimorando a experiência do usuário e consolidando o sistema com novas histórias implementadas e melhorias gerais.
 
-## Histórias implementadas:
+# Histórias implementadas:
 
-### 1. Eu, como usuário, quero marcar episódios como “assistidos”.
+## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
 - Implementamos uma funcionalidade que permite ao usuário marcar episódios individualmente como concluídos.
 - O sistema exibe um indicador visual de progresso, permitindo que o usuário saiba exatamente até onde assistiu.
 - Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
 
-### 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
+## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
 - Adicionamos uma área dedicada com título da temporada, data de lançamento, número de episódios e sinopse.
 - Isso permite que o usuário acompanhe o lançamento e evolução das séries de forma clara.
 
-### 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
+## 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
 - Criamos um ranking dinâmico, exibindo os animes com as notas mais altas dadas pela comunidade.
 - O ranking apresenta posição, nota média e número de avaliações, tornando a descoberta de novos títulos mais prática.
 
 ---
 
-## Screencast
-
-Gravamos um screencast apresentando as novas funcionalidades implementadas nesta entrega, com foco nas melhorias de usabilidade e novos recursos.  
-📺 [Clique aqui para assistir](https://youtu.be/SEU_LINK_AQUI)
-
----
-
-## Jira
+# Jira
 
 Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
@@ -235,51 +228,48 @@ Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entre
 
 ---
 
-## 🧪 Testes de Sistema (E2E) Automatizados
+# Screencast
 
-Os **testes de sistema (End-to-End)** têm como objetivo validar o funcionamento do projeto de ponta a ponta, simulando o comportamento real de um usuário interagindo com a aplicação.  
-Esses testes verificam **fluxos completos**, como login, pesquisa de animes, marcação de episódios assistidos, exibição de temporadas e gerenciamento de listas.
+Nesta entrega, produzimos um screencast demonstrando as funcionalidades recém-implementadas, além de apresentar o fluxo de deploy, os testes realizados no Cypress e a integração com o CI/CD.
 
-A execução automatizada desses testes garante:
-- Maior **confiabilidade** no funcionamento do sistema;
-- **Detecção rápida** de falhas após atualizações;
-- **Padronização** dos cenários de validação;
-- **Economia de tempo** nas verificações manuais.
+<p align="center">
+  
+[![Deploy](https://img.shields.io/badge/DEPLOY-43B581?style=for-the-badge&logo=vercel&logoColor=white)]()
+[![Cypress](https://img.shields.io/badge/CYPRESS-6A0DAD?style=for-the-badge&logo=cypress&logoColor=white)]()
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-007BFF?style=for-the-badge&logo=githubactions&logoColor=white)]()
 
-🎥 **Assista à execução dos testes E2E:**  
-[👉 Clique aqui para ver o screencast no YouTube](https://youtu.be/SEU_LINK_AQUI)
+</p>
+
+
 
 ---
 
-📌 *Ferramentas utilizadas*:  
-- Framework de testes E2E (Cypress)  
-- Execução automatizada no ambiente do projeto  
-- Cenários baseados em histórias de usuário reais
+
+# Bugtracker
+
+Implementamos uma nova seção de bug tracker para gerenciar de forma organizada as falhas identificadas e as melhorias realizadas nesta sprint.
+
+## Open
+![bugtracker](img/issues-bugtracker3-open.png)
+
 ---
 
-## 🐞 Issue / Bug Tracker Atualizado
-
-Durante o desenvolvimento, utilizamos o **Bug Tracker do GitHub** para registrar, acompanhar e corrigir problemas encontrados na aplicação.  
-Esse acompanhamento contínuo permite:
-
-- Rastrear bugs e falhas de forma organizada;  
-- Documentar correções e melhorias realizadas;  
-- Facilitar a comunicação e a colaboração entre os membros da equipe;  
-- Garantir maior estabilidade e qualidade no produto final.
-
-📌 **Exemplo de uso do Bug Tracker:**  
-Abaixo, um print da nossa aba de *Issues* no GitHub, onde centralizamos os relatos e acompanhamos as correções em andamento:
-
+## Closed
 ![bugtracker](img/issues-bugtracker3.png)
 
-> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento — garantindo um fluxo claro de manutenção e evolução do sistema.
+---
+
+> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento
 
 ---
 
-## Relatório Pair Programming
+# Relatório Pair Programming
 
 Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
 📄 [Acesse o PDF](docs/pair_programming.pdf)
+
+---
+---
 
 </details>
 
