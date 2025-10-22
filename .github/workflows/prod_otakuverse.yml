@@ -76,7 +76,7 @@ jobs:
         env:
           # Adicione suas variáveis de ambiente necessárias
           DEBUG: 'True'
-          SECRET_KEY: ${{ secrets.yeeyaolljq3vo-nddd55p@bg&r%q-&@jl6k4!wsmk%b$ukln4b }}
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       
       - name: Run Cypress tests
         run: npx cypress run
