@@ -210,8 +210,31 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
   - Então uma lista crescente dos animes aparecerá.
 
 ### Top animes:
+![top-animes](img/top-animes.png)
+
+---
+## História 2: Eu como usuário gostaria de ver o perfil de outras pessoas da comunidade
+
+- Cenário 1: Pesquisar e visualizar o perfil de outro usuário
+
+  - Dado que o usuário está logado e deseja acessar o perfil de outro usuário;
+  - Quando pesquisa o nome do usuário desejado na barra de pesquisa;
+  - Então o perfil correspondente será exibido com as informações disponíveis.
+ 
+- Cenário 2: Exibir mensagem quando o perfil pesquisado não for encontrado
+
+  - Dado que o usuário está logado e deseja acessar o perfil de outro usuário;
+  - Quando pesquisa por um nome que não corresponde a nenhum usuário cadastrado;
+  - Então uma mensagem informando que “nenhum usuário foi encontrado” será exibida na tela.
+ 
+### Pesquisar e visualizar perfil:
+![cenario-correto](img/cenario-correto.png)
+
+### Pesquisa de usuário não encontrado:
+![cenario-errado](img/cenario-errado.png)
 
 
+---
 ---
 
 # Jira
