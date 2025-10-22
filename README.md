@@ -201,18 +201,16 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 
 # Histórias implementadas:
 
-## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
-- Implementamos uma funcionalidade que permite ao usuário marcar animes individualmente como (planejo assistir, assistindo ou completo)
-  ![planejo assistir](./img/animes-planejo-assistir.png)
-- Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
+## 1. Visualizar o ranking dos animes com as maiores notas
 
-## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
-- Adicionamos uma área dedicada com título da temporada, data de lançamento, número de episódios e sinopse.
-- Isso permite que o usuário acompanhe o lançamento e evolução das séries de forma clara.
+- Cenário 1: Visualizar o top ranking dos animes de acordo com a avaliação
+  
+  - Dado que o usuário está logado e deseja visualizar a ordem do top ranking dos animes com maiores notas;
+  - Quando seleciona a aba de top animes;
+  - Então uma lista crescente dos animes aparecerá.
 
-## 3. Eu, como usuário, quero visualizar um ranking dos animes com maior nota.
-- Criamos um ranking dinâmico, exibindo os animes com as notas mais altas dadas pela comunidade.
-- O ranking apresenta posição, nota média e número de avaliações, tornando a descoberta de novos títulos mais prática.
+### Top animes:
+
 
 ---
 
