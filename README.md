@@ -202,8 +202,8 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 # Histórias implementadas:
 
 ## 1. Eu, como usuário, quero marcar episódios como “assistidos”.
-- Implementamos uma funcionalidade que permite ao usuário marcar episódios individualmente como concluídos.
-- O sistema exibe um indicador visual de progresso, permitindo que o usuário saiba exatamente até onde assistiu.
+- Implementamos uma funcionalidade que permite ao usuário marcar animes individualmente como (planejo assistir, assistindo ou completo)
+  ![planejo assistir](./img/animes-planejo-assistir.png)
 - Também foi criada uma seção de histórico de episódios assistidos, facilitando o retorno ao ponto correto na obra.
 
 ## 2. Eu, como usuário, quero visualizar informações detalhadas sobre as temporadas dos animes.
