@@ -213,7 +213,7 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ![top-animes](img/top-animes.png)
 
 ---
-## História 2: Eu como usuário gostaria de ver o perfil de outras pessoas da comunidade
+## História 2: Visualizar o perfil de outras pessoas da comunidade
 
 ---
 
