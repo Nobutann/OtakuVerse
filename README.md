@@ -201,7 +201,7 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 
 # Histórias implementadas:
 
-## 1. Visualizar o ranking dos animes com as maiores notas
+## História 1: Visualizar o ranking dos animes com as maiores notas
 
 - Cenário 1: Visualizar o top ranking dos animes de acordo com a avaliação
   
@@ -233,6 +233,16 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ### Pesquisa de usuário não encontrado:
 ![cenario-errado](img/cenario-errado.png)
 
+## História 3: Visualizar informações sobre as temporadas que serão lançadas.
+
+- Cenário 1: Entrar na aba sazonais e visualizar quais animes serão lançados
+
+  - Dado que o usuário está logado e desejar visualizar informações sobre o lançamento de novas temporadas/animes;
+  - Quando estiver na aba sazonais;
+  - Então poderá visualizar as informações sobre as temporadas de lançamento, divididos em estações do ano.
+
+### Aba sazonais:
+![aba-sazonais](img/aba-sazonais.png)
 
 ---
 ---
