@@ -319,10 +319,10 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
 ### Backlog:
-![backlog3](img/backlog3.png)
+![backlog3](img/backlogjira3.png)
 
 ### Board:
-![board3](img/board3.png)
+![board3](img/boardjira3.png)
 
 ---
 
