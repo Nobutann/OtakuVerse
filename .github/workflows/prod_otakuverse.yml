@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 name: Build and deploy Python app to Azure Web App - OtakuVerse
 
 on:
@@ -59,27 +56,21 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Install Cypress
-        run: npm install cypress --save-dev
-      
       - name: Start Django server
         run: |
           source venv/bin/activate
           python manage.py migrate
           python manage.py runserver &
-          sleep 5
         env:
-          # Adicione suas variáveis de ambiente necessárias
           DEBUG: 'True'
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
       
-      - name: Run Cypress tests
-        run: npx cypress run
+      - name: Install Node dependencies and run Cypress
+        run: |
+          npm install
+          npx cypress install
+          npx cypress verify
+          npx cypress run
         env:
           CYPRESS_baseUrl: http://localhost:8000
       
@@ -99,7 +90,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test  
+    needs: test
     permissions:
       id-token: write
       contents: read
