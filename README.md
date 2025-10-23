@@ -215,6 +215,8 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ---
 ## História 2: Eu como usuário gostaria de ver o perfil de outras pessoas da comunidade
 
+---
+
 - Cenário 1: Pesquisar e visualizar o perfil de outro usuário
 
   - Dado que o usuário está logado e deseja acessar o perfil de outro usuário;
@@ -233,7 +235,11 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ### Pesquisa de usuário não encontrado:
 ![cenario-errado](img/cenario-errado.png)
 
-## História 3: Visualizar informações sobre as temporadas que serão lançadas.
+---
+
+## História 3: Visualizar informações sobre as temporadas que serão lançadas
+
+---
 
 - Cenário 1: Entrar na aba sazonais e visualizar quais animes serão lançados
 
@@ -243,6 +249,67 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 
 ### Aba sazonais:
 ![aba-sazonais](img/aba-sazonais.png)
+
+---
+
+## História 4: Pesquisar e visualizar personagens de animes
+
+---
+
+- Cenário 1: Pesquisar um personagem válido e aparecer:
+
+  - Dado que o usuário está logado e deseja pesquisar para visualizar o personagem;
+  - Quando estiver na opção de pesquisar personagens;
+  - Então poderá visualizar os personagens com o nome digitado.
+
+- Cenário 2: Pesquisar um personagem inválido e não ser encontrado:
+
+  - Dado que o usuário está logado e deseja pesquisar para visualizar o personagem;
+  - Quando digitar um nome de personagem inválido;
+  - Então poderá visualizar personagem não encontrado.
+
+### Pesquisa personagem válida:
+![personagem](img/personagem.png)
+
+### Pesquisa personagem inválida:
+![personagem-errado](img/personagem-errado.png)
+
+---
+ 
+
+## História 5: Selecionar anime como (planejo assistir, assistindo ou completo)
+
+---
+
+- Cenário 1: Seleciona o anime como planejo assistir:
+
+  - Dado que o usuário está logado e deseja adicionar um anime a lista de planejo assistir;
+  - Quando confirmar a opção e adicionar a lista;
+  - Então poderá visualizar na sua lista de animes, na parte de planejo assistir, o anime escolhido.
+ 
+
+- Cenário 2: Seleciona o anime como assisitndo:
+
+  - Dado que o usuário está logado e deseja adicionar um anime a lista de assistindo;
+  - Quando confirmar a opção e adicionar a lista;
+  - Então poderá visualizar na sua lista de animes, na parte de assistindo, o anime escolhido.
+
+- Cenário 3: Seleciona o anime como completo:
+
+  - Dado que o usuário está logado e deseja adicionar um anime a lista de planejo assistir;
+  - Quando confirmar a opção e adicionar a lista;
+  - Então poderá visualizar na sua lista de animes, na parte de completo, o anime escolhido.
+
+###
+ 
+### Escolha (planejo assistir):
+![planejo-assistir](img/planejo-assistir.png)
+
+### Escolha (assistindo):
+![assistindo](img/assistindo.png)
+
+### Escolha (completo):
+![completo](img/completo.png)
 
 ---
 ---
