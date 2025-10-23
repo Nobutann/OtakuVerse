@@ -60,19 +60,17 @@ jobs:
         run: |
           source venv/bin/activate
           python manage.py migrate
-          python manage.py runserver &
+          python manage.py runserver 8000 &
         env:
           DEBUG: 'True'
           SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
       
-      - name: Install Node dependencies and run Cypress
-        run: |
-          npm install
-          npx cypress install
-          npx cypress verify
-          npx cypress run
-        env:
-          CYPRESS_baseUrl: http://localhost:8000
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: 'http://localhost:8000'
+          wait-on-timeout: 60
+          config: baseUrl=http://localhost:8000
       
       - name: Upload Cypress screenshots (on failure)
         uses: actions/upload-artifact@v4
@@ -113,3 +111,4 @@ jobs:
         with:
           app-name: 'OtakuVerse'
           slot-name: 'Production'
+
