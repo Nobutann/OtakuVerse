@@ -59,44 +59,20 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      
-      - name: Install Cypress
-        run: npm install cypress --save-dev
-      
       - name: Start Django server
         run: |
           source venv/bin/activate
           python manage.py migrate
           python manage.py runserver &
-          sleep 5
         env:
-          # Adicione suas variáveis de ambiente necessárias
           DEBUG: 'True'
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
       
       - name: Run Cypress tests
-        run: npx cypress run
-        env:
-          CYPRESS_baseUrl: http://localhost:8000
-      
-      - name: Upload Cypress screenshots (on failure)
-        uses: actions/upload-artifact@v4
-        if: failure()
+        uses: cypress-io/github-action@v6
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-      
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-
+          wait-on: 'http://localhost:8000'
+          wait-on-timeout: 120
   deploy:
     runs-on: ubuntu-latest
     needs: test  
@@ -121,4 +97,5 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'OtakuVerse'
+
           slot-name: 'Production'
