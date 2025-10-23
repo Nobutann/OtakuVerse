@@ -275,43 +275,6 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ![personagem-errado](img/personagem-errado.png)
 
 ---
- 
-
-## História 5: Selecionar anime como (planejo assistir, assistindo ou completo)
-
----
-
-- Cenário 1: Seleciona o anime como planejo assistir:
-
-  - Dado que o usuário está logado e deseja adicionar um anime a lista de planejo assistir;
-  - Quando confirmar a opção e adicionar a lista;
-  - Então poderá visualizar na sua lista de animes, na parte de planejo assistir, o anime escolhido.
- 
-
-- Cenário 2: Seleciona o anime como assisitndo:
-
-  - Dado que o usuário está logado e deseja adicionar um anime a lista de assistindo;
-  - Quando confirmar a opção e adicionar a lista;
-  - Então poderá visualizar na sua lista de animes, na parte de assistindo, o anime escolhido.
-
-- Cenário 3: Seleciona o anime como completo:
-
-  - Dado que o usuário está logado e deseja adicionar um anime a lista de planejo assistir;
-  - Quando confirmar a opção e adicionar a lista;
-  - Então poderá visualizar na sua lista de animes, na parte de completo, o anime escolhido.
-
-###
- 
-### Escolha (planejo assistir):
-![planejo-assistir](img/planejo-assistir.png)
-
-### Escolha (assistindo):
-![assistindo](img/assistindo.png)
-
-### Escolha (completo):
-![completo](img/completo.png)
-
----
 ---
 
 # Jira
