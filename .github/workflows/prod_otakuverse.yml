@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 name: Build and deploy Python app to Azure Web App - OtakuVerse
 
 on:
@@ -28,11 +25,10 @@ jobs:
           source venv/bin/activate
       
       - name: Install dependencies
-        run: pip install -r requirements.txt
-      
-      - name: Cleaning testing files
         run: |
-          zip release.zip ./* -r
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
@@ -41,6 +37,8 @@ jobs:
           path: |
             .
             !venv/
+            !.git/
+            !cypress/
 
   test:
     runs-on: ubuntu-latest
@@ -59,20 +57,79 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
       
-      - name: Start Django server
+      - name: Create test database directory
+        run: mkdir -p db
+      
+      - name: Collect static files
         run: |
           source venv/bin/activate
-          python manage.py migrate
-          python manage.py runserver &
+          python manage.py collectstatic --noinput
         env:
           DEBUG: 'True'
           SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
+          ALLOWED_HOSTS: 'localhost,127.0.0.1'
+      
+      - name: Run migrations
+        run: |
+          source venv/bin/activate
+          python manage.py migrate --noinput
+        env:
+          DEBUG: 'True'
+          SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
+          ALLOWED_HOSTS: 'localhost,127.0.0.1'
+      
+      - name: Start Django server
+        run: |
+          source venv/bin/activate
+          python manage.py runserver 0.0.0.0:8000 > django.log 2>&1 &
+          echo $! > django.pid
+        env:
+          DEBUG: 'True'
+          SECRET_KEY: 'test-secret-key-apenas-para-testes-123456789'
+          ALLOWED_HOSTS: 'localhost,127.0.0.1,0.0.0.0'
+          DJANGO_SETTINGS_MODULE: 'config.settings'
+      
+      - name: Wait for Django to be ready
+        run: |
+          timeout 60 bash -c 'until curl -f http://localhost:8000 > /dev/null 2>&1; do sleep 2; done'
       
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           wait-on: 'http://localhost:8000'
           wait-on-timeout: 120
+          browser: chrome
+        env:
+          CYPRESS_BASE_URL: 'http://localhost:8000'
+      
+      - name: Stop Django server
+        if: always()
+        run: |
+          if [ -f django.pid ]; then
+            kill $(cat django.pid) || true
+          fi
+      
+      - name: Upload Django logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: django-logs
+          path: django.log
+      
+      - name: Upload Cypress screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      
+      - name: Upload Cypress videos
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
   deploy:
     runs-on: ubuntu-latest
     needs: test  
@@ -97,5 +154,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'OtakuVerse'
-
           slot-name: 'Production'
