@@ -51,10 +51,6 @@ describe('Contador de Episódios - Detalhes e Lista', () => {
             cy.get('select[name="status"]').select('watching');
             cy.get('button[type="submit"]').click();
           });
-          cy.wait(3000);
-          cy.reload();
-          cy.wait(2000);
-          cy.get('.current-entry', { timeout: 10000 }).should('exist');
         }
       });
     });

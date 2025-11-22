@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Anime(models.Model):
     mal_id = models.PositiveIntegerField(unique=True)
     title = models.CharField(max_length=300)
@@ -18,7 +19,8 @@ class Anime(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 class AnimeList(models.Model):
     STATUS = [
         ('watching', 'Assistindo'),
@@ -26,8 +28,10 @@ class AnimeList(models.Model):
         ('ptw', 'Planejo Assistir'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='anime_entries')
-    anime = models.ForeignKey(Anime, on_delete=models.CASCADE, related_name='user_entries')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='anime_entries')
+    anime = models.ForeignKey(
+        Anime, on_delete=models.CASCADE, related_name='user_entries')
     score = models.PositiveIntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default='ptw')
     episodes_watched = models.PositiveIntegerField(default=0)
@@ -43,6 +47,7 @@ class AnimeList(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.anime.title} ({self.status})"
 
+
 class FavoriteCharacter(models.Model):
     """Guarda um personagem favorito para um usuário específico."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,3 +60,45 @@ class FavoriteCharacter(models.Model):
 
     def __str__(self):
         return f"{self.name} (Favorito de {self.user.username})"
+
+
+class Comment(models.Model):
+    """Comentários de usuários sobre animes específicos."""
+    anime = models.ForeignKey(
+        Anime, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='comments')
+    content = models.CharField(max_length=175)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        content_preview = self.content[:50] + \
+            '...' if len(self.content) > 50 else self.content
+        return f"{self.user.username} - {self.anime.title} - {content_preview}"
+
+
+class AnimeRecommendation(models.Model):
+    """Recomendações de animes similares feitas por usuários."""
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='anime_recommendations')
+    source_anime = models.ForeignKey(
+        Anime, on_delete=models.CASCADE, related_name='recommendations_from')
+    recommended_anime = models.ForeignKey(
+        Anime, on_delete=models.CASCADE, related_name='recommendations_to')
+    note = models.CharField(max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'source_anime', 'recommended_anime'],
+                name='unique_user_recommendation'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.user.username} recomenda {self.recommended_anime.title} para {self.source_anime.title}"

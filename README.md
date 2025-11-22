@@ -213,7 +213,9 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ![top-animes](img/top-animes.png)
 
 ---
-## História 2: Eu como usuário gostaria de ver o perfil de outras pessoas da comunidade
+## História 2: Visualizar o perfil de outras pessoas da comunidade
+
+---
 
 - Cenário 1: Pesquisar e visualizar o perfil de outro usuário
 
@@ -233,7 +235,11 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ### Pesquisa de usuário não encontrado:
 ![cenario-errado](img/cenario-errado.png)
 
-## História 3: Visualizar informações sobre as temporadas que serão lançadas.
+---
+
+## História 3: Visualizar informações sobre as temporadas que serão lançadas
+
+---
 
 - Cenário 1: Entrar na aba sazonais e visualizar quais animes serão lançados
 
@@ -245,6 +251,30 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 ![aba-sazonais](img/aba-sazonais.png)
 
 ---
+
+## História 4: Pesquisar e visualizar personagens de animes
+
+---
+
+- Cenário 1: Pesquisar um personagem válido e aparecer:
+
+  - Dado que o usuário está logado e deseja pesquisar para visualizar o personagem;
+  - Quando estiver na opção de pesquisar personagens;
+  - Então poderá visualizar os personagens com o nome digitado.
+
+- Cenário 2: Pesquisar um personagem inválido e não ser encontrado:
+
+  - Dado que o usuário está logado e deseja pesquisar para visualizar o personagem;
+  - Quando digitar um nome de personagem inválido;
+  - Então poderá visualizar personagem não encontrado.
+
+### Pesquisa personagem válida:
+![personagem](img/personagem.png)
+
+### Pesquisa personagem inválida:
+![personagem-errado](img/personagem-errado.png)
+
+---
 ---
 
 # Jira
@@ -252,10 +282,10 @@ Nesta terceira entrega, ampliamos significativamente as funcionalidades do **Ota
 Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
 ### Backlog:
-![backlog3](img/backlog3.png)
+![backlog3](img/backlogjira3.png)
 
 ### Board:
-![board3](img/board3.png)
+![board3](img/boardjira3.png)
 
 ---
 
@@ -266,8 +296,8 @@ Nesta entrega, produzimos um screencast demonstrando as funcionalidades recém-i
 <p align="center">
   
 [![Deploy](https://img.shields.io/badge/DEPLOY-43B581?style=for-the-badge&logo=vercel&logoColor=white)](https://youtu.be/TUo69KgQFFQ)
-[![Cypress](https://img.shields.io/badge/CYPRESS-6A0DAD?style=for-the-badge&logo=cypress&logoColor=white)]()
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-007BFF?style=for-the-badge&logo=githubactions&logoColor=white)]()
+[![Cypress](https://img.shields.io/badge/CYPRESS-6A0DAD?style=for-the-badge&logo=cypress&logoColor=white)](https://youtu.be/Q18ei4toqiQ?si=b6hAWG4CAQ7me6wf)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-007BFF?style=for-the-badge&logo=githubactions&logoColor=white)](https://youtu.be/IPecKtdxZdU?si=H4LDzNZsK5K8Iule)
 
 </p>
 

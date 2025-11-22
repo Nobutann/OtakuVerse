@@ -53,7 +53,7 @@ describe('Testes de Lista de Animes', () => {
     })
     
     cy.visit(`/lists/${testUser.username}/`)
-    cy.get('table tbody tr').should('have.length.at.least', 1)
+    cy.get('table tbody tr').should('not.contain', 'Nenhum anime encontrado')
   })
 
   it('Deve adicionar anime com status Completo', () => {
@@ -71,7 +71,7 @@ describe('Testes de Lista de Animes', () => {
     })
     
     cy.visit(`/lists/${testUser.username}/`)
-    cy.get('table').contains('Completo').should('be.visible')
+    cy.get('.status-label.status-completed').should('be.visible')
   })
 
   it('Deve adicionar anime com status Planejo Assistir', () => {
@@ -89,26 +89,27 @@ describe('Testes de Lista de Animes', () => {
     })
     
     cy.visit(`/lists/${testUser.username}/`)
-    cy.get('table').contains('Planejo Assistir').should('be.visible')
+    cy.get('.status-label.status-ptw').should('be.visible')
   })
 
   it('Deve mostrar anime na lista do usuário', () => {
     cy.visit(`/lists/${testUser.username}/`)
-    cy.get('table tbody tr').should('have.length.at.least', 3)
+    cy.get('table tbody tr').should('not.contain', 'Nenhum anime encontrado')
+    cy.get('.anime-title').should('have.length.at.least', 3)
   })
 
   it('Deve filtrar por status Assistindo', () => {
     cy.visit(`/lists/${testUser.username}/?status=watching`)
     cy.wait(500)
-    cy.get('table tbody tr').should('have.length.at.least', 1)
-    cy.get('table').contains('Assistindo').should('be.visible')
+    cy.get('table tbody tr').should('not.contain', 'Nenhum anime encontrado')
+    cy.get('.status-label.status-watching').should('be.visible')
   })
 
   it('Deve filtrar por status Completo', () => {
     cy.visit(`/lists/${testUser.username}/?status=completed`)
     cy.wait(500)
-    cy.get('table tbody tr').should('have.length.at.least', 1)
-    cy.get('table').contains('Completo').should('be.visible')
+    cy.get('table tbody tr').should('not.contain', 'Nenhum anime encontrado')
+    cy.get('.status-label.status-completed').should('be.visible')
   })
 
   it('Deve remover anime da lista', () => {
@@ -135,6 +136,7 @@ describe('Testes de Lista de Animes', () => {
     })
     
     cy.visit(`/lists/${testUser.username}/`)
-    cy.get('table tbody tr').should('have.length.at.least', 5)
+    cy.get('table tbody tr').should('not.contain', 'Nenhum anime encontrado')
+    cy.get('.anime-title').should('have.length.at.least', 5)
   })
 })

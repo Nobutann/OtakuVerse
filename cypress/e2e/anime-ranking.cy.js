@@ -204,22 +204,13 @@ describe('Ranking de Animes - Top Animes', () => {
     });
   });
 
-  describe('Tratamento de Erros', () => {
-    it('deve exibir mensagem quando não houver animes', () => {
-      cy.intercept('GET', '**/v4/top/anime*', {
-        statusCode: 200,
-        body: { data: [] }
-      }).as('emptyResponse');
+  describe('Tratamento de Erros - Busca de Animes', () => {
+    it('exibe mensagem quando nenhum anime é encontrado', () => {
+      cy.visit('/animes/buscar/?q=aaasdsaadfafas');
 
-      cy.visit('/animes/ranking/animes/');
-      cy.wait('@emptyResponse');
-
-      cy.get('.no-results').then($result => {
-        if ($result.length > 0) {
-          cy.get('.no-results-text')
-            .should('contain', 'Nenhum anime encontrado no momento');
-        }
-      });
+      cy.get('.error-banner')
+        .should('be.visible')
+        .and('contain', 'Nenhum anime encontrado');
     });
   });
 });
