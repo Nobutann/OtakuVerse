@@ -3,7 +3,22 @@ import requests
 from django.http import JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, Count
+from lists.models import Anime, Comment
+
+
+def get_comment_counts(mal_ids):
+    """Helper function to get comment counts for a list of mal_ids"""
+    comment_counts = {}
+    animes = Anime.objects.filter(mal_id__in=mal_ids).annotate(
+        comment_count=Count('comments')
+    ).values('mal_id', 'comment_count')
+
+    for anime in animes:
+        comment_counts[anime['mal_id']] = anime['comment_count']
+
+    return comment_counts
+
 
 def homepage(request):
     context = {'featured_anime': [], 'erro': None}
@@ -12,7 +27,8 @@ def homepage(request):
         featured_anime = []
         for anime_id in ids:
             try:
-                response = requests.get(f"https://api.jikan.moe/v4/anime/{anime_id}", timeout=8)
+                response = requests.get(
+                    f"https://api.jikan.moe/v4/anime/{anime_id}", timeout=8)
                 response.raise_for_status()
                 data = response.json().get('data')
                 if data:
@@ -20,11 +36,18 @@ def homepage(request):
             except requests.exceptions.RequestException as e:
                 print(f"Erro ao buscar anime {anime_id}: {e}")
                 continue
+
+        # Add comment counts to anime data
+        comment_counts = get_comment_counts(ids)
+        for anime in featured_anime:
+            anime['comment_count'] = comment_counts.get(anime['mal_id'], 0)
+
         context['featured_anime'] = featured_anime
     except Exception as e:
         context['erro'] = f"Erro ao carregar recomendações: {e}"
         print(f"Erro na home: {e}")
     return render(request, 'main/index.html', context)
+
 
 def search_sugestions(request):
     query = request.GET.get('q', '').strip()
@@ -36,7 +59,8 @@ def search_sugestions(request):
 
     def fetch_jikan(endpoint, params):
         try:
-            response = requests.get(f"https://api.jikan.moe/v4/{endpoint}", params=params, timeout=5)
+            response = requests.get(
+                f"https://api.jikan.moe/v4/{endpoint}", params=params, timeout=5)
             response.raise_for_status()
             return response.json().get('data', [])
         except requests.RequestException as e:
@@ -66,7 +90,7 @@ def search_sugestions(request):
         users = User.objects.select_related('profile').filter(
             Q(username__icontains=query)
         )[:5]
-        
+
         for user in users:
             suggestions.append({
                 'id': user.username,
@@ -75,8 +99,8 @@ def search_sugestions(request):
                 'type': 'usuário'
             })
 
-
     return JsonResponse({'suggestions': suggestions})
+
 
 def search_redirect(request):
     query = request.GET.get('q', '').strip()
@@ -92,12 +116,14 @@ def search_redirect(request):
     redirect_url = f"{reverse('animes:buscar_anime')}?q={query}"
     return redirect(redirect_url)
 
+
 def character_search_results(request):
     query = request.GET.get('q', '')
     context = {'query': query, 'characters': [], 'error': None}
     if query:
         try:
-            response = requests.get("https://api.jikan.moe/v4/characters", params={'q': query}, timeout=10)
+            response = requests.get(
+                "https://api.jikan.moe/v4/characters", params={'q': query}, timeout=10)
             response.raise_for_status()
             data = response.json()
             context['characters'] = data.get('data', [])
@@ -105,21 +131,22 @@ def character_search_results(request):
             context['error'] = f"Ocorreu um erro ao buscar os personagens: {e}"
     return render(request, 'main/character_search_results.html', context)
 
+
 def user_search_results(request):
     query = request.GET.get('q', '').strip()
-    
+
     context = {
         'query': query,
         'users': [],
         'total_results': 0
     }
-    
+
     if query:
         users = User.objects.select_related('profile').filter(
             Q(username__icontains=query) | Q(profile__bio__icontains=query)
         ).order_by('username')
-        
+
         context['users'] = users
         context['total_results'] = users.count()
-    
+
     return render(request, 'main/user_search_results.html', context)
