@@ -334,3 +334,81 @@ Continuamos aplicando a prática de Pair Programming para aumentar a colaboraç�
 
 </details>
 
+---
+
+<details>
+<summary>🚀 QUARTA ENTREGA</summary>
+
+descrição sobre a entrega
+
+# Histórias implementadas:
+
+## História 1: lorem ipsum
+
+---
+## História 2: lorem ipsum
+
+---
+
+## História 3: Visualizar informações sobre as temporadas que serão lançadas
+
+---
+
+## História 4: Pesquisar e visualizar personagens de animes
+
+---
+
+# Jira
+
+descrição do que atualizou no jira
+
+### Backlog:
+imagem
+
+### Board:
+imagem
+
+---
+
+# Screencast
+
+descrição do screencast
+
+<p align="center">
+  
+links
+</p>
+
+
+
+---
+
+
+# Bugtracker
+
+descrição do bugtracker
+
+## Open
+imagem
+
+---
+
+## Closed
+imagem
+
+---
+
+> 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento
+
+---
+
+# Relatório Pair Programming
+
+Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
+📄 [Acesse o PDF](link)
+
+---
+---
+
+</details>
+
