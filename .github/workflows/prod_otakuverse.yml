@@ -72,20 +72,41 @@ jobs:
           python manage.py collectstatic --noinput --clear
         env:
           TARGET_ENV: Dev
+          DJANGO_SETTINGS_MODULE: your_project.settings
+          DEBUG: 'True'
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          # Adicione timeout maior para APIs externas
+          REQUESTS_TIMEOUT: '30'
       
       - name: Start Django application in background
         run: |
           source antenv/bin/activate
-          python manage.py runserver 0.0.0.0:8000 &
-          sleep 15
+          nohup python manage.py runserver 0.0.0.0:8000 > django.log 2>&1 &
+          echo $! > django.pid
+          
+          # Aguarda até o servidor responder
+          for i in {1..30}; do
+            if curl -s http://localhost:8000 > /dev/null 2>&1; then
+              echo "Django está respondendo!"
+              break
+            fi
+            echo "Aguardando Django iniciar... ($i/30)"
+            sleep 2
+          done
         env:
           TARGET_ENV: Dev
+          DEBUG: 'True'
+          ALLOWED_HOSTS: localhost,127.0.0.1
+          # Variáveis para controlar rate limit da Jikan API
+          JIKAN_API_DELAY: '1'
+          REQUESTS_TIMEOUT: '30'
       
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           browser: firefox
-          config: baseUrl=http://localhost:8000
+          config: baseUrl=http://localhost:8000,defaultCommandTimeout=10000,requestTimeout=15000,responseTimeout=15000
+          config-file: cypress.config.js
       
       - name: Upload Cypress screenshots on failure
         uses: actions/upload-artifact@v4
@@ -93,6 +114,14 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
+          if-no-files-found: ignore
+      
+      - name: Upload Django logs on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: django-logs
+          path: django.log
           if-no-files-found: ignore
       
       - name: Upload Cypress videos
