@@ -6,101 +6,107 @@
 
 {% block content %}
 
-<main class="main-content">
+<main class="main-content anime-details-page">
     {% if anime %}
     <section class="featured-section">
-        <div class="anime-details-container" style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: flex-start; max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <div class="anime-details-container">
 
-            <div class="anime-poster-section" style="flex: 0 0 320px; display: flex; flex-direction: column; gap: 1.5rem;">
-                <div class="anime-card">
-                    <div class="anime-poster" style="aspect-ratio: 3/4; overflow: hidden;">
-                        <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="anime-overlay">
-                            <div class="anime-info">
-                                <div class="anime-score">⭐ {{ anime.score|default:"N/A" }}</div>
-                                <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
-                            </div>
-                        </div>
+            <!-- LEFT COLUMN: Poster & Actions -->
+            <div class="anime-poster-section">
+                <!-- Poster Card -->
+                <div class="anime-poster-card">
+                    <img src="{{ anime.images.jpg.image_url }}" alt="{{ anime.title }}">
+                    <div class="anime-overlay">
+                        <div class="anime-score">⭐ {{ anime.score|default:"N/A" }}</div>
+                        <div class="anime-year">{{ anime.year|default:"TBA" }}</div>
                     </div>
                 </div>
 
+                <!-- Add to List Card -->
                 {% if user.is_authenticated %}
-                <div class="list-actions">
-                    <h4>Adicionar à Lista</h4>
-                    {% if user_entry %}
-                        <div class="current-entry" style="text-align: center;">
-                            <p class="entry-status" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
-                                <span class="status-badge status-{{ user_entry.status }}">{{ user_entry.get_status_display }}</span>
-                                {% if user_entry.score %}
-                                    <span class="user-score">{{ user_entry.score }}/10</span>
-                                {% endif %}
-                            </p>
-                            <div class="entry-actions" style="display: flex; gap: 0.5rem; justify-content: center;">
-                                <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-secondary btn-small">Editar</a>
-                                <a href="{% url 'lists:remove_entry' user_entry.id %}" class="btn btn-danger btn-small">Remover</a>
+                    <div class="list-actions">
+                        <h4>Adicionar à Lista</h4>
+                        {% if user_entry %}
+                            <div class="current-entry">
+                                <div class="entry-status" style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; margin-bottom: 1rem;">
+                                    <span class="status-badge status-{{ user_entry.status }}">{{ user_entry.get_status_display }}</span>
+                                    {% if user_entry.score %}
+                                        <span class="user-score">⭐ {{ user_entry.score }}/10</span>
+                                    {% endif %}
+                                </div>
+                                <div class="entry-actions" style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
+                                    <a href="{% url 'lists:edit_entry' user_entry.id %}" class="btn btn-secondary btn-small">Editar</a>
+                                    <a href="{% url 'lists:remove_entry' user_entry.id %}" class="btn btn-danger btn-small">Remover</a>
+                                </div>
+                                <div class="episode-counter"
+                                    data-entry-id="{{ user_entry.id }}"
+                                    data-max-episodes="{{ anime.episodes|default:0 }}">
+                                    <button type="button" class="btn btn-small decrease-ep">-</button>
+                                    <span class="episodes-watched">{{ user_entry.episodes_watched|default:0 }}</span>
+                                    <button type="button" class="btn btn-small increase-ep">+</button>
+                                    <span style="color: #9a9a9a;">/ {{ anime.episodes|default:0 }}</span>
+                                </div>
                             </div>
-
-                            <div class="episode-counter" 
-                                data-entry-id="{{ user_entry.id }}" 
-                                data-max-episodes="{{ anime.episodes|default:0 }}" 
-                                style="margin-top: 1rem; display:flex; align-items:center; gap:0.5rem;">
-                                <button type="button" class="btn btn-small decrease-ep">-</button>
-                                <span class="episodes-watched">{{ user_entry.episodes_watched|default:0 }}</span>
-                                <button type="button" class="btn btn-small increase-ep">+</button>
-                                <span style="margin-left: 0.5rem;">/ {{ anime.episodes|default:0 }}</span>
-                            </div>
-                        </div>
-                    {% else %}
-                        <form method="post" action="{% url 'lists:add_to_list' anime.mal_id %}" class="add-to-list-form" style="display: flex; flex-direction: column; gap: 1rem;">
-                            {% csrf_token %}
-                            <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                <label for="status">Status:</label>
-                                <select name="status" id="status" class="form-control" style="padding: 0.7rem; border-radius: 8px;">
-                                    <option value="ptw" selected>Planejo Assistir</option>
-                                    <option value="watching">Assistindo</option>
-                                    <option value="completed">Completo</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-full">Adicionar à Lista</button>
-                        </form>
-                    {% endif %}
-                </div>
+                        {% else %}
+                            <form method="post" action="{% url 'lists:add_to_list' anime.mal_id %}" class="add-to-list-form">
+                                {% csrf_token %}
+                                <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                    <label for="status">Status:</label>
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="ptw" selected>Planejo Assistir</option>
+                                        <option value="watching">Assistindo</option>
+                                        <option value="completed">Completo</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">Adicionar à Lista</button>
+                            </form>
+                        {% endif %}
+                    </div>
                 {% else %}
-                <div class="list-actions">
-                    <p class="login-prompt"><a href="{% url 'users:login' %}">Faça login</a> para adicionar à sua lista</p>
-                </div>
+                    <div class="list-actions">
+                        <p class="login-prompt"><a href="{% url 'users:login' %}">Faça login</a> para adicionar à sua lista</p>
+                    </div>
                 {% endif %}
 
+                <!-- Stats Card -->
                 <div class="anime-stats">
                     <h4>Estatísticas</h4>
-                    <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
-                            <span class="stat-label">Pontuação</span>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-label">⭐ Pontuação</span>
                             <span class="stat-value">{{ anime.score|default:"N/A" }}</span>
                         </div>
-                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
-                            <span class="stat-label">Ranking</span>
+                        <div class="stat-item">
+                            <span class="stat-label">🏆 Ranking</span>
                             <span class="stat-value">#{{ anime.rank|default:"N/A" }}</span>
                         </div>
-                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
-                            <span class="stat-label">Popularidade</span>
+                        <div class="stat-item">
+                            <span class="stat-label">📊 Popularidade</span>
                             <span class="stat-value">#{{ anime.popularity|default:"N/A" }}</span>
                         </div>
-                        <div class="stat-item" style="text-align:center; padding:0.8rem;">
-                            <span class="stat-label">Membros</span>
+                        <div class="stat-item">
+                            <span class="stat-label">👥 Membros</span>
                             <span class="stat-value">{{ anime.members|default:"N/A" }}</span>
                         </div>
                     </div>
                 </div>
-            </div> <div class="anime-info-section" style="flex: 1; display: flex; flex-direction: column; gap: 2rem;">
-                
+            </div>
+            <!-- END LEFT COLUMN -->
+
+            <!-- RIGHT COLUMN: Content -->
+            <div class="anime-info-section">
+
+                <!-- Hero Header -->
                 <div class="anime-header">
                     <h1 class="anime-title">{{ anime.title }}</h1>
-                    {% if anime.title_english %}
+                    {% if anime.title_english and anime.title_english != anime.title %}
                         <h2 class="anime-title-english">{{ anime.title_english }}</h2>
                     {% endif %}
                     {% if anime.title_japanese %}
                         <h3 class="anime-title-japanese">{{ anime.title_japanese }}</h3>
+                    {% endif %}
+                    {% if anime.type %}
+                        <span class="anime-type-badge">{{ anime.type }}{% if anime.episodes %} • {{ anime.episodes }} eps{% endif %}</span>
                     {% endif %}
                 </div>
 
@@ -110,6 +116,7 @@
                     </div>
                 {% endif %}
 
+                <!-- Synopsis -->
                 {% if anime.synopsis %}
                 <div class="synopsis-section">
                     <h3>Sinopse</h3>
@@ -117,30 +124,52 @@
                 </div>
                 {% endif %}
 
-                <div class="details-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 1.5rem;">
+                <!-- Details Grid -->
+                <div class="details-grid">
                     <div class="detail-section">
                         <h4>Informações</h4>
-                        <div class="detail-list" style="display:flex; flex-direction: column; gap: 0.8rem;">
+                        <div class="detail-list">
                             {% if anime.type %}
-                            <div class="detail-item"><span class="detail-label">Tipo:</span> <span class="detail-value">{{ anime.type }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Tipo:</span>
+                                <span class="detail-value">{{ anime.type }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.episodes %}
-                            <div class="detail-item"><span class="detail-label">Episódios:</span> <span class="detail-value">{{ anime.episodes }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Episódios:</span>
+                                <span class="detail-value">{{ anime.episodes }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.status %}
-                            <div class="detail-item"><span class="detail-label">Status:</span> <span class="detail-value">{{ anime.status }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">{{ anime.status }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.aired.string %}
-                            <div class="detail-item"><span class="detail-label">Exibido:</span> <span class="detail-value">{{ anime.aired.string }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Exibido:</span>
+                                <span class="detail-value">{{ anime.aired.string }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.season %}
-                            <div class="detail-item"><span class="detail-label">Temporada:</span> <span class="detail-value">{{ anime.season|title }} {{ anime.year }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Temporada:</span>
+                                <span class="detail-value">{{ anime.season|title }} {{ anime.year }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.source %}
-                            <div class="detail-item"><span class="detail-label">Fonte:</span> <span class="detail-value">{{ anime.source }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Fonte:</span>
+                                <span class="detail-value">{{ anime.source }}</span>
+                            </div>
                             {% endif %}
                             {% if anime.duration %}
-                            <div class="detail-item"><span class="detail-label">Duração:</span> <span class="detail-value">{{ anime.duration }}</span></div>
+                            <div class="detail-item">
+                                <span class="detail-label">Duração:</span>
+                                <span class="detail-value">{{ anime.duration }}</span>
+                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -160,6 +189,95 @@
                     {% endif %}
                 </div>
 
+                <!-- Recommendations Section -->
+                <div class="recommendations-container">
+                    <div class="recommendations-header">
+                        <h3 class="recommendations-title">
+                            <svg class="recommendations-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="url(#otakuGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <defs>
+                                    <linearGradient id="otakuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#ff87d6"/>
+                                        <stop offset="100%" stop-color="#a86dff"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M15 4l5 5M20 4l-5 5M2 22l8-8"/>
+                            </svg>
+                            Recomendar animes semelhantes
+                        </h3>
+                        <p class="recommendations-subtitle">Ajude outros otakus a descobrir animes com a mesma vibe</p>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <!-- Recommendation Form -->
+                        <form method="post" action="{% url 'animes:add_recommendation' anime.mal_id %}" class="recommendation-form" id="recommendationForm">
+                            {% csrf_token %}
+                            <div class="recommendation-search-wrapper">
+                                <div class="search-input-container">
+                                    <input
+                                        type="text"
+                                        id="animeSearchInput"
+                                        placeholder="Digite o nome de um anime semelhante..."
+                                        autocomplete="off"
+                                        class="anime-search-input"
+                                    >
+                                    <input type="hidden" name="recommended_anime_id" id="selectedAnimeId">
+                                    <div class="search-results" id="searchResults"></div>
+                                </div>
+
+                                <div id="selectedAnimePreview" class="selected-anime-preview" style="display: none;">
+                                    <img id="selectedAnimeImage" src="" alt="">
+                                    <div class="selected-anime-info">
+                                        <span id="selectedAnimeTitle"></span>
+                                        <button type="button" class="remove-selection" id="removeSelection">✕</button>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary recommendation-submit" id="submitRecommendation" disabled>
+                                    Recomendar
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <!-- Login Prompt -->
+                        <div class="recommendation-login-prompt">
+                            <p><a href="{% url 'users:login' %}">Faça login</a> para recomendar animes semelhantes</p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Community Recommendations Display -->
+                    <div class="community-recommendations">
+                        <h4 class="community-recommendations-title">Recomendações da Comunidade</h4>
+
+                        {% if recommendations %}
+                            <div class="recommendations-grid">
+                                {% for rec in recommendations %}
+                                    <a href="{% url 'animes:detalhes_anime' rec.recommended_anime__mal_id %}" class="recommendation-card">
+                                        <div class="recommendation-poster">
+                                            <img src="{{ rec.recommended_anime__image_url }}" alt="{{ rec.recommended_anime__title }}">
+                                        </div>
+                                        <div class="recommendation-info">
+                                            <h5 class="recommendation-anime-title">{{ rec.recommended_anime__title|truncatechars:40 }}</h5>
+                                            <div class="recommendation-meta">
+                                                <span class="recommendation-count">💫 {{ rec.recommendation_count }}x</span>
+                                                {% if rec.recommended_anime__score %}
+                                                    <span class="recommendation-score">⭐ {{ rec.recommended_anime__score }}</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-recommendations">
+                                <div class="empty-icon">💫</div>
+                                <p>Ainda não há recomendações para este anime.</p>
+                                <p class="empty-subtitle">Seja o primeiro a recomendar algo semelhante!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Trailer -->
                 {% if anime.trailer and anime.trailer.embed_url %}
                 <div class="anime-trailer-container">
                     <h3 class="trailer-title">Trailer</h3>
@@ -167,7 +285,99 @@
                 </div>
                 {% endif %}
 
-            </div> </div> </section>
+                <!-- Comments Section -->
+                <div class="comments-stats-section" style="background: var(--dark-card); border-radius: var(--border-radius); padding: 1.5rem;">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                        <span style="font-size: 1.4rem;">💬</span>
+                        Interaja com a comunidade através de comentários
+                        <span style="font-size: 0.9rem; opacity: 0.6;">✨</span>
+                    </h3>
+
+                    {% if user.is_authenticated %}
+                        <!-- Comment Form -->
+                        <form method="post" class="comment-form" style="margin-bottom: 2rem;">
+                            {% csrf_token %}
+                            <div class="comment-input-wrapper">
+                                <textarea
+                                    name="content"
+                                    id="commentContent"
+                                    class="comment-textarea"
+                                    placeholder="Escreva seu comentário (até 175 caracteres)..."
+                                    maxlength="175"
+                                    rows="3"
+                                    style="width: 100%; padding: 0.8rem; background: var(--dark-base); border: 1px solid var(--dark-border); border-radius: 8px; color: var(--text-primary); font-family: inherit; resize: vertical; min-height: 80px;"
+                                >{% if comment_error %}{{ request.POST.content }}{% endif %}</textarea>
+                                <div class="comment-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                                    <span id="charCounter" class="char-counter" style="color: var(--text-muted); font-size: 0.85rem;">0/175</span>
+                                    <button type="submit" class="btn-comment" style="background: var(--gradient-cute); border: none; padding: 0.6rem 1.5rem; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                                        Comentar
+                                    </button>
+                                </div>
+                            </div>
+                            {% if comment_error %}
+                                <p class="error-message" style="color: #ff6b6b; margin-top: 0.5rem; font-size: 0.9rem;">{{ comment_error }}</p>
+                            {% endif %}
+                        </form>
+                    {% else %}
+                        <div class="login-notice" style="background: rgba(255, 182, 193, 0.1); border: 1px solid var(--primary-pink); border-radius: 8px; padding: 1rem; margin-bottom: 2rem; text-align: center;">
+                            <p style="color: var(--text-secondary); margin: 0;">
+                                <a href="{% url 'users:login' %}" style="color: var(--primary-pink); text-decoration: none; font-weight: 600;">Faça login</a> para comentar e interagir com a comunidade.
+                            </p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Comments List -->
+                    <div class="comments-list">
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <div class="comment-card" style="background: #2a2a2a; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; position: relative; overflow: hidden;">
+                                    <div class="comment-header" style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.6rem;">
+                                        <img src="{{ comment.user.profile.avatar.url }}" alt="{{ comment.user.username }}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--dark-border);">
+                                        <div style="flex: 1;">
+                                            <a href="{% url 'users:profile' comment.user.username %}" style="color: #ff97d9; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: color 0.2s ease;">
+                                                {{ comment.user.username }}
+                                            </a>
+                                            <p style="color: #aaa; font-size: 0.75rem; margin: 0; margin-top: 2px;" title="{{ comment.created_at|date:'d/m/Y H:i' }}">
+                                                {{ comment.created_at|timesince }} atrás
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p class="comment-content" style="color: var(--text-secondary); margin: 0; line-height: 1.6; padding-left: 44px;">{{ comment.content }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- User Avatar Circles Section -->
+                        <div class="commenters-avatars" style="display: flex; align-items: center; gap: 0.5rem; padding: 1.5rem 0 0.5rem 0; border-top: 1px solid var(--dark-border); margin-top: 1rem;">
+                            {% if unique_commenters %}
+                                <!-- Show real user avatars -->
+                                {% for user in unique_commenters %}
+                                    <div class="avatar-circle" style="position: relative; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; border: 2px solid var(--primary-pink); box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3); transition: all 0.3s ease;" title="{{ user.username }}">
+                                        {% if user.profile.avatar %}
+                                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        {% else %}
+                                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary-pink), var(--primary-lavender)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1rem;">
+                                                {{ user.username|first|upper }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <!-- Show placeholder circles when no comments -->
+                                {% for i in "12345" %}
+                                    <div class="avatar-circle-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--dark-light); border: 2px dashed var(--dark-border); opacity: 0.5;"></div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END RIGHT COLUMN -->
+
+        </div>
+        <!-- END CONTAINER -->
+    </section>
 
     <hr class="divider">
 
@@ -233,4 +443,227 @@
     </div>
     {% endif %}
 </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Enhanced character counter and form interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        const commentTextarea = document.getElementById('commentContent');
+        const charCounter = document.getElementById('charCounter');
+
+        if (commentTextarea && charCounter) {
+            // Update counter on page load
+            updateCounter();
+
+            // Update counter on input
+            commentTextarea.addEventListener('input', updateCounter);
+
+            function updateCounter() {
+                const currentLength = commentTextarea.value.length;
+                const maxLength = 175;
+                charCounter.textContent = currentLength + '/' + maxLength;
+
+                // Remove all classes first
+                charCounter.classList.remove('warning', 'danger');
+
+                // Change color based on character count with smooth transitions
+                if (currentLength >= 165) {
+                    charCounter.style.color = '#ff6b6b';
+                    charCounter.classList.add('danger');
+                } else if (currentLength >= 140) {
+                    charCounter.style.color = '#ffa500';
+                    charCounter.classList.add('warning');
+                } else {
+                    charCounter.style.color = '#ccc';
+                }
+            }
+        }
+
+        // Enhanced avatar circle interactions
+        const avatarCircles = document.querySelectorAll('.avatar-circle');
+        avatarCircles.forEach((circle, index) => {
+            // Stagger animation on load
+            circle.style.animationDelay = `${0.1 + (index * 0.05)}s`;
+
+            // Add ripple effect on click
+            circle.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 182, 193, 0.6)';
+                ripple.style.width = '100%';
+                ripple.style.height = '100%';
+                ripple.style.top = '0';
+                ripple.style.left = '0';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add smooth scroll for avatar row on mobile
+        const avatarRow = document.querySelector('.commenters-avatars');
+        if (avatarRow && window.innerWidth <= 768) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            avatarRow.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - avatarRow.offsetLeft;
+                scrollLeft = avatarRow.scrollLeft;
+            });
+
+            avatarRow.addEventListener('mouseleave', () => {
+                isDown = false;
+            });
+
+            avatarRow.addEventListener('mouseup', () => {
+                isDown = false;
+            });
+
+            avatarRow.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - avatarRow.offsetLeft;
+                const walk = (x - startX) * 2;
+                avatarRow.scrollLeft = scrollLeft - walk;
+            });
+        }
+
+        // Add fade-in animation for newly posted comments
+        const commentCards = document.querySelectorAll('.comment-card');
+        commentCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.05}s`;
+        });
+
+        // Textarea auto-resize
+        if (commentTextarea) {
+            commentTextarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+            });
+        }
+    });
+
+    // Add ripple animation keyframes dynamically
+    if (!document.getElementById('ripple-animation')) {
+        const style = document.createElement('style');
+        style.id = 'ripple-animation';
+        style.textContent = `
+            @keyframes ripple {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Recommendation autocomplete functionality
+    const animeSearchInput = document.getElementById('animeSearchInput');
+    const searchResults = document.getElementById('searchResults');
+    const selectedAnimeId = document.getElementById('selectedAnimeId');
+    const selectedAnimePreview = document.getElementById('selectedAnimePreview');
+    const submitButton = document.getElementById('submitRecommendation');
+    const removeSelection = document.getElementById('removeSelection');
+
+    let searchTimeout;
+    let selectedAnime = null;
+
+    if (animeSearchInput) {
+        animeSearchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            clearTimeout(searchTimeout);
+
+            if (query.length >= 2) {
+                searchTimeout = setTimeout(() => {
+                    searchAnime(query);
+                }, 300);
+            } else {
+                searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
+            }
+        });
+
+        animeSearchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                searchResults.style.display = 'none';
+            }, 200);
+        });
+    }
+
+    if (removeSelection) {
+        removeSelection.addEventListener('click', function() {
+            clearSelection();
+        });
+    }
+
+    function searchAnime(query) {
+        fetch(`/animes/api/anime-search/?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data.results);
+            })
+            .catch(error => {
+                console.error('Error searching anime:', error);
+            });
+    }
+
+    function displaySearchResults(results) {
+        if (!results || results.length === 0) {
+            searchResults.innerHTML = '<div class="no-results">Nenhum anime encontrado</div>';
+            searchResults.style.display = 'block';
+            return;
+        }
+
+        searchResults.innerHTML = '';
+        results.forEach(anime => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.innerHTML = `
+                <img src="${anime.image_url}" alt="${anime.title}">
+                <div class="result-info">
+                    <div class="result-title">${anime.title}</div>
+                    <div class="result-meta">
+                        ${anime.type || 'N/A'} ${anime.score ? '• ⭐ ' + anime.score : ''}
+                    </div>
+                </div>
+            `;
+            resultItem.addEventListener('click', () => selectAnime(anime));
+            searchResults.appendChild(resultItem);
+        });
+        searchResults.style.display = 'block';
+    }
+
+    function selectAnime(anime) {
+        selectedAnime = anime;
+        selectedAnimeId.value = anime.mal_id;
+
+        document.getElementById('selectedAnimeImage').src = anime.image_url;
+        document.getElementById('selectedAnimeTitle').textContent = anime.title;
+
+        selectedAnimePreview.style.display = 'flex';
+        animeSearchInput.style.display = 'none';
+        searchResults.style.display = 'none';
+        submitButton.disabled = false;
+    }
+
+    function clearSelection() {
+        selectedAnime = null;
+        selectedAnimeId.value = '';
+        selectedAnimePreview.style.display = 'none';
+        animeSearchInput.style.display = 'block';
+        animeSearchInput.value = '';
+        submitButton.disabled = true;
+    }
+</script>
 {% endblock %}
