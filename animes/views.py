@@ -13,7 +13,6 @@ from django.views.decorators.http import require_POST
 
 
 def get_comment_counts(mal_ids):
-    """Helper function to get comment counts for a list of mal_ids"""
     comment_counts = {}
     animes = Anime.objects.filter(mal_id__in=mal_ids).annotate(
         comment_count=Count('comments')
@@ -112,7 +111,6 @@ def buscar_anime(request):
 
 
 def detalhes_anime(request, anime_id):
-    # Ensure anime_id is an integer
     try:
         anime_id = int(anime_id)
     except (ValueError, TypeError):
@@ -140,21 +138,18 @@ def detalhes_anime(request, anime_id):
 
         anime = dados_api.get('data')
 
-        # Get or create anime object in database
+
         anime_obj = None
         if anime:
             try:
-                # Extract studios and genres from API data (still in dict format)
                 studios_list = anime.get('studios', [])
                 genres_list = anime.get('genres', [])
 
-                # Convert to comma-separated strings for database
                 studios_str = ', '.join([s.get('name', '') for s in studios_list]) if isinstance(
                     studios_list, list) and studios_list else ''
                 genres_str = ', '.join([g.get('name', '') for g in genres_list]) if isinstance(
                     genres_list, list) and genres_list else ''
 
-                # Use get_or_create for cleaner code
                 anime_obj, created = Anime.objects.get_or_create(
                     mal_id=anime_id,
                     defaults={
@@ -173,9 +168,7 @@ def detalhes_anime(request, anime_id):
                     }
                 )
 
-                # Update existing anime if not created
                 if not created:
-                    # Update fields that might have changed
                     anime_obj.title = anime.get('title', anime_obj.title)
                     anime_obj.score = anime.get('score', anime_obj.score)
                     anime_obj.episodes = anime.get(
@@ -185,12 +178,10 @@ def detalhes_anime(request, anime_id):
             except (ValueError, TypeError) as e:
                 contexto['erro'] = f"Erro ao processar dados do anime: {e}"
             except Exception as e:
-                # Log unexpected errors but don't show to user in normal operation
                 import logging
                 logger = logging.getLogger(__name__)
                 logger.error(f"Unexpected error saving anime {anime_id}: {e}")
 
-        # Process genres and studios for template display (convert to list of strings)
         if anime:
             if isinstance(anime.get('genres', []), list) and anime.get('genres'):
                 if anime['genres'] and isinstance(anime['genres'][0], dict):
@@ -204,13 +195,11 @@ def detalhes_anime(request, anime_id):
 
         contexto['anime'] = anime
 
-        # Get user's anime list entry if authenticated
         if request.user.is_authenticated and anime_obj:
             user_entry = AnimeList.objects.filter(
                 user=request.user, anime=anime_obj).first()
             contexto['user_entry'] = user_entry
 
-        # Handle comment submission
         if request.method == 'POST' and request.user.is_authenticated and anime_obj:
             content = request.POST.get('content', '').strip()
 
@@ -227,14 +216,12 @@ def detalhes_anime(request, anime_id):
                 messages.success(request, 'Comentário adicionado com sucesso!')
                 return redirect('animes:detalhes_anime', anime_id=anime_id)
 
-        # Fetch comments for this anime
         if anime_obj:
             comments = Comment.objects.filter(
                 anime=anime_obj
             ).select_related('user', 'user__profile').order_by('-created_at')
             contexto['comments'] = comments
 
-            # Get unique commenters (latest 5) for avatar display
             seen_users = set()
             unique_commenters = []
             for comment in comments:
@@ -245,7 +232,6 @@ def detalhes_anime(request, anime_id):
                         break
             contexto['unique_commenters'] = unique_commenters
 
-            # Fetch recommendations for this anime
             recommendations = AnimeRecommendation.objects.filter(
                 source_anime=anime_obj
             ).select_related('recommended_anime', 'user').values(
@@ -274,7 +260,6 @@ def top_animes(request):
     data = response.json()
     animes_list = data.get('data', [])
 
-    # Add comment counts
     mal_ids = [anime['mal_id'] for anime in animes_list]
     comment_counts = get_comment_counts(mal_ids)
     for anime in animes_list:
@@ -381,7 +366,6 @@ def arquivo_de_temporadas(request):
 @login_required
 @require_POST
 def add_recommendation(request, anime_id):
-    """Handle recommendation submission"""
     try:
         source_anime = get_object_or_404(Anime, mal_id=anime_id)
         recommended_anime_id = request.POST.get('recommended_anime_id')
@@ -391,17 +375,14 @@ def add_recommendation(request, anime_id):
                 request, 'Por favor, selecione um anime para recomendar.')
             return redirect('animes:detalhes_anime', anime_id=anime_id)
 
-        # Validate that source and recommended are different
         if str(source_anime.mal_id) == str(recommended_anime_id):
             messages.error(request, 'Você não pode recomendar o mesmo anime.')
             return redirect('animes:detalhes_anime', anime_id=anime_id)
 
-        # Get or create the recommended anime
         recommended_anime = Anime.objects.filter(
             mal_id=recommended_anime_id).first()
 
         if not recommended_anime:
-            # Fetch from API and create
             try:
                 api_url = f'https://api.jikan.moe/v4/anime/{recommended_anime_id}'
                 response = requests.get(api_url, timeout=10)
@@ -437,18 +418,16 @@ def add_recommendation(request, anime_id):
                 messages.error(request, f'Erro ao buscar dados do anime: {e}')
                 return redirect('animes:detalhes_anime', anime_id=anime_id)
 
-        # Try to create the recommendation
         try:
             AnimeRecommendation.objects.create(
                 user=request.user,
                 source_anime=source_anime,
                 recommended_anime=recommended_anime,
-                note=''  # No note field in form
+                note=''
             )
             messages.success(
                 request, f'Recomendação de "{recommended_anime.title}" adicionada com sucesso!')
         except Exception as e:
-            # Handle unique constraint violation
             messages.info(request, 'Você já recomendou este anime.')
 
         return redirect('animes:detalhes_anime', anime_id=anime_id)
@@ -459,13 +438,11 @@ def add_recommendation(request, anime_id):
 
 
 def search_anime_autocomplete(request):
-    """Search anime for autocomplete in recommendation form"""
     query = request.GET.get('q', '').strip()
 
     if not query or len(query) < 2:
         return JsonResponse({'results': []})
 
-    # First, search in local database
     local_animes = Anime.objects.filter(
         Q(title__icontains=query) | Q(title_english__icontains=query)
     ).values('mal_id', 'title', 'image_url', 'anime_type', 'score')[:5]
@@ -480,7 +457,6 @@ def search_anime_autocomplete(request):
             'score': anime['score']
         })
 
-    # If we have less than 5 results, search the API
     if len(results) < 5:
         try:
             response = requests.get(
@@ -494,7 +470,6 @@ def search_anime_autocomplete(request):
             for anime in api_data:
                 if len(results) >= 5:
                     break
-                # Avoid duplicates
                 if not any(r['mal_id'] == anime['mal_id'] for r in results):
                     results.append({
                         'mal_id': anime['mal_id'],
