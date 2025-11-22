@@ -72,11 +72,6 @@ jobs:
           python manage.py collectstatic --noinput --clear
         env:
           TARGET_ENV: Dev
-          DJANGO_SETTINGS_MODULE: your_project.settings
-          DEBUG: 'True'
-          ALLOWED_HOSTS: localhost,127.0.0.1
-          # Adicione timeout maior para APIs externas
-          REQUESTS_TIMEOUT: '30'
       
       - name: Start Django application in background
         run: |
@@ -95,11 +90,6 @@ jobs:
           done
         env:
           TARGET_ENV: Dev
-          DEBUG: 'True'
-          ALLOWED_HOSTS: localhost,127.0.0.1
-          # Variáveis para controlar rate limit da Jikan API
-          JIKAN_API_DELAY: '1'
-          REQUESTS_TIMEOUT: '30'
       
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
