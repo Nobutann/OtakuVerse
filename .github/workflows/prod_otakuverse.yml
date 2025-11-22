@@ -65,11 +65,19 @@ jobs:
           source antenv/bin/activate
           pip install -r requirements.txt
       
+      - name: Run Django migrations and setup
+        run: |
+          source antenv/bin/activate
+          python manage.py migrate --noinput
+          python manage.py collectstatic --noinput --clear
+        env:
+          TARGET_ENV: Dev
+      
       - name: Start Django application in background
         run: |
           source antenv/bin/activate
-          python manage.py runserver &
-          sleep 10
+          python manage.py runserver 0.0.0.0:8000 &
+          sleep 15
         env:
           TARGET_ENV: Dev
       
