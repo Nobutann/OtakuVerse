@@ -383,7 +383,7 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 ![comentarios](img/comentarios.png)
 
 ### Visualizando comentário/os
-![visualizando comentários](img/visualizando-animes.png)
+![visualizando comentários](img/visualizando.png)
 
 ---
 
