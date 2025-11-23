@@ -339,28 +339,25 @@ Continuamos aplicando a prática de Pair Programming para aumentar a colaboraç�
 <details>
 <summary>🚀 QUARTA ENTREGA</summary>
 
-descrição sobre a entrega
+Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de funcionalidades avançadas voltadas para personalização, interação comunitária e acompanhamento de lançamentos. As histórias planejadas e executadas nesta sprint foram:
 
 # Histórias implementadas:
 
-## História 1: lorem ipsum
-
+## História 1: Recomendar animes semelhantes ao que o usuário assistiu
+![recomendar-animes]img/recomendar-animes.png
 ---
-## História 2: lorem ipsum
-
----
-
-## História 3: Visualizar informações sobre as temporadas que serão lançadas
-
+## História 2: Sistema de comentários e interação comunitária
+![comentarios]img/comentarios.png
 ---
 
-## História 4: Pesquisar e visualizar personagens de animes
+## História 3: Calendário de estreias de episódios (Em validação)
 
 ---
+
 
 # Jira
 
-descrição do que atualizou no jira
+Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
 ### Backlog:
 imagem
