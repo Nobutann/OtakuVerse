@@ -348,10 +348,21 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 - Cenário 1: Recomendar um anime semelhante ao animes assistido:
 
   - Dado que o usuário está logado e já assistiu a algun anime;
-  - Quando acessa o anime assistido na área de recomendações;
-  - Então ele poderá recomendar um anime semelhante.
+  - Quando acessa o anime, na área de recomendações;
+  - Então ele poderá escolher um anime e recomendar a comunidade.
+ 
+- Cenário 2: Visualizar o/os anime/s recomendados pela comunidade:
 
-![recomendar-animes](img/recomendar-animes.png)
+  - Dado que o usuário está logado;
+  - Quando acessa o anime, e vai na área de recomendações;
+  - Então ele poderá visualizar os animes recomendados pela comunidade.
+
+### Pesquisa de anime para recomendação á comunidade
+![recomendar-animes](img/recomendacao.png)
+
+### Animes recomendados pela comunidade
+![animes-recomendados](img/recomendados.png)
+
 ---
 ## História 2: Sistema de comentários e interação comunitária
 
