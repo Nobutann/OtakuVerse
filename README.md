@@ -351,7 +351,7 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
   - Quando acessa o anime, na área de recomendações;
   - Então ele poderá escolher um anime e recomendar a comunidade.
  
-- Cenário 2: Visualizar o/os anime/s recomendados pela comunidade:
+- Cenário 2: Visualizar o/os anime/es recomendados pela comunidade:
 
   - Dado que o usuário está logado;
   - Quando acessa o anime, e vai na área de recomendações;
@@ -378,8 +378,13 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
   - Dado que o usuário está logado e acessa a página de um anime;
   - Quando rolar para a área de comentários;
   - Então poderá visualizar os comentários feitos pela comunidade;
-    
+
+### Fazendo comentário
 ![comentarios](img/comentarios.png)
+
+### Visualizando comentário/os
+![visualizando comentários](img/visualizando-animes.png)
+
 ---
 
 ## História 3: Calendário de estreias de episódios (Em validação)
