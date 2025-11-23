@@ -345,8 +345,6 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 
 ## História 1: Recomendar animes semelhantes
 
----
-
 - Cenário 1: Recomendar um anime semelhante ao animes assistido:
 
   - Dado que o usuário está logado e já assistiu a algun anime;
@@ -363,7 +361,7 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 ![recomendar-animes](img/recomendacao.png)
 
 ### Animes recomendados pela comunidade
-![animes-recomendados](img/recomendados.png)
+![animes-recomendados](img/recomendacao-animes-4.png)
 
 ---
 
