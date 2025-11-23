@@ -420,9 +420,20 @@ Nesta entrega, produzimos um screencast demonstrando as funcionalidades recém-i
 ---
 
 
+# BugTracker
 
+Implementamos uma nova seção de bug tracker para gerenciar de forma organizada as falhas identificadas e as melhorias realizadas nesta sprint.
+
+## Open
+![bugtracker](img/issues-bugtracker4-open.png)
 
 ---
+
+## Closed
+![bugtracker](img/issues-bugtracker4.png)
+
+---
+
 
 > 💡 Cada issue registrada contém título, descrição, prioridade e status de andamento
 
