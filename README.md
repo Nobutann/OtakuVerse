@@ -396,6 +396,9 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 
 Atualizamos o Jira com uma nova sprint para acompanhar as atividades desta entrega, mantendo a organização e a clareza das tarefas.
 
+### Backlog:
+![backlog-jira-4](img/backlog-jira-4.png)
+
 ### Board:
 ![board-jira-4](img/board-jira-4.png)
 
