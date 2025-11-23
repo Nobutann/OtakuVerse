@@ -343,13 +343,13 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 
 # Histórias implementadas:
 
-## História 1: Recomendar animes semelhantes ao que o usuário assistiu
+## História 1: Recomendar animes semelhantes
 
-- Cenário 1: Exibir recomendações baseadas nos animes assistidos:
+- Cenário 1: Recomendar um anime semelhante ao animes assistido:
 
-  - Dado que o usuário está logado e já assistiu a alguns animes;
-  - Quando acessa a página inicial ou a área de recomendações;
-  - Então uma lista de animes semelhantes aos que assistiu deve aparecer.
+  - Dado que o usuário está logado e já assistiu a algun anime;
+  - Quando acessa o anime assistido na área de recomendações;
+  - Então ele poderá recomendar um anime semelhante.
 
 ![recomendar-animes](img/recomendar-animes.png)
 ---
