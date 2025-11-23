@@ -367,13 +367,17 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 
 ## História 2: Sistema de comentários e interação comunitária
 
----
-
 - Cenário 1: Usuário comentar com a comunidade sobre o anime:
 
   - Dado que o usuário está logado e acessa a página de um anime;
   - Quando rolar para a área de comentários;
   - Então poderá clicar em comentar, e digitar um comentário de até 175 caracteres
+
+- Cenário 2: Usuário visualiza os comentários da comunidade:
+
+  - Dado que o usuário está logado e acessa a página de um anime;
+  - Quando rolar para a área de comentários;
+  - Então poderá visualizar os comentários feitos pela comunidade;
     
 ![comentarios](img/comentarios.png)
 ---
