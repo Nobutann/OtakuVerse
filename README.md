@@ -344,9 +344,22 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 # Histórias implementadas:
 
 ## História 1: Recomendar animes semelhantes ao que o usuário assistiu
+
+- Cenário 1: Exibir recomendações baseadas nos animes assistidos:
+
+  - Dado que o usuário está logado e já assistiu a alguns animes;
+  - Quando acessa a página inicial ou a área de recomendações;
+  - Então uma lista de animes semelhantes aos que assistiu deve aparecer.
+
 ![recomendar-animes](img/recomendar-animes.png)
 ---
 ## História 2: Sistema de comentários e interação comunitária
+
+-Cenário 1: Usuário comentar em um anime
+    -Dado que o usuário está logado e acessa a página de detalhes de um anime;
+    -Quando escreve um comentário e clica para enviar;
+    -Então o comentário deve aparecer listado junto aos demais comentários daquele anime.
+    
 ![comentarios](img/comentarios.png)
 ---
 
