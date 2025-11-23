@@ -413,7 +413,7 @@ imagem
 # Relatório Pair Programming
 
 Continuamos aplicando a prática de Pair Programming para aumentar a colaboração entre os membros e reduzir falhas.  
-📄 [Acesse o PDF](link)
+📄 [Acesse o PDF](docs/pair_programming-4.pdf)
 
 ---
 ---
