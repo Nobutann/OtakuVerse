@@ -355,10 +355,12 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 ---
 ## História 2: Sistema de comentários e interação comunitária
 
--Cenário 1: Usuário comentar em um anime
-    -Dado que o usuário está logado e acessa a página de detalhes de um anime;
-    -Quando escreve um comentário e clica para enviar;
-    -Então o comentário deve aparecer listado junto aos demais comentários daquele anime.
+- Cenário 1: Usuário comentar em um anime:
+
+  - Dado que o usuário está logado e acessa a página de detalhes de um anime;
+  - Quando escreve um comentário e clica para enviar;
+  - Então o comentário deve aparecer listado junto aos demais comentários daquele anime.
+
     
 ![comentarios](img/comentarios.png)
 ---
