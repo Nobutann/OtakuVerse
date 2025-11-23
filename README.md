@@ -344,10 +344,10 @@ Durante a quarta entrega, a equipe do OtakuVerse focou no desenvolvimento de fun
 # Histórias implementadas:
 
 ## História 1: Recomendar animes semelhantes ao que o usuário assistiu
-![recomendar-animes]img/recomendar-animes.png
+![recomendar-animes](img/recomendar-animes.png)
 ---
 ## História 2: Sistema de comentários e interação comunitária
-![comentarios]img/comentarios.png
+![comentarios](img/comentarios.png)
 ---
 
 ## História 3: Calendário de estreias de episódios (Em validação)
