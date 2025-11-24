@@ -28,7 +28,7 @@
     <a href="https://www.figma.com/design/6Q4DkRQeQO5bq2jOZrwhfO/OtakuVerse?t=B29iLpEUN9gL3O8G-1">
         <img src="https://img.shields.io/badge/Figma-4B0082?style=for-the-badge&logo=Figma&logoColor=white" alt="Figma">
     </a>
-    <a href="https://otakuverse-bbbrhsg8c6hkgch5.brazilsouth-01.azurewebsites.net">
+    <a href="https://otakuverse.azurewebsites.net">
         <img src="https://img.shields.io/badge/OtakuVerse-%20-pink?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABWElEQVQ4T52TsU4CURCFv5NMASBbyAxTvgCVkA3UQPnRCr3kCKxDQkH1BWYF1C4hBfZJq/7Dxsf+m9efN4xhMHnNEe8A1W1mk6/T1uN4pYZwHPINs0o0P3oqkAQ9gGZpZj7m8Z8OwvAczbRI+zeuVnbEHz3Vqc2J1ch8yPskP8Q3hX0cPrd1aY7dk81aMqEs3ixwI0hw9hAzwFci3kXs3J0FJjiDrE9wsfYpY8X0QH2pJx31gP88QPQJ3x3KXhO+L9lV0DbZyk9kY7OjvA6CWu3g+vYvQ4s+BMxVhO9QoJeFQHso/5XgX6JeVw3nX6qfUoB38yqk+X0A8f2Yk/cCQQf5AAAAAElFTkSuQmCC" alt="OtakuVerse">
     </a>
 </div>
