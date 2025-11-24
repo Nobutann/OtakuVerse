@@ -330,7 +330,7 @@ Continuamos aplicando a prática de Pair Programming para aumentar a colaboraç�
 📄 [Acesse o PDF](docs/pair_programming.pdf)
 
 ---
----
+
 
 </details>
 
