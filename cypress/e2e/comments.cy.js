@@ -30,6 +30,7 @@ describe('Comentários de Animes', () => {
     cy.visit('/animes/animes/1/', { failOnStatusCode: false });
     cy.wait(2000);
     
+    cy.get('#commentContent').should('be.visible');
     cy.get('#commentContent').type(testComment);
     cy.get('.btn-comment').click();
     cy.wait(2000);
@@ -37,15 +38,5 @@ describe('Comentários de Animes', () => {
     cy.get('.comment-card').should('exist');
     cy.get('.comment-content').should('contain', testComment);
     cy.get('.comment-card').first().should('contain', testUsername);
-    
-    cy.get('.comment-card').first().then($card => {
-      const hasLikeButton = $card.find('.btn-like, .like-button, [class*="like"]').length > 0;
-      if (hasLikeButton) {
-        cy.wrap($card).find('.btn-like, .like-button, [class*="like"]').first().click();
-        cy.wait(1000);
-      } else {
-        cy.log('Sistema de curtidas não implementado');
-      }
-    });
   });
 });

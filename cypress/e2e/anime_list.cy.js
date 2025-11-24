@@ -74,8 +74,8 @@ describe('Testes de Lista de Animes', () => {
     cy.get('.status-label.status-completed').should('be.visible')
   })
 
-  it('Deve adicionar anime com status Planejo Assistir', () => {
-    cy.visit('/animes/animes/21/', { failOnStatusCode: false })
+    it('Deve adicionar anime com status Planejo Assistir', () => {
+    cy.visit('/animes/animes/30/', { failOnStatusCode: false })
     cy.wait(3000)
     
     cy.get('body').then($body => {
